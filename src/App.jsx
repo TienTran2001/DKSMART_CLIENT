@@ -6,25 +6,38 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useUserStore } from './store/useUserStore';
+import { AdminLayout } from './pages/admin';
+import Dashboard from './pages/admin/Dashboard';
+import Users from './pages/admin/user/Users';
+import AddUser from './pages/admin/user/AddUser';
+import UpdateUser from './pages/admin/user/UpdateUser';
 
 function App() {
   const navigate = useNavigate();
-  const { getCurrent, current, token } = useUserStore();
+  const { getCurrent, token } = useUserStore();
 
   useEffect(() => {
     getCurrent();
   }, [token]);
-  console.log(current);
+  // console.log(current);
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* auth layout */}
         <Route path={path.AUTH_LAYOUT} element={<AuthLayout />}>
           <Route path={path.LOGIN} element={<Login navigate={navigate} />} />
           <Route
             path={path.REGISTER}
             element={<Register navigate={navigate} />}
           />
+        </Route>
+        {/* admin */}
+        <Route path="admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="create-user" element={<AddUser />} />
+          <Route path="update-user/:userId" element={<UpdateUser />} />
         </Route>
       </Routes>
       <ToastContainer

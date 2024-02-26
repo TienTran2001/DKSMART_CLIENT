@@ -1,15 +1,15 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { apiRegister } from '~/apis/auth';
-import { Button, InputForm } from '~/components';
-import { useUserStore } from '~/store/useUserStore';
+import { InputForm } from '~/components';
+import ButtonDefault from '~/components/commons/ButtonDefault';
 
 // eslint-disable-next-line react/prop-types
 const Register = ({ navigate }) => {
-  const { setPhoneNumber } = useUserStore();
-
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
@@ -24,8 +24,9 @@ const Register = ({ navigate }) => {
       email: data.email,
       password: data.password,
     };
+    setLoading(true);
     const response = await apiRegister(payload);
-    console.log(response);
+    setLoading(false);
     if (response.success) {
       Swal.fire({
         icon: 'success',
@@ -35,7 +36,6 @@ const Register = ({ navigate }) => {
         confirmButtonText: 'Đăng nhập ngay',
       }).then((isConfirm) => {
         if (isConfirm) {
-          setPhoneNumber(payload.phone);
           navigate('/login');
         }
       });
@@ -122,13 +122,14 @@ const Register = ({ navigate }) => {
               errors={errors}
             />
 
-            <Button
-              type="button"
-              className="w-full"
+            <ButtonDefault
+              disable={loading}
+              fullWidth
+              className="bg-main"
               onClick={handleSubmit(handleRegister)}
             >
               Đăng ký
-            </Button>
+            </ButtonDefault>
             <p className="text-sm font-light text-gray-500">
               Đã có tài khoản?{' '}
               <Link

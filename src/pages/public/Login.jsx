@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { apiLogin } from '~/apis/auth';
-import { Button, InputForm } from '~/components';
+import { InputForm } from '~/components';
+import ButtonDefault from '~/components/commons/ButtonDefault';
 
 import { useUserStore } from '~/store/useUserStore';
 
@@ -76,14 +77,14 @@ const Login = ({ navigate }) => {
                 Quên mật khẩu?
               </a>
             </div>
-            <Button
-              type="button"
-              className="w-full"
-              onClick={handleSubmit(handleLogin)}
+            <ButtonDefault
               disable={loading}
+              fullWidth
+              className="bg-main"
+              onClick={handleSubmit(handleLogin)}
             >
               Đăng nhập
-            </Button>
+            </ButtonDefault>
             <p className="text-sm font-light text-gray-500">
               Bạn chưa có tài khoản?{' '}
               <Link

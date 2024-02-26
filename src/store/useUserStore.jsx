@@ -15,6 +15,7 @@ export const useUserStore = create(
           return set(() => ({
             current: response.currentUser,
           }));
+        else return set(() => ({ current: null }));
       },
     }),
     {

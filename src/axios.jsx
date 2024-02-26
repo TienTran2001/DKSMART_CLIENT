@@ -12,9 +12,8 @@ instance.interceptors.request.use(
     // Làm gì đó trước khi request dược gửi đi
     let token = window.localStorage.getItem('dksmart');
     if (token) token = JSON.parse(token);
-    console.log(token);
+
     if (token.state?.token) {
-      console.log('vao ne');
       config.headers = {
         Authorization: `Bearer ${token.state?.token}`,
       };

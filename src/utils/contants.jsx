@@ -1,0 +1,93 @@
+import path from './path';
+import { RxDashboard } from 'react-icons/rx';
+import { FaUserCircle } from 'react-icons/fa';
+import { LuMapPin } from 'react-icons/lu';
+import { GiHomeGarage } from 'react-icons/gi';
+import { PiNewspaperClippingLight } from 'react-icons/pi';
+
+// eslint-disable-next-line no-undef
+export const adminSidebar = [
+  {
+    id: 1,
+    name: 'Thống kê',
+    path: `/${path.ADMIN_LAYOUT}/${path.DASHBOARD}`,
+    icon: <RxDashboard />,
+    type: 'SINGLE',
+  },
+  {
+    id: 2,
+    name: 'Tài khoản',
+    path: ``,
+    icon: <FaUserCircle />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 21,
+        name: 'Tạo tài khoản',
+        path: `/${path.ADMIN_LAYOUT}/create-user`,
+      },
+      {
+        id: 22,
+        name: 'Quản lý',
+        path: `/${path.ADMIN_LAYOUT}/${path.USER}`,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Tỉnh thành',
+    path: ``,
+    icon: <LuMapPin />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 31,
+        name: 'Tạo tỉnh thành',
+        path: `/${path.ADMIN_LAYOUT}/create-province`,
+      },
+      {
+        id: 32,
+        name: 'Quản lý',
+        path: `/${path.ADMIN_LAYOUT}/provinces`,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Trung tâm đăng kiểm',
+    path: ``,
+    icon: <GiHomeGarage />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 41,
+        name: 'Tạo trung tâm',
+        path: `/${path.ADMIN_LAYOUT}/create-center`,
+      },
+      {
+        id: 42,
+        name: 'Quản lý',
+        path: `/${path.ADMIN_LAYOUT}/centers`,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Tin tức',
+    path: ``,
+    icon: <PiNewspaperClippingLight />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 51,
+        name: 'Tạo tin tức',
+        path: `/${path.ADMIN_LAYOUT}/create-news`,
+      },
+      {
+        id: 52,
+        name: 'Quản lý',
+        path: `/${path.ADMIN_LAYOUT}/news`,
+      },
+    ],
+  },
+];

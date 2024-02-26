@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+import withMT from '@material-tailwind/react/utils/withMT';
+
+export default withMT({
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
@@ -8,6 +10,9 @@ export default {
       },
       colors: {
         main: '#0000FF',
+        'main-1': '#353535',
+        'main-gray': '#eceff180',
+        'main-gray-1': '#607d8b1a',
       },
       width: {
         main: '1319px',
@@ -18,4 +23,4 @@ export default {
     // eslint-disable-next-line no-undef
     require('@tailwindcss/forms')({ strategy: 'class' }),
   ],
-};
+});

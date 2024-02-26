@@ -15,6 +15,7 @@ const InputForm = ({
   inputClassName,
   validate,
   value,
+  readOnly = false,
 }) => {
   return (
     <div className={containerClassName}>
@@ -29,13 +30,15 @@ const InputForm = ({
       <input
         type={type}
         id={id}
+        readOnly={readOnly}
         value={value}
         placeholder={placeholder}
         className={twMerge(
           clsx(
             style,
             'bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5',
-            inputClassName
+            inputClassName,
+            readOnly && 'opacity-80 cursor-not-allowed'
           )
         )}
         {...register(id, validate)}
