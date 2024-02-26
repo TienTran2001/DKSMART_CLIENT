@@ -9,6 +9,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from '@material-tailwind/react';
+import Swal from 'sweetalert2';
 
 import { FiChevronDown } from 'react-icons/fi';
 import { MdChevronRight } from 'react-icons/md';
@@ -16,13 +17,29 @@ import { adminSidebar } from '~/utils/contants';
 import { NavLink } from 'react-router-dom';
 import { IoMdLogOut } from 'react-icons/io';
 import { ImProfile } from 'react-icons/im';
-export default function AdminSidebarMain() {
+// eslint-disable-next-line react/prop-types
+export default function AdminSidebarMain({ navigate }) {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
-
+  const handleLogout = () => {
+    Swal.fire({
+      title: '',
+      text: 'Bạn muốn đăng xuất!',
+      showCancelButton: true,
+      confirmButtonColor: '#0000FF',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Đăng xuất',
+      cancelButtonText: 'Đóng!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('dksmart');
+        navigate('');
+      }
+    });
+  };
   return (
     <Card className="min-h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2 p-4">
@@ -109,7 +126,7 @@ export default function AdminSidebarMain() {
           Thông tin tài khoản
         </ListItem>
 
-        <ListItem>
+        <ListItem onClick={() => handleLogout()}>
           <ListItemPrefix>
             <IoMdLogOut className="text-xl" />
           </ListItemPrefix>

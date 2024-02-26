@@ -11,11 +11,18 @@ import { useUserStore } from '~/store/useUserStore';
 
 // eslint-disable-next-line react/prop-types
 const Login = ({ navigate }) => {
-  const { setToken } = useUserStore();
+  const { setToken, current } = useUserStore();
 
   const [loading, setLoading] = useState(false);
 
-  // console.log(token);
+  if (current) {
+    if (current?.roleId == 1) {
+      navigate('/admin/dashboard');
+    } else if (current?.roleId == 2) {
+      navigate('');
+    }
+  }
+
   const {
     register,
     formState: { errors },
@@ -31,7 +38,6 @@ const Login = ({ navigate }) => {
     if (response.success) {
       toast.success(response.message);
       setToken(response.token);
-      navigate('/');
     } else toast.error(response.message);
   };
 

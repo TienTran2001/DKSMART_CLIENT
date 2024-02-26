@@ -14,7 +14,7 @@ import UpdateUser from './pages/admin/user/UpdateUser';
 
 function App() {
   const navigate = useNavigate();
-  const { getCurrent, token } = useUserStore();
+  const { getCurrent, current, token } = useUserStore();
 
   useEffect(() => {
     getCurrent();
@@ -33,12 +33,14 @@ function App() {
           />
         </Route>
         {/* admin */}
-        <Route path="admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="users" element={<Users />} />
-          <Route path="create-user" element={<AddUser />} />
-          <Route path="update-user/:userId" element={<UpdateUser />} />
-        </Route>
+        {current?.roleId == 1 && (
+          <Route path="admin" element={<AdminLayout navigate={navigate} />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users" element={<Users />} />
+            <Route path="create-user" element={<AddUser />} />
+            <Route path="update-user/:userId" element={<UpdateUser />} />
+          </Route>
+        )}
       </Routes>
       <ToastContainer
         position="top-right"
