@@ -11,6 +11,8 @@ import Dashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/user/Users';
 import AddUser from './pages/admin/user/AddUser';
 import UpdateUser from './pages/admin/user/UpdateUser';
+import Provinces from './pages/admin/province/Provinces';
+import AddProvince from './pages/admin/province/AddProvince';
 
 function App() {
   const navigate = useNavigate();
@@ -39,6 +41,8 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="create-user" element={<AddUser />} />
             <Route path="update-user/:userId" element={<UpdateUser />} />
+            <Route path="provinces" element={<Provinces />} />
+            <Route path="create-province" element={<AddProvince />} />
           </Route>
         )}
       </Routes>
