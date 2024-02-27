@@ -25,7 +25,7 @@ const TABLE_HEAD = ['Số thứ tự', 'Tên tỉnh', 'Thao tác'];
 
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { apiGetAllProvince } from '~/apis/provinces';
+import { apiDeleteProvince, apiGetAllProvince } from '~/apis/provinces';
 export default function Provinces() {
   const [loading, setLoading] = useState(false);
   const [provinces, setProvinces] = useState([]);
@@ -60,11 +60,11 @@ export default function Provinces() {
       cancelButtonText: 'Thoát!',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        // const response = await apiDeleteUser(userId);
-        // if (response.success) {
-        //   toast.success(response.message);
-        //   loadUsers();
-        // } else toast.error(response.message);
+        const response = await apiDeleteProvince(provinceId);
+        if (response.success) {
+          toast.success(response.message);
+          loadUsers();
+        } else toast.error(response.message);
       }
     });
   };

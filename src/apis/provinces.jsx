@@ -25,3 +25,9 @@ export const apiUpdateProvince = (provinceId, data) =>
     method: 'put',
     data,
   });
+
+export const apiDeleteProvince = (provinceId) =>
+  axios({
+    url: `/provinces/${provinceId}`,
+    method: 'delete',
+  });
