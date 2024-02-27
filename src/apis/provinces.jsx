@@ -6,9 +6,22 @@ export const apiGetAllProvince = () =>
     method: 'get',
   });
 
+export const apiGetProvinceById = (provinceId) =>
+  axios({
+    url: `/provinces/${provinceId}`,
+    method: 'get',
+  });
+
 export const apiAddProvince = (data) =>
   axios({
     url: '/provinces',
     method: 'post',
+    data,
+  });
+
+export const apiUpdateProvince = (provinceId, data) =>
+  axios({
+    url: `/provinces/${provinceId}`,
+    method: 'put',
     data,
   });

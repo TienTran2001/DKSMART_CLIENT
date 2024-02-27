@@ -13,6 +13,7 @@ import AddUser from './pages/admin/user/AddUser';
 import UpdateUser from './pages/admin/user/UpdateUser';
 import Provinces from './pages/admin/province/Provinces';
 import AddProvince from './pages/admin/province/AddProvince';
+import UpdateProvince from './pages/admin/province/UpdateProvince';
 
 function App() {
   const navigate = useNavigate();
@@ -43,6 +44,10 @@ function App() {
             <Route path="update-user/:userId" element={<UpdateUser />} />
             <Route path="provinces" element={<Provinces />} />
             <Route path="create-province" element={<AddProvince />} />
+            <Route
+              path="update-province/:provinceId"
+              element={<UpdateProvince />}
+            />
           </Route>
         )}
       </Routes>
