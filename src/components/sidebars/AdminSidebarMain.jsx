@@ -119,13 +119,14 @@ export default function AdminSidebarMain({ navigate }) {
         ))}
 
         <hr className="my-2 border-blue-gray-50" />
-        <ListItem>
-          <ListItemPrefix>
-            <ImProfile className="text-lg" />
-          </ListItemPrefix>
-          Thông tin tài khoản
-        </ListItem>
-
+        <NavLink to="/admin/profile">
+          <ListItem>
+            <ListItemPrefix>
+              <ImProfile className="text-lg" />
+            </ListItemPrefix>
+            Thông tin tài khoản
+          </ListItem>
+        </NavLink>
         <ListItem onClick={() => handleLogout()}>
           <ListItemPrefix>
             <IoMdLogOut className="text-xl" />

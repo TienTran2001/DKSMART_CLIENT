@@ -17,6 +17,7 @@ import UpdateProvince from './pages/admin/province/UpdateProvince';
 import Centers from './pages/admin/center/Centers';
 import AddCenter from './pages/admin/center/AddCenter';
 import UpdateCenter from './pages/admin/center/UpdateCenter';
+import ProfileUser from './pages/admin/ProfileUser';
 
 function App() {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ function App() {
             <Route path="centers" element={<Centers />} />
             <Route path="create-center" element={<AddCenter />} />
             <Route path="update-center/:centerId" element={<UpdateCenter />} />
+            <Route path="profile" element={<ProfileUser />} />
           </Route>
         )}
       </Routes>

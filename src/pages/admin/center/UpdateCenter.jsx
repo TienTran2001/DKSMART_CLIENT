@@ -51,9 +51,6 @@ const UpdateCenter = () => {
       setValue('province', center.provinceId);
     }
   };
-  const handleHihi = () => {
-    setValue('name', 'hhiih');
-  };
 
   const handleUpdateCenter = async (data) => {
     const payload = {
@@ -193,14 +190,6 @@ const UpdateCenter = () => {
               onClick={handleSubmit(handleUpdateCenter)}
             >
               Cập nhật trung tâm đăng kiểm
-            </ButtonDefault>
-
-            <ButtonDefault
-              disable={loading}
-              className="bg-main"
-              onClick={handleHihi}
-            >
-              hihi
             </ButtonDefault>
           </div>
         </form>
