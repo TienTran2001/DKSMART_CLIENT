@@ -64,7 +64,7 @@ const AddProvince = () => {
               className="bg-main"
               onClick={handleSubmit(handleAddProvince)}
             >
-              Tạo tài khoản
+              Tạo tỉnh thành
             </ButtonDefault>
           </div>
         </form>

@@ -18,6 +18,8 @@ import Centers from './pages/admin/center/Centers';
 import AddCenter from './pages/admin/center/AddCenter';
 import UpdateCenter from './pages/admin/center/UpdateCenter';
 import ProfileUser from './pages/admin/ProfileUser';
+import CentersPublic from './pages/public/CentersPublic';
+import Profile from './pages/public/Profile';
 
 function App() {
   const navigate = useNavigate();
@@ -31,6 +33,8 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/centers" element={<CentersPublic />} />
+        <Route path="/profile" element={<Profile navigate={navigate} />} />
         {/* auth layout */}
         <Route path={path.AUTH_LAYOUT} element={<AuthLayout />}>
           <Route path={path.LOGIN} element={<Login navigate={navigate} />} />

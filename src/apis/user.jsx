@@ -35,3 +35,10 @@ export const apiUpdateUser = (userId, data) =>
     method: 'put',
     data,
   });
+
+export const apiUpdateCurrent = (data) =>
+  axios({
+    url: `/users/current`,
+    method: 'put',
+    data,
+  });

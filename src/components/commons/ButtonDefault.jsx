@@ -6,7 +6,7 @@ const ButtonDefault = ({
   children,
   className,
   onClick,
-  disable = 'false',
+  disable = false,
   fullWidth,
   size = 'md',
 }) => {

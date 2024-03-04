@@ -24,8 +24,8 @@ const UpdateCenter = () => {
   } = useForm();
 
   useEffect(() => {
-    getCenter(centerId);
     loadProvinces();
+    getCenter(centerId);
   }, []);
 
   const loadProvinces = async () => {
@@ -41,7 +41,7 @@ const UpdateCenter = () => {
     const response = await apiGetCenterById(centerId);
     if (response.success) {
       const { center } = response;
-
+      console.log(center);
       setValue('name', center.name);
       setValue('address', center.address);
       setValue('phone', center.phone);
@@ -51,6 +51,7 @@ const UpdateCenter = () => {
       setValue('province', center.provinceId);
     }
   };
+  console.log('load');
 
   const handleUpdateCenter = async (data) => {
     const payload = {
@@ -61,7 +62,6 @@ const UpdateCenter = () => {
       status: data.status,
       provinceId: data.province,
     };
-    console.log(payload);
 
     setLoading(true);
     const response = await apiUpdateCenter(centerId, payload);
@@ -163,7 +163,6 @@ const UpdateCenter = () => {
                 label="Tỉnh thành"
                 id="province"
                 register={register}
-                value=""
                 validate={{
                   required: 'Tỉnh thành không được bỏ trống.',
                 }}

@@ -47,6 +47,9 @@ export default function AdminSidebarMain({ navigate }) {
           DKSMART
         </Typography>
       </div>
+      <div className="py-5 px-4 font-bold text-base rounded-xl text-center bg-[#edeff1]">
+        Quản trị hệ thống
+      </div>
       <List>
         {adminSidebar.map((item) => (
           <Fragment key={item.id}>
@@ -54,7 +57,7 @@ export default function AdminSidebarMain({ navigate }) {
               <NavLink to={item.path}>
                 {({ isActive }) => (
                   <Accordion open={isActive}>
-                    <ListItem className="p-0" selected={isActive}>
+                    <ListItem className="p-0 " selected={isActive}>
                       <AccordionHeader
                         onClick={() => handleOpen(item.id)}
                         className="border-b-0 p-3"

@@ -1,10 +1,11 @@
 import axios from '~/axios';
 
-export const apiGetAllCenter = () =>
-  axios({
-    url: '/centers',
+export const apiGetAllCenter = (limit, page) => {
+  return axios({
+    url: `/centers?limit=${limit}&page=${page}`,
     method: 'get',
   });
+};
 
 export const apiGetCenterById = (centerId) =>
   axios({

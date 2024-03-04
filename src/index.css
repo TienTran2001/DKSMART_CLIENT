@@ -10,3 +10,10 @@ html,
 body {
   height: 100%;
 }
+.slick-dots {
+  transform: translateY(-50px);
+}
+.slick-dots li button:before {
+  font-size: 14px;
+  color: white;
+}

@@ -41,11 +41,11 @@ export default function Centers() {
 
   const loadCenters = async () => {
     setLoading(true);
-    const response = await apiGetAllCenter();
+    const response = await apiGetAllCenter(8, 0);
     setLoading(false);
     if (response.success) {
-      const { centers } = response;
-      setCenters(centers);
+      console.log(response);
+      setCenters(response.centers.rows);
     } else toast.error(response.message);
   };
 
@@ -209,7 +209,7 @@ export default function Centers() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {Province.name}
+                          {Province?.name}
                         </Typography>
                       </div>
                     </td>
