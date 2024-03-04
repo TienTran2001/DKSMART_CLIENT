@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { apiGetAllCenter } from '~/apis/center';
 import { IoMdSearch } from 'react-icons/io';
 import { apiGetAllProvince } from '~/apis/provinces';
+import { Tooltip } from '@material-tailwind/react';
 
 import CardCenter from '~/components/commons/CardCenter';
 
@@ -61,9 +62,11 @@ const CentersPublic = () => {
                   placeholder="Nhập tên trung tâm"
                   className="border-none outline-none p-2.5 w-full rounded-lg bg-gray-50  text-gray-900"
                 />
-                <div className="cursor-pointer p-3 transition-all hover:bg-main-gray">
-                  <IoMdSearch className="text-xl text-gray-700" />
-                </div>
+                <Tooltip content="Tìm kiếm">
+                  <div className="cursor-pointer p-3 transition-all hover:bg-main-gray">
+                    <IoMdSearch className="text-xl text-gray-700" />
+                  </div>
+                </Tooltip>
               </div>
             </div>
             <div className="  mt-[50px] mx-auto flex flex-col gap-y-5">

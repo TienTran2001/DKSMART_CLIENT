@@ -42,7 +42,6 @@ const Profile = ({ navigate }) => {
       fullname: data.name,
       email: data.email,
       address: data.address,
-      roleId: 1,
     };
 
     setLoading(true);
