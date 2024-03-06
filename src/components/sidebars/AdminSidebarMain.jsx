@@ -37,6 +37,7 @@ export default function AdminSidebarMain({ navigate }) {
       if (result.isConfirmed) {
         localStorage.removeItem('dksmart');
         navigate('');
+        window.location.reload();
       }
     });
   };
