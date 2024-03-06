@@ -5,16 +5,21 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
-import { Select, Option } from '@material-tailwind/react';
+import { Select as SelectM, Option } from '@material-tailwind/react';
 import { apiGetUserById, apiUpdateUser } from '~/apis/user';
 import { useParams } from 'react-router-dom';
+import Select from 'react-tailwindcss-select';
+import { apiGetCenters } from '~/apis/center';
 
 // eslint-disable-next-line react/prop-types
 const UpdateUser = () => {
   const { userId } = useParams();
   const [loading, setLoading] = useState(false);
+  const [centers, setCenters] = useState([]);
+  const [center, setCenter] = useState();
 
   const [user, setUser] = useState({});
+
   const {
     register,
     formState: { errors },
@@ -22,24 +27,44 @@ const UpdateUser = () => {
     setValue,
   } = useForm();
 
+  const foundCenter = centers.find((item) => item.value === user.centerId);
   useEffect(() => {
+    loadCenter();
     getUser(userId);
   }, []);
+  const loadCenter = async () => {
+    const response = await apiGetCenters();
+
+    if (response.success) {
+      const transformedData = response.centers.map((item) => ({
+        value: item.centerId,
+        label: item.name,
+      }));
+      setCenters(transformedData);
+    } else toast.error(response.message);
+  };
 
   const getUser = async (userId) => {
     const response = await apiGetUserById(userId);
     if (response.success) {
       const { currentUser } = response;
       setUser(currentUser);
+      setValue('name', currentUser.fullname);
+      setValue('email', currentUser.email);
+      setValue('address', currentUser.address);
+      setValue('roleId', currentUser.roleId);
+      setValue('centerId', currentUser?.centerId);
     }
   };
 
-  const handleUpdateUser = async () => {
+  const handleUpdateUser = async (data) => {
+    let valueRoleId = center?.value || foundCenter.value;
     const payload = {
-      fullname: user.fullname,
-      email: user.email,
-      address: user.address,
-      roleId: user.roleId,
+      fullname: data.name,
+      email: data.email,
+      address: data.address,
+      roleId: data.roleId,
+      centerId: data.roleId == 2 ? valueRoleId : null,
     };
 
     setLoading(true);
@@ -66,10 +91,9 @@ const UpdateUser = () => {
       return { ...prev, roleId: val };
     });
   };
-  const handleChangeUser = (res) => {
-    setUser((prev) => {
-      return { ...prev, ...res };
-    });
+
+  const handleChange = (value) => {
+    setCenter(value);
   };
 
   return (
@@ -90,15 +114,10 @@ const UpdateUser = () => {
               />
               <InputForm
                 label="Họ Tên"
-                value={user.fullname}
                 register={register}
                 id="name"
                 placeholder="Trần Văn A"
                 containerClassName="md:w-1/2"
-                validate={{
-                  onChange: (e) =>
-                    handleChangeUser({ fullname: e.target.value }),
-                }}
                 errors={errors}
               />
             </div>
@@ -106,7 +125,6 @@ const UpdateUser = () => {
               <InputForm
                 label="Email"
                 type="email"
-                value={user.email}
                 register={register}
                 containerClassName="md:w-1/2"
                 id="email"
@@ -116,33 +134,22 @@ const UpdateUser = () => {
                     value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: 'Email không hợp lệ',
                   },
-                  onChange: (e) => handleChangeUser({ email: e.target.value }),
                 }}
                 errors={errors}
               />
               <InputForm
                 label="Địa chỉ"
                 type="text"
-                value={user.address}
                 register={register}
                 containerClassName="md:w-1/2"
                 id="address"
                 placeholder="Địa chỉ"
-                validate={{
-                  onChange: (e) =>
-                    handleChangeUser({ address: e.target.value }),
-                }}
+                validate={{}}
               />
             </div>
 
-            <div className="w-72">
-              {/* <label
-                htmlFor=""
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                Chọn quyền
-              </label> */}
-              <Select
+            <div className="w-full">
+              <SelectM
                 label="Chọn quyền"
                 value={`${user.roleId}`}
                 onChange={(val) => handleSetValueRole(val)}
@@ -152,8 +159,27 @@ const UpdateUser = () => {
                 <Option value="1">Quản trị hệ thống</Option>
                 <Option value="2">Quản trị trung tâm đăng kiểm</Option>
                 <Option value="3">Người dùng</Option>
-              </Select>
+              </SelectM>
             </div>
+            {user?.roleId == 2 && (
+              <Select
+                placeholder="Chọn trung tâm đăng kiểm"
+                searchInputPlaceholder="Tìm kiếm..."
+                noOptionsMessage="Không có kết quả phù hợp"
+                classNames={{
+                  menuButton: ({ isDisabled }) =>
+                    `flex text-sm text-gray-600 border border-gray-300  rounded-lg shadow-sm transition-all duration-300  focus:border-main  ${
+                      isDisabled
+                        ? 'bg-gray-200'
+                        : 'bg-white hover:border-gray-400 focus:border-main '
+                    }`,
+                }}
+                isSearchable
+                value={center || foundCenter}
+                onChange={handleChange}
+                options={centers}
+              />
+            )}
 
             <ButtonDefault
               disable={loading}

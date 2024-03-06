@@ -1,16 +1,21 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
-import { Select, Option } from '@material-tailwind/react';
+import { Select as SelectM, Option } from '@material-tailwind/react';
 import { apiAddUser } from '~/apis/user';
+import Select from 'react-tailwindcss-select';
+import { apiGetCenters } from '~/apis/center';
 
 // eslint-disable-next-line react/prop-types
 const AddUser = () => {
   const [loading, setLoading] = useState(false);
+  const [center, setCenter] = useState(null);
+  const [centers, setCenters] = useState([]);
+
   const {
     register,
     formState: { errors },
@@ -20,7 +25,26 @@ const AddUser = () => {
     watch,
   } = useForm();
   const passwordValue = watch('password');
+  const roleId = watch('roleId');
+
+  console.log(centers);
+  useEffect(() => {
+    loadCenter();
+  }, []);
+  const loadCenter = async () => {
+    const response = await apiGetCenters();
+
+    if (response.success) {
+      const transformedData = response.centers.map((item) => ({
+        value: item.centerId,
+        label: item.name,
+      }));
+      setCenters(transformedData);
+    } else toast.error(response.message);
+  };
+
   const handleAddUser = async (data) => {
+    console.log(data);
     const payload = {
       fullname: data.name,
       phone: data.phone,
@@ -28,6 +52,7 @@ const AddUser = () => {
       password: data.password,
       address: data.address,
       roleId: data.roleId || '3',
+      centerId: data.centerId,
     };
 
     setLoading(true);
@@ -50,6 +75,12 @@ const AddUser = () => {
   };
   const handleSetValueRole = (val) => {
     val ? setValue('roleId', val) : setValue('roleId', 3);
+  };
+
+  const handleChange = (value) => {
+    console.log('value:', value);
+    setCenter(value);
+    setValue('centerId', center.value);
   };
 
   return (
@@ -145,14 +176,14 @@ const AddUser = () => {
               />
             </div>
 
-            <div className="w-72">
+            <div className="w-full">
               {/* <label
                 htmlFor=""
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Chọn quyền
               </label> */}
-              <Select
+              <SelectM
                 label="Chọn quyền"
                 value="3"
                 onChange={(val) => handleSetValueRole(val)}
@@ -162,8 +193,27 @@ const AddUser = () => {
                 <Option value="1">Quản trị hệ thống</Option>
                 <Option value="2">Quản trị trung tâm đăng kiểm</Option>
                 <Option value="3">Người dùng</Option>
-              </Select>
+              </SelectM>
             </div>
+            {roleId == 2 && (
+              <Select
+                placeholder="Chọn trung tâm đăng kiểm"
+                searchInputPlaceholder="Tìm kiếm..."
+                noOptionsMessage="Không có kết quả phù hợp"
+                classNames={{
+                  menuButton: ({ isDisabled }) =>
+                    `flex text-sm text-gray-600 border border-gray-300  rounded-lg shadow-sm transition-all duration-300  focus:border-main  ${
+                      isDisabled
+                        ? 'bg-gray-200'
+                        : 'bg-white hover:border-gray-400 focus:border-main '
+                    }`,
+                }}
+                isSearchable
+                value={center}
+                onChange={handleChange}
+                options={centers}
+              />
+            )}
 
             <ButtonDefault
               disable={loading}

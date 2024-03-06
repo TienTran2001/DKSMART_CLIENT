@@ -7,6 +7,13 @@ export const apiGetAllCenter = (limit, page) => {
   });
 };
 
+export const apiGetCenters = () => {
+  return axios({
+    url: `/centers`,
+    method: 'get',
+  });
+};
+
 export const apiGetCenterById = (centerId) =>
   axios({
     url: `/centers/${centerId}`,

@@ -1,6 +1,7 @@
 import { MdCheckCircle } from 'react-icons/md';
 import { SlCalender } from 'react-icons/sl';
 import ButtonDefault from './ButtonDefault';
+import { AiOutlineClose } from 'react-icons/ai';
 
 // eslint-disable-next-line react/prop-types
 const CardCenter = ({ center }) => {
@@ -22,10 +23,19 @@ const CardCenter = ({ center }) => {
         Số điện thoại: <span className="text-main">{phone}</span>
       </div>
       <div className="flex justify-between">
-        <ButtonDefault className="bg-green-600 flex items-center gap-x-2">
-          <MdCheckCircle className="text-lg" />
-          <span>{status}</span>
-        </ButtonDefault>
+        {status == 'đang nhận lịch' && (
+          <ButtonDefault className="bg-green-600 flex items-center gap-x-2">
+            <MdCheckCircle className="text-lg" />
+            <span>{status}</span>
+          </ButtonDefault>
+        )}
+        {status == 'ngưng nhận lịch' && (
+          <ButtonDefault className="bg-red-400 flex items-center gap-x-2">
+            <AiOutlineClose className="text-lg" />
+            <span>{status}</span>
+          </ButtonDefault>
+        )}
+
         <ButtonDefault className="bg-main flex items-center gap-x-2">
           <SlCalender className="text-lg -translate-y-[1px]" />
           <span>Đặt lịch ngay</span>
