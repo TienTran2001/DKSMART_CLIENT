@@ -58,7 +58,7 @@ const UpdateUser = () => {
   };
 
   const handleUpdateUser = async (data) => {
-    let valueRoleId = center?.value || foundCenter.value;
+    let valueRoleId = center?.value || foundCenter?.value;
     const payload = {
       fullname: data.name,
       email: data.email,
