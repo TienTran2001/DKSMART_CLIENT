@@ -57,7 +57,7 @@ const UpdateProvince = () => {
 
   return (
     <div className=" mx-auto md:h-auto">
-      <h1 className="text-2xl mb-5  font-bold">Tạo tỉnh thành</h1>
+      <h1 className="text-2xl mb-5  font-bold">Cập nhật tỉnh thành</h1>
       <div className="w-full h-full bg-white rounded-lg md:shadow  md:mt-0 ">
         <form className="p-6  sm:p-8">
           <div className="space-y-8 ">

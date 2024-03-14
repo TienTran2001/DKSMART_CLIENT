@@ -175,6 +175,7 @@ export default function Users() {
                         {roleId == 1 && `Quản trị hệ thống`}
                         {roleId == 2 && `Quản trị trung tâm đăng kiểm`}
                         {roleId == 3 && `Người dùng`}
+                        {roleId == 4 && `Nhân viên trung tâm`}
                       </Typography>
                     </td>
                     <td className={classes}>
