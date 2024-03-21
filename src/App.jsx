@@ -19,7 +19,10 @@ import AddCenter from './pages/admin/center/AddCenter';
 import UpdateCenter from './pages/admin/center/UpdateCenter';
 import ProfileUser from './pages/admin/ProfileUser';
 import CentersPublic from './pages/public/CentersPublic';
-import Profile from './pages/public/Profile';
+import Profile from './pages/user/Profile';
+import { Vehicles } from './pages/user';
+import AddVehicle from './pages/user/AddVehicle';
+import UpdateVehicle from './pages/user/UpdateVehicle';
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +37,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/centers" element={<CentersPublic />} />
+        <Route path="/vehicles" element={<Vehicles navigate={navigate} />} />
+        <Route
+          path="/create-vehicle"
+          element={<AddVehicle navigate={navigate} />}
+        />
+        <Route
+          path="/update-vehicle/:vehicleId"
+          element={<UpdateVehicle navigate={navigate} />}
+        />
         <Route path="/profile" element={<Profile navigate={navigate} />} />
         {/* auth layout */}
         <Route path={path.AUTH_LAYOUT} element={<AuthLayout />}>
@@ -43,6 +55,7 @@ function App() {
             element={<Register navigate={navigate} />}
           />
         </Route>
+
         {/* admin */}
         {current?.roleId == 1 && (
           <Route path="admin" element={<AdminLayout navigate={navigate} />}>

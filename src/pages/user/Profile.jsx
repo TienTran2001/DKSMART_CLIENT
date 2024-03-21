@@ -7,7 +7,7 @@ import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
 import { useUserStore } from '~/store/useUserStore';
 import { apiUpdateCurrent } from '~/apis/user';
-import { PublicLayout } from '.';
+import { PublicLayout } from '../public';
 
 // eslint-disable-next-line react/prop-types
 const Profile = ({ navigate }) => {

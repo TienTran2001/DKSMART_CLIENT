@@ -30,7 +30,7 @@ const categories = [
   {
     name: 'Hồ sơ phương tiện',
     icon: <AiTwotoneCar className="text-[130px] text-black" />,
-    link: '',
+    link: '/vehicles',
   },
 ];
 
@@ -48,14 +48,12 @@ const Home = () => {
   };
 
   const [centers, setCenters] = useState([]);
-  console.log(centers);
   useEffect(() => {
     loadCenter();
   }, []);
   const loadCenter = async () => {
     const res = await apiGetAllCenter(2, 0);
     if (res.success) {
-      console.log(res);
       setCenters(res.centers.rows);
     }
   };

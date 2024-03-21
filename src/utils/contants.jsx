@@ -91,3 +91,19 @@ export const adminSidebar = [
     ],
   },
 ];
+
+export const formatDate = (data) => {
+  const date = new Date(data); // Tạo đối tượng Date từ ngày ISO
+
+  // Lấy các thành phần ngày, tháng, năm
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+  const year = date.getFullYear();
+
+  // Định dạng lại ngày theo dd/MM/YYYY
+  const formattedDate = `${day < 10 ? '0' + day : day}/${
+    month < 10 ? '0' + month : month
+  }/${year}`;
+
+  return formattedDate;
+};
