@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
 import { useUserStore } from '~/store/useUserStore';
-import { apiUpdateUser } from '~/apis/user';
+import { apiUpdateCurrent } from '~/apis/user';
 
 // eslint-disable-next-line react/prop-types
 const ProfileUser = () => {
@@ -36,11 +36,10 @@ const ProfileUser = () => {
       fullname: data.name,
       email: data.email,
       address: data.address,
-      roleId: 1,
     };
 
     setLoading(true);
-    const response = await apiUpdateUser(current.userId, payload);
+    const response = await apiUpdateCurrent(payload);
     setLoading(false);
 
     if (response.success) {

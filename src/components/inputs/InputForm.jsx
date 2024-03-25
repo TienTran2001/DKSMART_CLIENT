@@ -11,6 +11,7 @@ const InputForm = ({
   type = 'text',
   placeholder = '',
   register,
+  min,
   errors = {},
   inputClassName,
   validate,
@@ -32,6 +33,7 @@ const InputForm = ({
         id={id}
         readOnly={readOnly}
         value={value}
+        min={min}
         placeholder={placeholder}
         className={twMerge(
           clsx(

@@ -18,7 +18,9 @@ const Login = ({ navigate }) => {
   if (current) {
     if (current?.roleId == 1) {
       navigate('/admin/dashboard');
-    } else if (current?.roleId == 3) {
+    } else if (current?.roleId == 3 || current?.roleId == 4) {
+      navigate('/manage-center');
+    } else {
       navigate('');
     }
   }

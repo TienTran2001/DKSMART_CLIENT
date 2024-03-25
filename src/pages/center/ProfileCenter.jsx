@@ -5,16 +5,19 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
-import { useParams } from 'react-router-dom';
 import { apiGetAllProvince } from '~/apis/provinces';
-import { apiGetCenterById, apiUpdateCenter } from '~/apis/center';
+import {
+  apiGetCenterById,
+  apiUpdateCenterByManagerCenter,
+} from '~/apis/center';
 import SelectForm from '~/components/inputs/SelectForm';
+import { useUserStore } from '~/store/useUserStore';
 
 // eslint-disable-next-line react/prop-types
-const UpdateCenter = () => {
+const ProfileCenter = () => {
   const [provinces, setProvinces] = useState([]);
-  const { centerId } = useParams();
   const [loading, setLoading] = useState(false);
+  const { current } = useUserStore();
 
   const {
     register,
@@ -25,7 +28,7 @@ const UpdateCenter = () => {
 
   useEffect(() => {
     loadProvinces();
-    getCenter(centerId);
+    getCenter(current.centerId);
   }, []);
 
   const loadProvinces = async () => {
@@ -64,7 +67,7 @@ const UpdateCenter = () => {
     };
 
     setLoading(true);
-    const response = await apiUpdateCenter(centerId, payload);
+    const response = await apiUpdateCenterByManagerCenter(payload);
     setLoading(false);
 
     if (response.success) {
@@ -84,7 +87,9 @@ const UpdateCenter = () => {
 
   return (
     <div className=" mx-auto md:h-auto">
-      <h1 className="text-2xl mb-5  font-bold">Cập nhật trung tâm đăng kiểm</h1>
+      <h1 className="text-2xl mb-5  font-bold">
+        Thông tin trung tâm đăng kiểm
+      </h1>
       <div className="w-full h-full bg-white rounded-lg md:shadow  md:mt-0 ">
         <form className="p-6  sm:p-8">
           <div className="space-y-8 ">
@@ -197,4 +202,4 @@ const UpdateCenter = () => {
   );
 };
 
-export default UpdateCenter;
+export default ProfileCenter;

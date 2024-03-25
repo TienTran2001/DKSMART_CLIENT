@@ -33,6 +33,12 @@ export const apiUpdateCenter = (centerId, data) =>
     method: 'put',
     data,
   });
+export const apiUpdateCenterByManagerCenter = (data) =>
+  axios({
+    url: `/centers/update`,
+    method: 'put',
+    data,
+  });
 
 export const apiDeleteCenter = (centerId) =>
   axios({

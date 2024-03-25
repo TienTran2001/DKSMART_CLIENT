@@ -13,13 +13,16 @@ import Swal from 'sweetalert2';
 
 import { FiChevronDown } from 'react-icons/fi';
 import { MdChevronRight } from 'react-icons/md';
-import { adminSidebar } from '~/utils/contants';
 import { NavLink } from 'react-router-dom';
 import { IoMdLogOut } from 'react-icons/io';
 import { ImProfile } from 'react-icons/im';
+import { useUserStore } from '~/store/useUserStore';
+import { GiHomeGarage } from 'react-icons/gi';
+
 // eslint-disable-next-line react/prop-types
-export default function AdminSidebarMain({ navigate }) {
+export default function AdminSidebarMain({ navigate, navSidebar = [], rou }) {
   const [open, setOpen] = React.useState(0);
+  const { current } = useUserStore();
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
@@ -49,10 +52,12 @@ export default function AdminSidebarMain({ navigate }) {
         </Typography>
       </div>
       <div className="py-5 px-4 font-bold text-base rounded-xl text-center bg-[#edeff1]">
-        Quản trị hệ thống
+        {current?.roleId == 1 && <span>Quản trị hệ thống</span>}
+        {current?.roleId == 3 && <span>Quản trị trung tâm đăng kiểm</span>}
+        {current?.roleId == 4 && <span>Trung tâm đăng kiểm</span>}
       </div>
       <List>
-        {adminSidebar.map((item) => (
+        {navSidebar.map((item) => (
           <Fragment key={item.id}>
             {item.type === 'SINGLE' && (
               <NavLink to={item.path}>
@@ -123,7 +128,7 @@ export default function AdminSidebarMain({ navigate }) {
         ))}
 
         <hr className="my-2 border-blue-gray-50" />
-        <NavLink to="/admin/profile">
+        <NavLink to={`/${rou}/profile`}>
           <ListItem>
             <ListItemPrefix>
               <ImProfile className="text-lg" />
@@ -131,6 +136,16 @@ export default function AdminSidebarMain({ navigate }) {
             Thông tin tài khoản
           </ListItem>
         </NavLink>
+        {current?.roleId == 3 && (
+          <NavLink to={`/${rou}/center`}>
+            <ListItem>
+              <ListItemPrefix>
+                <GiHomeGarage className="text-lg" />
+              </ListItemPrefix>
+              Thông tin trung tâm
+            </ListItem>
+          </NavLink>
+        )}
         <ListItem onClick={() => handleLogout()}>
           <ListItemPrefix>
             <IoMdLogOut className="text-xl" />

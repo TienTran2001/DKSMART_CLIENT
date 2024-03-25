@@ -8,6 +8,7 @@ const ButtonDefault = ({
   onClick,
   disable = false,
   fullWidth,
+  variant,
   size = 'md',
 }) => {
   return (
@@ -17,6 +18,7 @@ const ButtonDefault = ({
       fullWidth={fullWidth}
       className={clsx('flex justify-center', className)}
       onClick={onClick}
+      variant={variant}
     >
       {children}
     </Button>

@@ -4,6 +4,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { LuMapPin } from 'react-icons/lu';
 import { GiHomeGarage } from 'react-icons/gi';
 import { PiNewspaperClippingLight } from 'react-icons/pi';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 // eslint-disable-next-line no-undef
 export const adminSidebar = [
@@ -87,6 +88,54 @@ export const adminSidebar = [
         id: 52,
         name: 'Quản lý',
         path: `/${path.ADMIN_LAYOUT}/news`,
+      },
+    ],
+  },
+];
+// eslint-disable-next-line no-undef
+export const centerSidebar = [
+  {
+    id: 1,
+    name: 'Thống kê',
+    path: `/manage-center/${path.DASHBOARD}`,
+    icon: <RxDashboard />,
+    type: 'SINGLE',
+  },
+  {
+    id: 2,
+    name: 'Tài khoản',
+    path: ``,
+    icon: <FaUserCircle />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 21,
+        name: 'Tạo tài khoản',
+        path: `/manage-center/create-user`,
+      },
+      {
+        id: 22,
+        name: 'Quản lý',
+        path: `/manage-center/${path.USER}`,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Lịch làm việc',
+    path: ``,
+    icon: <FaCalendarAlt />,
+    type: 'PARENT',
+    sub: [
+      {
+        id: 31,
+        name: 'Tạo lịch làm việc',
+        path: `/manage-center/create-shift`,
+      },
+      {
+        id: 32,
+        name: 'Quản lý',
+        path: `/manage-center/shifts`,
       },
     ],
   },

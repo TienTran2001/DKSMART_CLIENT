@@ -23,6 +23,13 @@ import Profile from './pages/user/Profile';
 import { Vehicles } from './pages/user';
 import AddVehicle from './pages/user/AddVehicle';
 import UpdateVehicle from './pages/user/UpdateVehicle';
+import CenterAdminLayout from './pages/center/CenterAdminLayout';
+import ProfileCenter from './pages/center/ProfileCenter';
+import Shifts from './pages/center/shift/Shifts';
+import AddShift from './pages/center/shift/AddShift';
+import UpdateShift from './pages/center/shift/UpdateShift';
+import AddShiftDetail from './pages/center/shift/AddShiftDetail';
+import UpdateShiftDetail from './pages/center/shift/UpdateShiftDetail';
 
 function App() {
   const navigate = useNavigate();
@@ -73,6 +80,30 @@ function App() {
             <Route path="create-center" element={<AddCenter />} />
             <Route path="update-center/:centerId" element={<UpdateCenter />} />
             <Route path="profile" element={<ProfileUser />} />
+          </Route>
+        )}
+        {/* center */}
+        {(current?.roleId == 3 || current?.roleId == 4) && (
+          <Route
+            path="manage-center"
+            element={<CenterAdminLayout navigate={navigate} />}
+          >
+            <Route path="profile" element={<ProfileUser />} />
+            <Route path="center" element={<ProfileCenter />} />
+            <Route path="shifts" element={<Shifts />} />
+            <Route path="create-shift" element={<AddShift />} />
+            <Route
+              path="update-shift/:shiftId"
+              element={<UpdateShift navigate={navigate} />}
+            />
+            <Route
+              path="create-shift-detail/:shiftId"
+              element={<AddShiftDetail navigate={navigate} />}
+            />
+            <Route
+              path="update-shift-detail/:shiftDetailId"
+              element={<UpdateShiftDetail navigate={navigate} />}
+            />
           </Route>
         )}
       </Routes>
