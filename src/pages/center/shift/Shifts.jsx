@@ -144,7 +144,7 @@ export default function Shifts() {
           </div>
         </form>
       </CardHeader>
-      <CardBody className="p-0 mt-6 overflow-scroll">
+      <CardBody className="p-0 mt-6 overflow-x-scroll">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>

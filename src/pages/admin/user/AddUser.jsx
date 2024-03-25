@@ -192,8 +192,8 @@ const AddUser = () => {
                 close
               >
                 <Option value="1">Quản trị hệ thống</Option>
-                <Option value="2">Quản trị trung tâm đăng kiểm</Option>
-                <Option value="3">Người dùng</Option>
+                <Option value="2">Người dùng</Option>
+                <Option value="3">Quản trị trung tâm đăng kiểm</Option>
                 <Option value="4">Nhân viên trung tâm</Option>
               </SelectM>
             </div>

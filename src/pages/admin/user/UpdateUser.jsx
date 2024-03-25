@@ -64,7 +64,7 @@ const UpdateUser = () => {
       email: data.email,
       address: data.address,
       roleId: data.roleId,
-      centerId: data.roleId == 2 || data.roleId == 4 ? valueRoleId : null,
+      centerId: data.roleId == 3 || data.roleId == 4 ? valueRoleId : null,
     };
 
     setLoading(true);
@@ -157,8 +157,8 @@ const UpdateUser = () => {
                 close
               >
                 <Option value="1">Quản trị hệ thống</Option>
-                <Option value="2">Quản trị trung tâm đăng kiểm</Option>
-                <Option value="3">Người dùng</Option>
+                <Option value="2">Người dùng</Option>
+                <Option value="3">Quản trị trung tâm đăng kiểm</Option>
                 <Option value="4">Nhân viên trung tâm</Option>
               </SelectM>
             </div>
