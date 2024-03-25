@@ -162,7 +162,7 @@ const UpdateUser = () => {
                 <Option value="4">Nhân viên trung tâm</Option>
               </SelectM>
             </div>
-            {(user?.roleId == 2 || user?.roleId == 4) && (
+            {(user?.roleId == 3 || user?.roleId == 4) && (
               <Select
                 placeholder="Chọn trung tâm đăng kiểm"
                 searchInputPlaceholder="Tìm kiếm..."
