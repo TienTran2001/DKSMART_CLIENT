@@ -173,8 +173,8 @@ export default function Users() {
                         className="font-normal"
                       >
                         {roleId == 1 && `Quản trị hệ thống`}
-                        {roleId == 2 && `Quản trị trung tâm đăng kiểm`}
-                        {roleId == 3 && `Người dùng`}
+                        {roleId == 3 && `Quản trị trung tâm đăng kiểm`}
+                        {roleId == 2 && `Người dùng`}
                         {roleId == 4 && `Nhân viên trung tâm`}
                       </Typography>
                     </td>
