@@ -27,7 +27,6 @@ const AddUser = () => {
   const passwordValue = watch('password');
   const roleId = watch('roleId');
 
-  console.log(centers);
   useEffect(() => {
     loadCenter();
   }, []);
@@ -44,7 +43,6 @@ const AddUser = () => {
   };
 
   const handleAddUser = async (data) => {
-    console.log('center', center);
     const payload = {
       fullname: data.name,
       phone: data.phone,
@@ -52,7 +50,7 @@ const AddUser = () => {
       password: data.password,
       address: data.address,
       roleId: data.roleId || '3',
-      centerId: data.roleId == 2 || data.roleId == 4 ? center.value : null,
+      centerId: data.roleId == 3 || data.roleId == 4 ? center.value : null,
     };
     console.log(payload);
 
@@ -75,11 +73,11 @@ const AddUser = () => {
     } else toast.error(response.message);
   };
   const handleSetValueRole = (val) => {
+    console.log(val);
     val ? setValue('roleId', val) : setValue('roleId', 3);
   };
 
   const handleChange = (value) => {
-    console.log('value:', value);
     setCenter(value);
     setValue('centerId', center.value);
   };
@@ -186,7 +184,7 @@ const AddUser = () => {
               </label> */}
               <SelectM
                 label="Chọn quyền"
-                value="3"
+                value="2"
                 onChange={(val) => handleSetValueRole(val)}
                 color="blue"
                 close
@@ -197,7 +195,7 @@ const AddUser = () => {
                 <Option value="4">Nhân viên trung tâm</Option>
               </SelectM>
             </div>
-            {roleId == 2 && (
+            {(roleId == 3 || roleId == 4) && (
               <Select
                 placeholder="Chọn trung tâm đăng kiểm"
                 searchInputPlaceholder="Tìm kiếm..."

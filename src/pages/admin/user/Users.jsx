@@ -26,21 +26,40 @@ const TABLE_HEAD = ['Người dùng', 'Email', 'Địa chỉ', 'Quyền', 'Thao 
 
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import ButtonDefault from '~/components/commons/ButtonDefault';
+import { IoMdSearch } from 'react-icons/io';
+import { InputForm } from '~/components';
+import { useForm } from 'react-hook-form';
 export default function Users() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
   let navigate = useNavigate();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    setValue,
+  } = useForm();
+
+  const phone = watch('phone');
+  // console.log(phone);
   useEffect(() => {
     loadUsers();
   }, []);
 
-  const loadUsers = async () => {
+  const loadUsers = async (phone, limit = 6, page) => {
     setLoading(true);
-    const response = await apiGetAllUser();
+    const response = await apiGetAllUser(phone, limit, page);
     setLoading(false);
+    console.log(response);
     if (response.success) {
-      const { users } = response;
-      setUsers(users);
+      const { users, totalPage } = response;
+      setUsers(users.rows);
+      setTotalPage(totalPage);
     } else toast.error(response.message);
   };
 
@@ -69,47 +88,72 @@ export default function Users() {
     });
   };
 
+  const handleSearch = (data) => {
+    loadUsers(data.phone);
+  };
+
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none ">
-        <div className="mb-8 flex items-center justify-between gap-8">
+      <div className="rounded-none p-4">
+        <div className="mb-8 flex items-center justify-between gap-8  ">
           <div>
             <Typography variant="h5" color="blue-gray">
               Danh sách tài khoản
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              Xem thông tin tất cả các tài khoản
+              Xem thông tin tài khoản
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              Tất cả
-            </Button>
-            <Button className="flex items-center gap-3" size="sm">
-              + Thêm tài khoản
-            </Button>
-          </div>
+          <ButtonDefault
+            disable={false}
+            className="px-4 py-3 flex items-center"
+            onClick={() => {
+              loadUsers();
+              setValue('phone', '');
+              setPage(1);
+            }}
+            variant="outlined"
+          >
+            Làm mới
+          </ButtonDefault>
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="w-full md:w-72">
-            <Input label="Tìm kiếm" />
-            {/* icon={} */}
+        <form>
+          <div className="md:flex items-center justify-between   space-y-[10px] md:space-y-0 ">
+            {/* tìm kiếm */}
+
+            <InputForm
+              type="text"
+              register={register}
+              id="phone"
+              placeholder="Nhập số điện thoại"
+              containerClassName="md:w-1/3"
+              inputClassName="pl-[50px]"
+              validate={{}}
+              errors={errors}
+            />
+            <div className="absolute">
+              <ButtonDefault
+                disable={false}
+                className="px-3 flex items-center"
+                onClick={handleSubmit(handleSearch)}
+                variant="text"
+              >
+                <IoMdSearch className="text-xl" />
+              </ButtonDefault>
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardBody className="p-0 overflow-scroll">
-        <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
+        </form>
+      </div>
+      <div className="p-0 mt-4 overflow-scroll relative ">
+        <table className=" w-full min-w-max table-auto text-left  ">
+          <thead className="sticky top-0 bg-black transition-all delay-500 z-50">
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
+                <th key={head} className="border-y border-blue-gray-100  p-4">
                   <Typography
                     variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
+                    color=""
+                    className="font-normal text-white leading-none opacity-90"
                   >
                     {head}
                   </Typography>
@@ -117,10 +161,10 @@ export default function Users() {
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {users.map(
               ({ userId, phone, fullname, email, address, roleId }, index) => {
-                const classes = 'p-4 border-b border-blue-gray-50';
+                const classes = 'p-3 border-b border-blue-gray-50';
 
                 return (
                   <tr key={phone}>
@@ -202,16 +246,33 @@ export default function Users() {
             )}
           </tbody>
         </table>
-      </CardBody>
+      </div>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          1 / 10
+          {page} / {totalPage}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <Button
+            variant="outlined"
+            size="sm"
+            disabled={page <= 1}
+            onClick={() => {
+              const x = page - 1;
+              loadUsers(phone, 6, x - 1);
+              setPage(page - 1);
+            }}
+          >
             Trước
           </Button>
-          <Button variant="outlined" size="sm">
+          <Button
+            variant="outlined"
+            size="sm"
+            disabled={page >= totalPage ? true : false}
+            onClick={() => {
+              loadUsers(phone, 6, page);
+              setPage(page + 1);
+            }}
+          >
             Tiếp
           </Button>
         </div>

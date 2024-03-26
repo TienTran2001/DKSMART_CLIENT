@@ -1,8 +1,8 @@
 import axios from '~/axios';
 
-export const apiGetAllShift = (centerId, date = '') =>
+export const apiGetAllShift = (centerId, date = '', limit = 6, page = 0) =>
   axios({
-    url: `center/shifts/${centerId}?date=${date}`,
+    url: `center/shifts/${centerId}?date=${date}&limit=${limit}&page=${page}`,
     method: 'get',
   });
 

@@ -42,27 +42,35 @@ const TABLE_HEAD = [
 export default function Shifts() {
   const [loading, setLoading] = useState(false);
   const [shifts, setShifts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const { current } = useUserStore();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
     setValue,
   } = useForm();
+  const date = watch('date');
   let navigate = useNavigate();
   useEffect(() => {
     loadShifts();
   }, []);
 
-  const loadShifts = async (date) => {
+  const loadShifts = async (date, limit = 6, page) => {
     setLoading(true);
-    const response = await apiGetAllShift(current?.centerId, date);
+    const response = await apiGetAllShift(current?.centerId, date, limit, page);
     setLoading(false);
+    console.log(response);
     if (response.success) {
-      const { shifts } = response;
-
-      setShifts(shifts);
-    } else toast.error(response.message);
+      const { shifts, totalPage } = response;
+      setShifts(shifts.rows);
+      setTotalPage(totalPage);
+    } else {
+      toast.error(response.message);
+      setShifts([]);
+    }
   };
 
   const handleEditShift = (shiftId) => {
@@ -97,7 +105,7 @@ export default function Shifts() {
 
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none ">
+      <div className="rounded-none p-4 ">
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
@@ -119,7 +127,7 @@ export default function Shifts() {
               validate={{}}
               errors={errors}
             />
-            <div className="absolute left-0">
+            <div className="absolute">
               <ButtonDefault
                 disable={false}
                 className="px-3 flex items-center"
@@ -136,6 +144,7 @@ export default function Shifts() {
               onClick={() => {
                 loadShifts();
                 setValue('registrationDate', '');
+                setPage(1);
               }}
               variant="outlined"
             >
@@ -143,20 +152,17 @@ export default function Shifts() {
             </ButtonDefault>
           </div>
         </form>
-      </CardHeader>
-      <CardBody className="p-0 mt-6 overflow-x-scroll">
-        <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
+      </div>
+      <div className="p-0 mt-4 overflow-scroll relative">
+        <table className=" w-full min-w-max table-auto text-left">
+          <thead className="sticky top-0 bg-black transition-all delay-500 z-50">
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
+                <th key={head} className="border-y border-blue-gray-100  p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="font-normal leading-none opacity-70"
+                    className="font-normal text-white leading-none opacity-90"
                   >
                     {head}
                   </Typography>
@@ -225,7 +231,7 @@ export default function Shifts() {
                     </td>
 
                     <td className={classes}>
-                      <Tooltip content="Sửa lịch làm việc">
+                      <Tooltip content="Chi tiết">
                         <IconButton
                           variant="text"
                           onClick={() => handleEditShift(shiftId)}
@@ -248,7 +254,37 @@ export default function Shifts() {
             )}
           </tbody>
         </table>
-      </CardBody>
+      </div>
+      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+        <Typography variant="small" color="blue-gray" className="font-normal">
+          {page} / {totalPage}
+        </Typography>
+        <div className="flex gap-2">
+          <Button
+            variant="outlined"
+            size="sm"
+            disabled={page <= 1}
+            onClick={() => {
+              const x = page - 1;
+              loadShifts(date, 6, x - 1);
+              setPage(page - 1);
+            }}
+          >
+            Trước
+          </Button>
+          <Button
+            variant="outlined"
+            size="sm"
+            disabled={page >= totalPage ? true : false}
+            onClick={() => {
+              loadShifts(date, 6, page);
+              setPage(page + 1);
+            }}
+          >
+            Tiếp
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

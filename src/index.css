@@ -24,3 +24,18 @@ body {
   transition: all solid 0.5s;
   cursor: pointer;
 }
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Thiết lập màu cho thumb của scrollbar */
+*::-webkit-scrollbar-thumb {
+  background: #e2e6e9;
+  border-radius: 5px;
+}
+
+/* Thiết lập kích thước cho thumb của scrollbar */
+*::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+}

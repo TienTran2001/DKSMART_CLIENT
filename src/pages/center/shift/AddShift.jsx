@@ -14,7 +14,6 @@ const AddShift = () => {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm();
   const handleAddProvince = async (data) => {
     const payload = {
@@ -33,7 +32,7 @@ const AddShift = () => {
         confirmButtonText: 'Thoát',
       }).then((isConfirm) => {
         if (isConfirm) {
-          reset();
+          // reset();
         }
       });
     } else toast.error(response.message);

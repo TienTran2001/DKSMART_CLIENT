@@ -18,9 +18,9 @@ export const apiAddUser = (data) =>
     data,
   });
 
-export const apiGetAllUser = () =>
+export const apiGetAllUser = (phone = '', limit = 6, page = 0) =>
   axios({
-    url: '/users',
+    url: `/users?phone=${phone}&limit=${limit}&page=${page}`,
     method: 'get',
   });
 export const apiDeleteUser = (userId) =>
