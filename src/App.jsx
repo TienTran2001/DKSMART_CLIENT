@@ -30,6 +30,7 @@ import AddShift from './pages/center/shift/AddShift';
 import UpdateShift from './pages/center/shift/UpdateShift';
 import AddShiftDetail from './pages/center/shift/AddShiftDetail';
 import UpdateShiftDetail from './pages/center/shift/UpdateShiftDetail';
+import Booking from './pages/user/Booking';
 
 function App() {
   const navigate = useNavigate();
@@ -44,16 +45,20 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/centers" element={<CentersPublic />} />
-        <Route path="/vehicles" element={<Vehicles navigate={navigate} />} />
-        <Route
-          path="/create-vehicle"
-          element={<AddVehicle navigate={navigate} />}
-        />
+
         <Route
           path="/update-vehicle/:vehicleId"
           element={<UpdateVehicle navigate={navigate} />}
         />
         <Route path="/profile" element={<Profile navigate={navigate} />} />
+
+        <Route path="/booking" element={<Booking navigate={navigate} />} />
+        <Route path="/vehicles" element={<Vehicles navigate={navigate} />} />
+        <Route
+          path="/create-vehicle"
+          element={<AddVehicle navigate={navigate} />}
+        />
+
         {/* auth layout */}
         <Route path={path.AUTH_LAYOUT} element={<AuthLayout />}>
           <Route path={path.LOGIN} element={<Login navigate={navigate} />} />

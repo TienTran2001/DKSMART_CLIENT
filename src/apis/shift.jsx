@@ -5,6 +5,11 @@ export const apiGetAllShift = (centerId, date = '', limit = 6, page = 0) =>
     url: `center/shifts/${centerId}?date=${date}&limit=${limit}&page=${page}`,
     method: 'get',
   });
+export const apiGetAllShiftsAfterOrEqualToTodayAsync = (centerId) =>
+  axios({
+    url: `center/shifts/${centerId}`,
+    method: 'get',
+  });
 
 export const apiGetShiftById = (shiftId) =>
   axios({

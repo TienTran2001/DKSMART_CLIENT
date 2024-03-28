@@ -31,10 +31,10 @@ export default function Provinces() {
   const [provinces, setProvinces] = useState([]);
   let navigate = useNavigate();
   useEffect(() => {
-    loadUsers();
+    loadProvinces();
   }, []);
 
-  const loadUsers = async () => {
+  const loadProvinces = async () => {
     setLoading(true);
     const response = await apiGetAllProvince();
     setLoading(false);
@@ -63,7 +63,7 @@ export default function Provinces() {
         const response = await apiDeleteProvince(provinceId);
         if (response.success) {
           toast.success(response.message);
-          loadUsers();
+          loadProvinces();
         } else toast.error(response.message);
       }
     });

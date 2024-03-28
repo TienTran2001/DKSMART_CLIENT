@@ -17,6 +17,7 @@ const InputForm = ({
   validate,
   value,
   readOnly = false,
+  onClick,
 }) => {
   return (
     <div className={containerClassName}>
@@ -29,6 +30,7 @@ const InputForm = ({
         </label>
       )}
       <input
+        onClick={onClick}
         type={type}
         id={id}
         readOnly={readOnly}
@@ -39,8 +41,7 @@ const InputForm = ({
           clsx(
             style,
             'bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5',
-            inputClassName,
-            readOnly && 'opacity-80 cursor-not-allowed'
+            inputClassName
           )
         )}
         {...register(id, validate)}

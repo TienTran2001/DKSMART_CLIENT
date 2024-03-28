@@ -7,6 +7,12 @@ export const apiGetAllCenter = (limit, page) => {
   });
 };
 
+export const apiGetCentersOfProvince = (provinceId) => {
+  return axios({
+    url: `/centers?province=${provinceId}`,
+    method: 'get',
+  });
+};
 export const apiGetCenters = () => {
   return axios({
     url: `/centers`,

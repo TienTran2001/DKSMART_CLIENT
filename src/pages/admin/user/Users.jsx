@@ -117,7 +117,7 @@ export default function Users() {
             Làm mới
           </ButtonDefault>
         </div>
-        <form>
+        <div>
           <div className="md:flex items-center justify-between   space-y-[10px] md:space-y-0 ">
             {/* tìm kiếm */}
 
@@ -142,7 +142,7 @@ export default function Users() {
               </ButtonDefault>
             </div>
           </div>
-        </form>
+        </div>
       </div>
       <div className="p-0 mt-4 overflow-scroll relative ">
         <table className=" w-full min-w-max table-auto text-left  ">

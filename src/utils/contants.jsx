@@ -156,3 +156,13 @@ export const formatDate = (data) => {
 
   return formattedDate;
 };
+
+export function formatTime(timeString) {
+  // Tách giờ và phút từ chuỗi thời gian
+  const [hour, minute] = timeString.split(':');
+
+  // Format giờ và phút
+  const formattedTime = `${hour}h${minute}`;
+
+  return formattedTime;
+}

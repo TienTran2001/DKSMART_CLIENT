@@ -20,7 +20,7 @@ const categories = [
   {
     name: 'Đặt lịch đăng kiểm',
     icon: <AiTwotoneClockCircle className="text-[130px]" />,
-    link: '',
+    link: '/booking',
   },
   {
     name: 'Trung tâm đăng kiểm',
