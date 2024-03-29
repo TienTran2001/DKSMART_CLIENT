@@ -18,3 +18,9 @@ export const apiGetAllBooking = ({
     url: `/appointments?limit=${limit}&page=${page}&search=${search}&status=${status}`,
     method: 'get',
   });
+
+export const apiGetBookingHistory = (appointmentId) =>
+  axios({
+    url: `/appointments/${appointmentId}`,
+    method: 'get',
+  });

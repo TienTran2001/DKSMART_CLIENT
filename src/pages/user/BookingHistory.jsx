@@ -123,7 +123,12 @@ const BookingHistory = ({ navigate }) => {
               <div className="space-y-6">
                 {bookingHistories.map((item) => (
                   <Fragment key={item.appointmentId}>
-                    <div className="cursor-pointer bg-main-gray border border-[#067d8b] rounded-md px-4 py-3 flex flex-col gap-y-5">
+                    <div
+                      className="cursor-pointer bg-main-gray border border-[#067d8b] rounded-md px-4 py-3 flex flex-col gap-y-5"
+                      onClick={() =>
+                        navigate(`booking-history-detail/${item.appointmentId}`)
+                      }
+                    >
                       <div className="flex items-center">
                         <div className="w-1/6">Biển số xe:</div>
                         <div

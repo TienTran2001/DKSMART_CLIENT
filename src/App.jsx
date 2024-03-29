@@ -32,6 +32,7 @@ import AddShiftDetail from './pages/center/shift/AddShiftDetail';
 import UpdateShiftDetail from './pages/center/shift/UpdateShiftDetail';
 import Booking from './pages/user/Booking';
 import BookingHistory from './pages/user/BookingHistory';
+import BookingHistoryDetail from './pages/user/BookingHistoryDetail';
 
 function App() {
   const navigate = useNavigate();
@@ -57,6 +58,10 @@ function App() {
         <Route
           path="/booking-history"
           element={<BookingHistory navigate={navigate} />}
+        />
+        <Route
+          path="/booking-history-detail/:appointmentId"
+          element={<BookingHistoryDetail navigate={navigate} />}
         />
         <Route path="/vehicles" element={<Vehicles navigate={navigate} />} />
         <Route
