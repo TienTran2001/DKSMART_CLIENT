@@ -40,9 +40,9 @@ export default function Header() {
         color="blue-gray"
         className="p-1 hover:text-main font-medium"
       >
-        <a href="#" className="flex items-center">
+        <Link to="/booking" className="flex items-center">
           Đặt lịch
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -50,9 +50,9 @@ export default function Header() {
         color="blue-gray"
         className="p-1 hover:text-main font-medium"
       >
-        <a href="#" className="flex items-center">
+        <Link to="/booking-history?status=all" className="flex items-center">
           Lịch hẹn
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"

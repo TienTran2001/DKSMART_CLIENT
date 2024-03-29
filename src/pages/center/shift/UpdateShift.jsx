@@ -18,6 +18,7 @@ import {
   apiGetShiftById,
   apiUpdateShift,
 } from '~/apis/shift';
+import { formatTime } from '~/utils/contants';
 
 const TABLE_HEAD = [
   'Số thứ tự',
@@ -139,7 +140,15 @@ const UpdateShift = ({ navigate }) => {
         Danh sách ca đăng kiểm trong ngày
       </h2>
       <div className="w-full  h-full bg-white mb-[100px] rounded-lg md:shadow ">
-        <div className="flex pt-5 pr-7 justify-end">
+        <div className="flex pt-5 pr-7 justify-end gap-x-6">
+          <ButtonDefault
+            disable={false}
+            variant="outlined"
+            className=""
+            onClick={() => loadShiftDetails()}
+          >
+            Làm mới
+          </ButtonDefault>
           <ButtonDefault
             disable={loading}
             className="bg-main"
@@ -207,7 +216,7 @@ const UpdateShift = ({ navigate }) => {
                                 color="blue-gray"
                                 className="font-normal opacity-70"
                               >
-                                {startTime}
+                                {formatTime(startTime)}
                               </Typography>
                             </div>
                           </td>
@@ -218,7 +227,7 @@ const UpdateShift = ({ navigate }) => {
                                 color="blue-gray"
                                 className="font-normal opacity-70"
                               >
-                                {endTime}
+                                {formatTime(endTime)}
                               </Typography>
                             </div>
                           </td>

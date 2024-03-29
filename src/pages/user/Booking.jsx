@@ -20,6 +20,8 @@ import {
   apiGetShiftById,
 } from '~/apis/shift';
 import { formatDate, formatTime } from '~/utils/contants';
+import { apiAddBooking } from '~/apis/booking';
+import { Chip } from '@material-tailwind/react';
 
 // eslint-disable-next-line react/prop-types
 const Booking = ({ navigate }) => {
@@ -43,6 +45,9 @@ const Booking = ({ navigate }) => {
   const [isOpenModelCenter, setIsOpenModelCenter] = useState(false);
   const [isOpenModelShift, setIsOpenModelShift] = useState(false);
   const [isOpenModelShiftDetail, setIsOpenModelShiftDetail] = useState(false);
+
+  const [valuePayload, setValuePayload] = useState({});
+  // console.log(valuePayload);
 
   const { current } = useUserStore();
   const {
@@ -132,6 +137,33 @@ const Booking = ({ navigate }) => {
     }
   };
 
+  const handleBooking = async (data) => {
+    const payload = {
+      ...valuePayload,
+      note: data.note,
+      appointmentDate: data.shift,
+    };
+    console.log(payload);
+    setLoading(true);
+    const response = await apiAddBooking(payload);
+    setLoading(false);
+    if (response.success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: response.message,
+        showConfirmButton: true,
+        confirmButtonText: 'Thoát',
+      }).then((isConfirm) => {
+        if (isConfirm) {
+          // navigate('/vehicles');
+        }
+      });
+    } else {
+      toast.error(response.message);
+    }
+  };
+
   return (
     <>
       <PublicLayout>
@@ -168,6 +200,12 @@ const Booking = ({ navigate }) => {
                               setIsOpenModelVehicle(false);
                               handleChangeVehicle(vehicle.vehicleId);
                               setIsChooseVehicle(true);
+                              setValuePayload((prev) => {
+                                return {
+                                  ...prev,
+                                  vehicleId: vehicle.vehicleId,
+                                };
+                              });
                             }}
                           >
                             {vehicle.licensePlate}
@@ -198,7 +236,7 @@ const Booking = ({ navigate }) => {
                     <div className="w-1/6 text-sm mb-2">Biển số xe:</div>
                     <div
                       className={clsx(
-                        'uppercase w-5/6 text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
+                        'uppercase w-full text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
                         plateColor === 'Trắng' && 'bg-white',
                         plateColor === 'Vàng' && 'bg-yellow-700',
                         plateColor === 'Xanh' && 'bg-blue-700'
@@ -298,6 +336,9 @@ const Booking = ({ navigate }) => {
                               setValue('center', center.name);
                               setIsOpenModelCenter(false);
                               handleChangeCenter(center.centerId);
+                              setValuePayload((prev) => {
+                                return { ...prev, centerId: center.centerId };
+                              });
                             }}
                           >
                             {center.name}
@@ -334,22 +375,38 @@ const Booking = ({ navigate }) => {
                 >
                   <div className="">
                     <ul>
-                      {shifts.map((shift) => (
-                        <>
-                          <li
-                            className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
-                            transition-all"
-                            key={shift.shiftId}
-                            onClick={() => {
-                              setValue('shift', shift.registrationDate);
-                              setIsOpenModelShift(false);
-                              handleChangeShift(shift.shiftId);
-                            }}
-                          >
-                            {formatDate(shift.registrationDate)}
-                          </li>
-                        </>
-                      ))}
+                      {shifts.map((shift) => {
+                        const totalQuantity = shift.ShiftDetails.reduce(
+                          (total, detail) => total + detail.quantity,
+                          0
+                        );
+                        const totalMaxQuantity = shift.ShiftDetails.reduce(
+                          (total, detail) => total + detail.maxQuantity,
+                          0
+                        );
+                        return (
+                          <>
+                            <li
+                              className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
+                            transition-all flex items-center justify-between px-[30px]"
+                              key={shift.shiftId}
+                              onClick={() => {
+                                setValue('shift', shift.registrationDate);
+                                setIsOpenModelShift(false);
+                                handleChangeShift(shift.shiftId);
+                              }}
+                            >
+                              {formatDate(shift.registrationDate)}
+                              <span>
+                                <span className="text-main">
+                                  {totalQuantity}
+                                </span>
+                                /{totalMaxQuantity}
+                              </span>
+                            </li>
+                          </>
+                        );
+                      })}
                     </ul>
                   </div>
                 </ModalContent>
@@ -384,7 +441,7 @@ const Booking = ({ navigate }) => {
                         <>
                           <li
                             className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
-                            transition-all"
+                            transition-all flex items-center justify-between px-4"
                             key={shiftDetail.shiftDetailId}
                             onClick={() => {
                               setValue(
@@ -394,10 +451,40 @@ const Booking = ({ navigate }) => {
                                 )} đến ${formatTime(shiftDetail.endTime)}`
                               );
                               setIsOpenModelShiftDetail(false);
+                              setValuePayload((prev) => {
+                                return {
+                                  ...prev,
+                                  shiftDetailId: shiftDetail.shiftDetailId,
+                                };
+                              });
                             }}
                           >
-                            {formatTime(shiftDetail.startTime)} đến{' '}
-                            {formatTime(shiftDetail.endTime)}
+                            <span>
+                              {formatTime(shiftDetail.startTime)} đến{' '}
+                              {formatTime(shiftDetail.endTime)}
+                            </span>
+                            {shiftDetail.status == 'Đã đầy' ? (
+                              <Chip
+                                size="sm"
+                                variant="ghost"
+                                value={shiftDetail.status}
+                                color={'red'}
+                              />
+                            ) : shiftDetail.status == 'Ngưng nhận lịch' ? (
+                              <Chip
+                                size="sm"
+                                variant="ghost"
+                                value={shiftDetail.status}
+                                color={'red'}
+                              />
+                            ) : (
+                              <span>
+                                <span className="text-main">
+                                  {shiftDetail.quantity}
+                                </span>
+                                /{shiftDetail.maxQuantity}
+                              </span>
+                            )}
                           </li>
                         </>
                       ))}
@@ -422,8 +509,27 @@ const Booking = ({ navigate }) => {
                   errors={errors}
                 />
               </div>
+              {/* note */}
+              <InputForm
+                label="Ghi chú"
+                type="text"
+                register={register}
+                containerClassName=""
+                inputClassName=""
+                id="note"
+                placeholder="Ghi chú"
+                validate={{}}
+                errors={errors}
+              />
 
               <div className=""></div>
+              <ButtonDefault
+                disable={loading}
+                className="bg-main w-full"
+                onClick={handleSubmit(handleBooking)}
+              >
+                Đặt lịch
+              </ButtonDefault>
             </div>
           </div>
         </div>
