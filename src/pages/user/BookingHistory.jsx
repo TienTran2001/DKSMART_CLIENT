@@ -54,6 +54,8 @@ const BookingHistory = ({ navigate }) => {
   const [totalPage, setTotalPage] = useState(1);
   const [statusValue, setStatusValue] = useState('');
 
+  const limit = 2;
+
   const [bookingHistories, setBookingHistories] = useState([]);
   const { current } = useUserStore();
 
@@ -62,7 +64,7 @@ const BookingHistory = ({ navigate }) => {
   }
 
   useEffect(() => {
-    loadBookingHistories('', 2, 0);
+    loadBookingHistories(statusValue, limit, 0);
   }, []);
 
   const loadBookingHistories = async (status, limit, page) => {
@@ -79,10 +81,11 @@ const BookingHistory = ({ navigate }) => {
     if (status == 'Tất cả') status = '';
     setStatusValue(status);
     setPage(1);
-    loadBookingHistories(status, 2, 0);
+    loadBookingHistories(status, limit, 0);
   };
 
   const handleCancelAppointment = async (appointmentId) => {
+    console.log(appointmentId);
     Swal.fire({
       title: '',
       text: 'Bạn chắc chắn hủy lịch hẹn này',
@@ -95,8 +98,10 @@ const BookingHistory = ({ navigate }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await apiCancelAppointment(appointmentId);
+        console.log(response);
         if (response.success) {
           toast.success(response.message);
+          loadBookingHistories(statusValue, limit, 0);
         } else toast.error(response.message);
       }
     });
@@ -202,7 +207,6 @@ const BookingHistory = ({ navigate }) => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (item.status === 'chưa xác nhận') {
-                                  console.log('huhu: ', item.status);
                                   handleCancelAppointment(item.appointmentId);
                                 }
                               }}

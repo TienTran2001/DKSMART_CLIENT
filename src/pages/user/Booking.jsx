@@ -156,7 +156,7 @@ const Booking = ({ navigate }) => {
         confirmButtonText: 'Thoát',
       }).then((isConfirm) => {
         if (isConfirm) {
-          // navigate('/vehicles');
+          navigate('/booking-history?status=all');
         }
       });
     } else {
