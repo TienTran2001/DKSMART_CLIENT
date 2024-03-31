@@ -329,19 +329,41 @@ const Booking = ({ navigate }) => {
                       {centers.map((center) => (
                         <>
                           <li
-                            className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
-                            transition-all"
+                            className={clsx(
+                              'text-center py-2 border-b  hover:bg-gray-100 transition-all flex items-center justify-between px-4',
+                              center.status == 'ngưng nhận lịch'
+                                ? 'cursor-not-allowed'
+                                : 'cursor-pointer'
+                            )}
                             key={center.centerId}
                             onClick={() => {
-                              setValue('center', center.name);
-                              setIsOpenModelCenter(false);
-                              handleChangeCenter(center.centerId);
-                              setValuePayload((prev) => {
-                                return { ...prev, centerId: center.centerId };
-                              });
+                              if (center.status == 'đang nhận lịch') {
+                                console.log('vào');
+                                setValue('center', center.name);
+                                setIsOpenModelCenter(false);
+                                handleChangeCenter(center.centerId);
+                                setValuePayload((prev) => {
+                                  return { ...prev, centerId: center.centerId };
+                                });
+                              }
                             }}
                           >
-                            {center.name}
+                            <span>{center.name}</span>
+                            {center.status == 'ngưng nhận lịch' ? (
+                              <Chip
+                                size="sm"
+                                variant="ghost"
+                                value={center.status}
+                                color={'red'}
+                              />
+                            ) : (
+                              <Chip
+                                size="sm"
+                                variant="ghost"
+                                value={center.status}
+                                color={'green'}
+                              />
+                            )}
                           </li>
                         </>
                       ))}

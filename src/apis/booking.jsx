@@ -7,6 +7,19 @@ export const apiAddBooking = (data) => {
     data,
   });
 };
+export const apiUpdateStatus = (appointmentId) => {
+  return axios({
+    url: `/appointments/${appointmentId}`,
+    method: 'put',
+  });
+};
+
+export const apiCancelAppointment = (appointmentId) => {
+  return axios({
+    url: `/appointments/cancel/${appointmentId}`,
+    method: 'put',
+  });
+};
 
 export const apiGetAllBooking = ({
   search = '',
@@ -22,5 +35,16 @@ export const apiGetAllBooking = ({
 export const apiGetBookingHistory = (appointmentId) =>
   axios({
     url: `/appointments/${appointmentId}`,
+    method: 'get',
+  });
+
+export const apiGetAllAppointmentOfCenter = ({
+  search = '',
+  limit = 6,
+  page = 0,
+  status = '',
+}) =>
+  axios({
+    url: `/appointments/center?limit=${limit}&page=${page}&search=${search}&status=${status}`,
     method: 'get',
   });

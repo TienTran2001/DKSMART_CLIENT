@@ -139,6 +139,13 @@ export const centerSidebar = [
       },
     ],
   },
+  {
+    id: 4,
+    name: 'Lịch hẹn',
+    path: `/manage-center/booking?status=all`,
+    icon: <FaCalendarAlt />,
+    type: 'SINGLE',
+  },
 ];
 
 export const formatDate = (data) => {

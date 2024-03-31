@@ -37,12 +37,12 @@ const Vehicles = ({ navigate }) => {
   const handleDeleteCenter = async (vehicleId) => {
     Swal.fire({
       title: '',
-      text: 'Bạn có chắc xóa phương tiện này!',
+      text: 'Xóa phương tiện sẽ thông tin của lịch hẹn!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, xóa nó!',
+      confirmButtonText: 'Xác nhận!',
       cancelButtonText: 'Thoát!',
     }).then(async (result) => {
       if (result.isConfirmed) {

@@ -59,14 +59,14 @@ const BookingHistoryDetail = ({ navigate }) => {
                   <div className="">
                     Địa điểm:{' '}
                     <span className="text-main">
-                      {bookingHistory?.Center.name}
+                      {bookingHistory?.Center?.name}
                     </span>
                   </div>
                   <div className="">
                     Địa chỉ:{' '}
                     <span className="text-main">
-                      <GoogleMapsLink address={bookingHistory?.Center.address}>
-                        {bookingHistory?.Center.address}
+                      <GoogleMapsLink address={bookingHistory?.Center?.address}>
+                        {bookingHistory?.Center?.address}
                       </GoogleMapsLink>
                     </span>
                   </div>
@@ -75,13 +75,13 @@ const BookingHistoryDetail = ({ navigate }) => {
                     <div className="">
                       Họ và tên:{' '}
                       <span className="text-main">
-                        {bookingHistory.User.fullname}
+                        {bookingHistory?.User?.fullname}
                       </span>
                     </div>
                     <div className="">
                       Số điện thoại:{' '}
                       <span className="text-main">
-                        {bookingHistory.User.phone}
+                        {bookingHistory?.User?.phone}
                       </span>
                     </div>
                   </div>
@@ -92,21 +92,21 @@ const BookingHistoryDetail = ({ navigate }) => {
                       <div
                         className={clsx(
                           'uppercase text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
-                          bookingHistory.Vehicle.plateColor === 'Trắng' &&
+                          bookingHistory?.Vehicle?.plateColor === 'Trắng' &&
                             'bg-white',
-                          bookingHistory.Vehicle.plateColor === 'Vàng' &&
+                          bookingHistory?.Vehicle?.plateColor === 'Vàng' &&
                             'bg-yellow-700',
-                          bookingHistory.Vehicle.plateColor === 'Xanh' &&
+                          bookingHistory?.Vehicle?.plateColor === 'Xanh' &&
                             'bg-blue-700'
                         )}
                       >
-                        {bookingHistory.Vehicle.licensePlate}
+                        {bookingHistory?.Vehicle?.licensePlate}
                       </div>
                     </div>
                     <div className="">
                       Loại phương tiện:{' '}
                       <span className="text-main">
-                        {bookingHistory.Vehicle.vehicleType}
+                        {bookingHistory?.Vehicle?.vehicleType}
                       </span>
                     </div>
                   </div>
@@ -120,10 +120,12 @@ const BookingHistoryDetail = ({ navigate }) => {
                     </div>
                     <div className="">
                       Giờ:{' '}
-                      <span className="text-main">
-                        {formatTime(bookingHistory.ShiftDetail.startTime)} đến{' '}
-                        {formatTime(bookingHistory.ShiftDetail.endTime)}
-                      </span>
+                      {bookingHistory?.ShiftDetail && (
+                        <span className="text-main">
+                          {formatTime(bookingHistory?.ShiftDetail?.startTime)}{' '}
+                          đến {formatTime(bookingHistory?.ShiftDetail?.endTime)}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="border-t-2"></div>

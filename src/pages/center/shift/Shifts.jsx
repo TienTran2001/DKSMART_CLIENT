@@ -45,6 +45,8 @@ export default function Shifts() {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const { current } = useUserStore();
+  const limit = 6;
+
   const {
     register,
     formState: { errors },
@@ -55,7 +57,7 @@ export default function Shifts() {
   const date = watch('date');
   let navigate = useNavigate();
   useEffect(() => {
-    loadShifts();
+    loadShifts('', limit, 0);
   }, []);
 
   const loadShifts = async (date, limit = 6, page) => {
@@ -92,7 +94,10 @@ export default function Shifts() {
         const response = await apiDeleteShift(shiftId);
         if (response.success) {
           toast.success(response.message);
+          // làm mới
           loadShifts();
+          setValue('registrationDate', '');
+          setPage(1);
         } else toast.error(response.message);
       }
     });
@@ -192,7 +197,7 @@ export default function Shifts() {
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
-                          {index + 1}
+                          {index + 1 + limit * (page - 1)}
                         </Typography>
                       </div>
                     </td>
@@ -266,7 +271,7 @@ export default function Shifts() {
             disabled={page <= 1}
             onClick={() => {
               const x = page - 1;
-              loadShifts(date, 6, x - 1);
+              loadShifts(date, limit, x - 1);
               setPage(page - 1);
             }}
           >
@@ -277,7 +282,7 @@ export default function Shifts() {
             size="sm"
             disabled={page >= totalPage ? true : false}
             onClick={() => {
-              loadShifts(date, 6, page);
+              loadShifts(date, limit, page);
               setPage(page + 1);
             }}
           >

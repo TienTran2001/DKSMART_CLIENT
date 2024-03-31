@@ -33,6 +33,7 @@ import UpdateShiftDetail from './pages/center/shift/UpdateShiftDetail';
 import Booking from './pages/user/Booking';
 import BookingHistory from './pages/user/BookingHistory';
 import BookingHistoryDetail from './pages/user/BookingHistoryDetail';
+import BookingCenter from './pages/center/appointment/BookingCenter';
 
 function App() {
   const navigate = useNavigate();
@@ -106,6 +107,7 @@ function App() {
             <Route path="profile" element={<ProfileUser />} />
             <Route path="center" element={<ProfileCenter />} />
             <Route path="shifts" element={<Shifts />} />
+
             <Route path="create-shift" element={<AddShift />} />
             <Route
               path="update-shift/:shiftId"
@@ -119,6 +121,7 @@ function App() {
               path="update-shift-detail/:shiftDetailId"
               element={<UpdateShiftDetail navigate={navigate} />}
             />
+            <Route path="booking" element={<BookingCenter />} />
           </Route>
         )}
       </Routes>

@@ -16,7 +16,7 @@ const ButtonDefault = ({
       size={size}
       loading={disable}
       fullWidth={fullWidth}
-      className={clsx('flex justify-center', className)}
+      className={clsx('flex justify-center items-center', className)}
       onClick={onClick}
       variant={variant}
     >

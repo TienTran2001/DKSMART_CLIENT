@@ -6,10 +6,12 @@ import { useUserStore } from '~/store/useUserStore';
 import clsx from 'clsx';
 import { IoArrowBackSharp } from 'react-icons/io5';
 import { formatDate, formatTime } from '~/utils/contants';
-import { apiGetAllBooking } from '~/apis/booking';
+import { apiCancelAppointment, apiGetAllBooking } from '~/apis/booking';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Button } from '@material-tailwind/react';
-import { AiOutlineFileText } from 'react-icons/ai';
+import { Button, IconButton, Tooltip } from '@material-tailwind/react';
+import { AiFillDelete, AiOutlineFileText } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const nav = [
   {
@@ -80,6 +82,26 @@ const BookingHistory = ({ navigate }) => {
     loadBookingHistories(status, 2, 0);
   };
 
+  const handleCancelAppointment = async (appointmentId) => {
+    Swal.fire({
+      title: '',
+      text: 'Bạn chắc chắn hủy lịch hẹn này',
+      icon: '',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Thoát!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await apiCancelAppointment(appointmentId);
+        if (response.success) {
+          toast.success(response.message);
+        } else toast.error(response.message);
+      }
+    });
+  };
+
   return (
     <>
       <PublicLayout>
@@ -111,63 +133,90 @@ const BookingHistory = ({ navigate }) => {
                 </NavLink>
               ))}
             </nav>
-
-            {bookingHistories.length == 0 ? (
-              <div className="flex items-center justify-center mb-5">
-                <div className="  flex items-center space-x-4  text-white px-10 py-7 bg-gray-400 rounded-md">
-                  <AiOutlineFileText className="text-[70px]" />
-                  <span className="text-lg">Không có dữ liệu!</span>
+            <div className="">
+              {bookingHistories.length == 0 ? (
+                <div className="flex items-center justify-center mb-5">
+                  <div className="  flex items-center space-x-4  text-white px-10 py-7 bg-gray-400 rounded-md">
+                    <AiOutlineFileText className="text-[70px]" />
+                    <span className="text-lg">Không có dữ liệu!</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {bookingHistories.map((item) => (
-                  <Fragment key={item.appointmentId}>
-                    <div
-                      className="cursor-pointer bg-main-gray border border-[#067d8b] rounded-md px-4 py-3 flex flex-col gap-y-5"
-                      onClick={() =>
-                        navigate(`booking-history-detail/${item.appointmentId}`)
-                      }
-                    >
-                      <div className="flex items-center">
-                        <div className="w-1/6">Biển số xe:</div>
-                        <div
-                          className={clsx(
-                            'uppercase w-5/6 text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
-                            item.Vehicle.plateColor === 'Trắng' && 'bg-white',
-                            item.Vehicle.plateColor === 'Vàng' &&
-                              'bg-yellow-700',
-                            item.Vehicle.plateColor === 'Xanh' && 'bg-blue-700'
-                          )}
-                        >
-                          {item.Vehicle.licensePlate}
+              ) : (
+                <div className="space-y-6">
+                  {bookingHistories.map((item) => (
+                    <Fragment key={item.appointmentId}>
+                      <div
+                        className="cursor-pointer bg-main-gray border border-[#067d8b] rounded-md px-4 py-3 flex flex-col gap-y-5"
+                        onClick={() =>
+                          navigate(
+                            `booking-history-detail/${item.appointmentId}`
+                          )
+                        }
+                      >
+                        <div className="flex items-center">
+                          <div className="w-1/6">Biển số xe:</div>
+                          <div
+                            className={clsx(
+                              'uppercase w-5/6 text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
+                              item?.Vehicle?.plateColor === 'Trắng' &&
+                                'bg-white',
+                              item?.Vehicle?.plateColor === 'Vàng' &&
+                                'bg-yellow-700',
+                              item?.Vehicle?.plateColor === 'Xanh' &&
+                                'bg-blue-700'
+                            )}
+                          >
+                            {item?.Vehicle?.licensePlate}
+                          </div>
                         </div>
-                      </div>
-                      <div className="border-t-2"></div>
-                      <div className="flex items-center">
+                        <div className="border-t-2"></div>
+                        <div className="flex items-center">
+                          <div className="">
+                            Giờ hẹn:{' '}
+                            {item?.ShiftDetail && (
+                              <span className="hover:text-main  text-main">
+                                {formatTime(item?.ShiftDetail?.startTime)} đến{' '}
+                                {formatTime(item?.ShiftDetail?.endTime)}
+                                {' - '}
+                                {formatDate(item.appointmentDate)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                         <div className="">
-                          Giờ hẹn:{' '}
-                          <span className="hover:text-main  text-main">
-                            {formatTime(item.ShiftDetail.startTime)} đến{' '}
-                            {formatTime(item.ShiftDetail.endTime)}
-                            {' - '}
-                            {formatDate(item.appointmentDate)}
-                          </span>
+                          Địa điểm:{' '}
+                          <span className="text-main">{item.Center.name}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="">
+                            Trạng thái:{' '}
+                            <span className="text-main">{item.status}</span>
+                          </div>
+                          <Tooltip content="Hủy lịch hẹn">
+                            <IconButton
+                              variant="text"
+                              className={clsx(
+                                item.status !== 'chưa xác nhận' &&
+                                  'opacity-50 cursor-not-allowed'
+                              )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (item.status === 'chưa xác nhận') {
+                                  console.log('huhu: ', item.status);
+                                  handleCancelAppointment(item.appointmentId);
+                                }
+                              }}
+                            >
+                              <AiFillDelete className="text-xl" />
+                            </IconButton>
+                          </Tooltip>
                         </div>
                       </div>
-                      <div className="">
-                        Địa điểm:{' '}
-                        <span className="text-main">{item.Center.name}</span>
-                      </div>
-                      <div className="">
-                        Trạng thái:{' '}
-                        <span className="text-main">{item.status}</span>
-                      </div>
-                    </div>
-                  </Fragment>
-                ))}
-              </div>
-            )}
+                    </Fragment>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
               <div className="font-normal">
