@@ -93,7 +93,7 @@ export default function BookingCenter() {
   const [isOpenModelDetail, setIsOpenModelDetail] = useState(false);
   const [isOpenImage, setIsOpenImage] = useState(false);
   const [search, setSearch] = useState('');
-  const limit = 1;
+  const limit = 6;
 
   const [bookingHistory, setBookingHistory] = useState();
 
