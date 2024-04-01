@@ -199,12 +199,17 @@ export default function BookingCenter() {
             <p>Thông tin lịch hẹn:</p>
             <p>Địa điểm: <b>${bookingHistory?.Center?.name}</b></p>
             <p>Địa chỉ: ${bookingHistory?.Center?.address}</p>
+            <p>Phương tiện: <b>${bookingHistory?.Vehicle?.licensePlate}</b></p>
             <p>Ngày hẹn: <b>${formatDate(
               bookingHistory.appointmentDate
             )}</b></p>
             <p>Giờ hẹn: <b>${formatTime(
               bookingHistory?.ShiftDetail?.startTime
             )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
+            <b>Lưu ý:</b><br/>
+            <i>- Vui lòng mang xe đến trước lịch hẹn 15 phút.<br/>
+            - Tuân thủ theo sự sắp xếp của nhân viên trung tâm để tránh gây ùn tắc. <br/>
+            - Mang đầy đủ các loại giấy tờ cho đăng kiểm.</i> <br/>
             <i>Xin chân thành cảm ơn!</i>
         `,
           };
