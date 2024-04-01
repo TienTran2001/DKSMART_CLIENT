@@ -191,7 +191,7 @@ export default function BookingCenter() {
               : 'đã hoàn thành';
 
           const data = {
-            email: 'tienco201@gmail.com',
+            email: `${bookingHistory?.User?.email}`,
             subject: `Lịch hẹn ${subject}`,
             message: `
             <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
