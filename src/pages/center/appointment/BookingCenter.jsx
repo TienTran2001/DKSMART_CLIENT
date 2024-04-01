@@ -34,6 +34,7 @@ import {
   apiCancelAppointment,
   apiGetAllAppointmentOfCenter,
   apiGetBookingHistory,
+  apiGetSendMail,
   apiUpdateStatus,
 } from '~/apis/booking';
 import clsx from 'clsx';
@@ -114,10 +115,10 @@ export default function BookingCenter() {
   }, []);
   const loadBookingHistory = async (appointmentId) => {
     const response = await apiGetBookingHistory(appointmentId);
-    console.log(response);
+
     if (response.success) {
       const { appointment } = response;
-      console.log(appointment);
+
       setBookingHistory(appointment);
     }
   };
@@ -129,7 +130,7 @@ export default function BookingCenter() {
       page,
       search,
     });
-    console.log(response);
+
     if (response.success) {
       const { appointments, totalPage } = response;
       setTotalPage(totalPage);
@@ -178,10 +179,37 @@ export default function BookingCenter() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await apiUpdateStatus(appointmentId);
+
         if (response.success) {
           toast.success(response.message);
           setIsOpenModelDetail(false);
           loadAppointments(status, limit, 0, search);
+          console.log(bookingHistory);
+          const subject =
+            bookingHistory.status == 'chưa xác nhận'
+              ? 'đã được xác nhận'
+              : 'đã hoàn thành';
+
+          const data = {
+            email: 'tienco201@gmail.com',
+            subject: `Lịch hẹn ${subject}`,
+            message: `
+            <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
+            <b>Lịch hẹn của bạn ${subject} trên hệ thống DKSMART</b>
+            <p>Thông tin lịch hẹn:</p>
+            <p>Địa điểm: <b>${bookingHistory?.Center?.name}</b></p>
+            <p>Địa chỉ: ${bookingHistory?.Center?.address}</p>
+            <p>Ngày hẹn: <b>${formatDate(
+              bookingHistory.appointmentDate
+            )}</b></p>
+            <p>Giờ hẹn: <b>${formatTime(
+              bookingHistory?.ShiftDetail?.startTime
+            )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
+            <i>Xin chân thành cảm ơn!</i>
+        `,
+          };
+          const res = await apiGetSendMail(data);
+          console.log('res: ', res);
         } else toast.error(response.message);
       }
     });

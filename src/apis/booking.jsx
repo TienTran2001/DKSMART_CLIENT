@@ -48,3 +48,9 @@ export const apiGetAllAppointmentOfCenter = ({
     url: `/appointments/center?limit=${limit}&page=${page}&search=${search}&status=${status}`,
     method: 'get',
   });
+export const apiGetSendMail = (data) =>
+  axios({
+    url: `/appointments/send-mail`,
+    method: 'post',
+    data,
+  });
