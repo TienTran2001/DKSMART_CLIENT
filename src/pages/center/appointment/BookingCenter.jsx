@@ -324,7 +324,7 @@ export default function BookingCenter() {
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
-                          {(index + 1) * limit * page}
+                          {index + 1 + limit * (page - 1)}
                         </Typography>
                       </div>
                     </td>
