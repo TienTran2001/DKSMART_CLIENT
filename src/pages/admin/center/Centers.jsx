@@ -44,7 +44,7 @@ export default function Centers() {
   const [totalPage, setTotalPage] = useState(1);
   const [search, setSearch] = useState('');
 
-  const limit = 2;
+  const limit = 6;
 
   const {
     register,
