@@ -178,7 +178,7 @@ export function formatTime(timeString) {
 export function GoogleMapsLink({ address, children }) {
   const encodedAddress = encodeURIComponent(address);
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
-  console.log(googleMapsUrl);
+
   return (
     <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
       {children}

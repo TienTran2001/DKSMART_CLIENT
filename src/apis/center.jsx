@@ -1,8 +1,13 @@
 import axios from '~/axios';
 
-export const apiGetAllCenter = (limit, page) => {
+export const apiGetAllCenter = ({
+  province = '',
+  name = '',
+  limit = 6,
+  page = 0,
+}) => {
   return axios({
-    url: `/centers?limit=${limit}&page=${page}`,
+    url: `/centers?name=${name}&limit=${limit}&page=${page}&province=${province}`,
     method: 'get',
   });
 };

@@ -3,23 +3,35 @@ import { Fragment, useEffect, useState } from 'react';
 import { apiGetAllCenter } from '~/apis/center';
 import { IoMdSearch } from 'react-icons/io';
 import { apiGetAllProvince } from '~/apis/provinces';
-import { Tooltip } from '@material-tailwind/react';
+import { Button, Tooltip } from '@material-tailwind/react';
 
 import CardCenter from '~/components/commons/CardCenter';
+import { IoArrowBackSharp } from 'react-icons/io5';
+import ButtonDefault from '~/components/commons/ButtonDefault';
 
-const CentersPublic = () => {
+// eslint-disable-next-line react/prop-types
+const CentersPublic = ({ navigate }) => {
   const [centers, setCenters] = useState([]);
   const [provinces, setProvinces] = useState([]);
 
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [province, setProvince] = useState('');
+
+  const limit = 3;
+
   useEffect(() => {
     loadProvinces();
-    loadCenter();
+    loadCenters('', '', limit, 0);
   }, []);
 
-  const loadCenter = async () => {
-    const res = await apiGetAllCenter(6, 0);
-    if (res.success) {
-      setCenters(res.centers.rows);
+  const loadCenters = async (province = '', name, limit, page) => {
+    const response = await apiGetAllCenter({ province, name, limit, page });
+    if (response.success) {
+      const { centers, totalPage } = response;
+      setCenters(centers.rows);
+      setTotalPage(totalPage);
     }
   };
 
@@ -31,18 +43,51 @@ const CentersPublic = () => {
       setProvinces(provinces);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleOnClickSearch = () => {
+    loadCenters(province, search, limit, 0);
+    setPage(1);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleOnClickSearch();
+    }
+  };
+
   return (
     <>
       <PublicLayout>
-        <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
-            <h2 className="font-semibold uppercase text-center text-main">
-              Trung tâm đăng kiểm
-            </h2>
-            <div className="mt-[30px] flex items-center justify-between">
+        <div className="min-h-screen max-w-[1200px] md:mx-auto">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
+            <div className="relative">
+              <button onClick={() => navigate('/')}>
+                <span className="absolute top-[25px] cursor-pointer">
+                  <IoArrowBackSharp size={22} className="text-main  " />
+                </span>
+              </button>
+              <h2 className="font-semibold uppercase text-center text-main">
+                Trung tâm đăng kiểm
+              </h2>
+            </div>
+
+            <div className="mt-[30px] md:space-x-[10px] md:space-y-0 space-y-2 md:flex md:items-center md:justify-between">
               <select
                 id=""
-                className=" w-[25%] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3"
+                onChange={(e) => {
+                  if (e.target.value == 'Chọn tỉnh thành') {
+                    console.log('vào');
+                    loadCenters('', search, limit, 0);
+                    return;
+                  }
+                  setProvince(e.target.value);
+                  loadCenters(e.target.value, search, limit, 0);
+                }}
+                className="w-full md:w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3"
               >
                 <option selected>Chọn tỉnh thành</option>
                 {provinces.map((province) => (
@@ -56,16 +101,24 @@ const CentersPublic = () => {
                 ))}
               </select>
 
-              <div className="w-2/3  border-solid border border-gray-300 rounded-lg flex">
+              <div className="w-full md:w-2/3  border-solid border border-gray-300 rounded-lg flex">
                 <input
                   type="text"
+                  value={search}
                   placeholder="Nhập tên trung tâm"
-                  className="border-none outline-none p-2.5 w-full rounded-lg bg-gray-50  text-gray-900"
+                  onChange={(e) => handleSearchChange(e)}
+                  onKeyDown={handleKeyDown}
+                  className=" border-none outline-none p-2.5 w-full rounded-lg bg-gray-50  text-gray-900"
                 />
                 <Tooltip content="Tìm kiếm">
-                  <div className="cursor-pointer p-3 transition-all hover:bg-main-gray">
-                    <IoMdSearch className="text-xl text-gray-700" />
-                  </div>
+                  <ButtonDefault
+                    disable={false}
+                    className="px-3 flex bg-main items-center rounded-none rounded-r-md"
+                    onClick={() => handleOnClickSearch()}
+                    variant="filled"
+                  >
+                    <IoMdSearch className="text-xl" />
+                  </ButtonDefault>
                 </Tooltip>
               </div>
             </div>
@@ -75,6 +128,36 @@ const CentersPublic = () => {
                   <CardCenter center={center} />
                 </Fragment>
               ))}
+            </div>
+            <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              <div className="font-normal">
+                {page} / {totalPage}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  disabled={page <= 1}
+                  onClick={() => {
+                    const x = page - 1;
+                    loadCenters(province, search, limit, x - 1);
+                    setPage(page - 1);
+                  }}
+                >
+                  Trước
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  disabled={page >= totalPage ? true : false}
+                  onClick={() => {
+                    loadCenters(province, search, limit, page);
+                    setPage(page + 1);
+                  }}
+                >
+                  Tiếp
+                </Button>
+              </div>
             </div>
           </div>
         </div>

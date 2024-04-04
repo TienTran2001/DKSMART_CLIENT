@@ -49,24 +49,24 @@ const Home = () => {
 
   const [centers, setCenters] = useState([]);
   useEffect(() => {
-    loadCenter();
+    loadCenters('', 2, 0);
   }, []);
-  const loadCenter = async () => {
-    const res = await apiGetAllCenter(2, 0);
-    if (res.success) {
-      setCenters(res.centers.rows);
+  const loadCenters = async (name, limit, page) => {
+    const response = await apiGetAllCenter({ name, limit, page });
+    if (response.success) {
+      setCenters(response.centers.rows);
     }
   };
   return (
     <PublicLayout>
       <main className="max-w-[1200px] mt-[50px] mx-auto">
-        <div className="w-2/3 mx-auto">
+        <div className="w-full md:w-2/3 mx-auto px-3 md:px-0">
           <Slide settings={settings}></Slide>
         </div>
-        <div className=" w-2/3 mt-[50px] mx-auto flex items-center justify-between flex-wrap gap-x-[10px] gap-y-[20px]">
+        <div className="w-full md:w-2/3 px-3 md:px-0 mt-[50px] mx-auto flex items-center justify-center md:justify-between flex-wrap gap-x-[10px] gap-y-[20px]">
           {categories.map((item, index) => (
             <Link key={index} to={item.link}>
-              <Card className="mt-6 w-56">
+              <Card className="mt-6 w-64 md:w-56">
                 <CardHeader
                   color="blue-gray"
                   className="relative h-32 flex items-center justify-center"
@@ -83,13 +83,13 @@ const Home = () => {
           ))}
         </div>
         {/* danh sách trung tâm */}
-        <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
+        <div className="mt-[50px] w-full md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
           <div className="flex items-center justify-between">
-            <h2 className="uppercase font-medium">
+            <h2 className="uppercase text-sm md:text-base font-medium">
               Danh sách trung tâm đăng kiểm
             </h2>
             <Link to="/centers">
-              <div className="text-sm hover:text-main flex items-center gap-x-[10px]">
+              <div className="text-sm md:text-md hover:text-main flex items-center gap-x-[10px]">
                 <span>Xem tât cả</span>
                 <FaChevronCircleRight className="text-base -translate-y-[1px]" />
               </div>
@@ -105,11 +105,13 @@ const Home = () => {
           </div>
         </div>
         {/* danh sách tin tức */}
-        <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
-          <div className="flex items-center justify-between">
-            <h2 className="uppercase font-medium">Tin tức</h2>
+        <div className="mt-[50px] w-full md:w-2/3   mx-auto rounded-md bg-white py-[25px] px-[20px]">
+          <div className="flex items-center gap-y-3 md:gap-y-0 justify-between">
+            <h2 className="uppercase text-sm md:text-base font-medium">
+              Tin tức
+            </h2>
             <Link to="">
-              <div className="text-sm hover:text-main flex items-center gap-x-[10px]">
+              <div className="text-sm md:text-md hover:text-main flex items-center gap-x-[10px]">
                 <span>Xem tât cả</span>
                 <FaChevronCircleRight className="text-base -translate-y-[1px]" />
               </div>

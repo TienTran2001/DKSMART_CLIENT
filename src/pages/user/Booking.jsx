@@ -168,7 +168,7 @@ const Booking = ({ navigate }) => {
     <>
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px] ">
+          <div className="mt-[50px] w-full md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px] ">
             <div className="relative">
               <button onClick={() => navigate(-1)}>
                 <span className="absolute top-[25px] cursor-pointer">
@@ -233,7 +233,7 @@ const Booking = ({ navigate }) => {
               {isChooseVehicle && (
                 <div className="space-y-6">
                   <div className="w-full">
-                    <div className="w-1/6 text-sm mb-2">Biển số xe:</div>
+                    <div className=" text-sm mb-2">Biển số xe:</div>
                     <div
                       className={clsx(
                         'uppercase w-full text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
@@ -348,7 +348,9 @@ const Booking = ({ navigate }) => {
                               }
                             }}
                           >
-                            <span>{center.name}</span>
+                            <span className="text-sm md:text:md">
+                              {center.name}
+                            </span>
                             {center.status == 'ngưng nhận lịch' ? (
                               <Chip
                                 size="sm"

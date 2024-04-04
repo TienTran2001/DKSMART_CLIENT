@@ -47,7 +47,10 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/centers" element={<CentersPublic />} />
+        <Route
+          path="/centers"
+          element={<CentersPublic navigate={navigate} />}
+        />
 
         <Route
           path="/update-vehicle/:vehicleId"
