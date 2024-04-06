@@ -34,6 +34,11 @@ import Booking from './pages/user/Booking';
 import BookingHistory from './pages/user/BookingHistory';
 import BookingHistoryDetail from './pages/user/BookingHistoryDetail';
 import BookingCenter from './pages/center/appointment/BookingCenter';
+import News from './pages/admin/news/News';
+import AddNews from './pages/admin/news/AddNews';
+import UpdateNews from './pages/admin/news/UpdateNews';
+import NewsDetail from './pages/public/NewsDetail';
+import NewsList from './pages/public/NewsList';
 
 function App() {
   const navigate = useNavigate();
@@ -46,7 +51,7 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home navigate={navigate} />} />
         <Route
           path="/centers"
           element={<CentersPublic navigate={navigate} />}
@@ -72,6 +77,11 @@ function App() {
           path="/create-vehicle"
           element={<AddVehicle navigate={navigate} />}
         />
+        <Route
+          path="/news-detail/:newsId"
+          element={<NewsDetail navigate={navigate} />}
+        />
+        <Route path="/news-list" element={<NewsList navigate={navigate} />} />
 
         {/* auth layout */}
         <Route path={path.AUTH_LAYOUT} element={<AuthLayout />}>
@@ -99,6 +109,9 @@ function App() {
             <Route path="create-center" element={<AddCenter />} />
             <Route path="update-center/:centerId" element={<UpdateCenter />} />
             <Route path="profile" element={<ProfileUser />} />
+            <Route path="news" element={<News />} />
+            <Route path="create-news" element={<AddNews />} />
+            <Route path="update-news/:newsId" element={<UpdateNews />} />
           </Route>
         )}
         {/* center */}

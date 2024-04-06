@@ -15,6 +15,8 @@ import CardCenter from '~/components/commons/CardCenter';
 import { Fragment, useEffect, useState } from 'react';
 import { apiGetAllCenter } from '~/apis/center';
 import { PublicLayout } from '.';
+import { apiGetAllNews } from '~/apis/news';
+import { formatDate } from '~/utils/contants';
 
 const categories = [
   {
@@ -34,7 +36,8 @@ const categories = [
   },
 ];
 
-const Home = () => {
+// eslint-disable-next-line react/prop-types
+const Home = ({ navigate }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -48,13 +51,22 @@ const Home = () => {
   };
 
   const [centers, setCenters] = useState([]);
+  const [news, setNews] = useState([]);
+  console.log(news);
   useEffect(() => {
     loadCenters('', 2, 0);
+    loadNews('công khai', 2, 0);
   }, []);
   const loadCenters = async (name, limit, page) => {
     const response = await apiGetAllCenter({ name, limit, page });
     if (response.success) {
       setCenters(response.centers.rows);
+    }
+  };
+  const loadNews = async (status, limit, page) => {
+    const response = await apiGetAllNews({ status, limit, page });
+    if (response.success) {
+      setNews(response.news.rows);
     }
   };
   return (
@@ -110,63 +122,44 @@ const Home = () => {
             <h2 className="uppercase text-sm md:text-base font-medium">
               Tin tức
             </h2>
-            <Link to="">
+            <Link to="/news-list">
               <div className="text-sm md:text-md hover:text-main flex items-center gap-x-[10px]">
                 <span>Xem tât cả</span>
                 <FaChevronCircleRight className="text-base -translate-y-[1px]" />
               </div>
             </Link>
           </div>
-          <div className="mt-5 flex  justify-around flex-wrap">
-            <Card className="w-[22rem] overflow-hidden">
-              <CardHeader
-                floated={false}
-                shadow={false}
-                color="transparent"
-                className="m-0 rounded-none w-full"
+          <div className="mt-5 flex gap-5 justify-around flex-wrap">
+            {news.map((item) => (
+              <Card
+                key={item.newsId}
+                className="w-[22rem] overflow-hidden cursor-pointer"
+                onClick={() => navigate(`/news-detail/${item.newsId}`)}
               >
-                <img
-                  className="w-full h-full object-cover"
-                  src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/3/24/edit-dang-kiem-moi-1-1679626264764657096428.png"
-                  alt=""
-                />
-              </CardHeader>
-              <CardBody className="p-4">
-                <Typography variant="h5" color="blue-gray">
-                  Từ ngày 15/02/2024, áp dụng quy định mới về đăng kiểm ô tô,
-                  chủ xe cần biết
-                </Typography>
-                <Tooltip content="Ngày đăng">
-                  <Typography className="font-normal inline-block mt-4 text-sm">
-                    23/02/2024
+                <CardHeader
+                  floated={false}
+                  shadow={false}
+                  color="transparent"
+                  className="m-0 rounded-none w-full"
+                >
+                  <img
+                    className="w-full h-full object-cover"
+                    src={item?.imageUrl}
+                    alt=""
+                  />
+                </CardHeader>
+                <CardBody className="p-4">
+                  <Typography variant="h5" color="blue-gray">
+                    <div className=" line-clamp-2">{item.title}</div>
                   </Typography>
-                </Tooltip>
-              </CardBody>
-            </Card>
-            <Card className="w-[22rem] overflow-hidden">
-              <CardHeader
-                floated={false}
-                shadow={false}
-                color="transparent"
-                className="m-0 rounded-none"
-              >
-                <img
-                  src="https://baogiaothong.mediacdn.vn/603483875699699712/2024/2/3/3dc97821d5877fc57cb246304efbf028-17069318006261624489448.jpg"
-                  alt=""
-                />
-              </CardHeader>
-              <CardBody className="p-4">
-                <Typography variant="h5" color="blue-gray">
-                  Mua ô tô cũ biển trắng chuyển sang biển vàng có cần đăng kiểm
-                  lại?
-                </Typography>
-                <Tooltip content="Ngày đăng">
-                  <Typography className="font-normal inline-block mt-4 text-sm">
-                    25/01/2024
-                  </Typography>
-                </Tooltip>
-              </CardBody>
-            </Card>
+                  <Tooltip content="Ngày đăng">
+                    <Typography className="font-normal inline-block mt-4 text-sm">
+                      {formatDate(item.createdAt)}
+                    </Typography>
+                  </Tooltip>
+                </CardBody>
+              </Card>
+            ))}
           </div>
         </div>
       </main>

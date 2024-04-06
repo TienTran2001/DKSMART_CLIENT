@@ -198,7 +198,7 @@ export default function Centers() {
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            {index + 1}
+                            {index + 1 + limit * (page - 1)}
                           </Typography>
                         </div>
                       </td>
