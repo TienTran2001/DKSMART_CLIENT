@@ -11,6 +11,7 @@ import { apiDeleteVehicle, apiGetVehicles } from '~/apis/vehicle';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { IoArrowBackSharp } from 'react-icons/io5';
 
 // eslint-disable-next-line react/prop-types
 const Vehicles = ({ navigate }) => {
@@ -65,9 +66,16 @@ const Vehicles = ({ navigate }) => {
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
           <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
-            <h2 className="font-semibold uppercase text-center text-main">
-              Hồ sơ phương tiện
-            </h2>
+            <div className="relative">
+              <button onClick={() => navigate(-1)}>
+                <span className="absolute top-[25px] cursor-pointer">
+                  <IoArrowBackSharp size={22} className="text-main  " />
+                </span>
+              </button>
+              <h2 className="font-semibold uppercase text-center text-main">
+                Hồ sơ phương tiện
+              </h2>
+            </div>
             <div className="mt-[30px] flex items-center justify-between">
               <Link to="/create-vehicle">
                 <ButtonDefault

@@ -22,6 +22,8 @@ import {
 import { formatDate, formatTime } from '~/utils/contants';
 import { apiAddBooking } from '~/apis/booking';
 import { Chip } from '@material-tailwind/react';
+import { AiOutlineFileText } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
 const Booking = ({ navigate }) => {
@@ -188,6 +190,21 @@ const Booking = ({ navigate }) => {
                   onClose={() => setIsOpenModelVehicle(false)}
                 >
                   <div className="">
+                    {vehicles?.length == 0 && (
+                      <Link to="/vehicles">
+                        <div className="flex cursor-pointer items-center justify-center my-5">
+                          <div className="  flex items-center space-x-4  text-white px-10 py-7 bg-gray-400 rounded-md">
+                            <AiOutlineFileText className="text-[70px]" />
+                            <div className="text-lg">
+                              <span className="">Không có dữ liệu!</span>
+                              <div className="mt-2">
+                                Ấn vào đây để thêm phương tiện
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    )}
                     <ul>
                       {vehicles.map((vehicle) => (
                         <>
