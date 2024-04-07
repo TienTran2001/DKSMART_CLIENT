@@ -140,7 +140,7 @@ const Home = ({ navigate }) => {
                   floated={false}
                   shadow={false}
                   color="transparent"
-                  className="m-0 rounded-none w-full"
+                  className="m-0 rounded-none h-[200px] w-full"
                 >
                   <img
                     className="w-full h-full object-cover"
