@@ -111,7 +111,7 @@ const BookingHistory = ({ navigate }) => {
     <>
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px] ">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px] ">
             <div className="relative">
               <button onClick={() => navigate('')}>
                 <span className="absolute top-[25px] cursor-pointer">
@@ -132,7 +132,7 @@ const BookingHistory = ({ navigate }) => {
                     location.search.includes(`status=${item.value}`)
                       ? 'main bg-gray-200'
                       : 'black'
-                  } hover:bg-gray-200 transition-all rounded-sm py-3 w-full text-center`}
+                  } hover:bg-gray-200 text-[14px] md:text-base transition-all rounded-sm py-3 w-full text-center`}
                 >
                   {item.name}
                 </NavLink>

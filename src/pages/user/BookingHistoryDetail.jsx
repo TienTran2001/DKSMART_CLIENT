@@ -39,7 +39,7 @@ const BookingHistoryDetail = ({ navigate }) => {
     <>
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px] ">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[10px] md:px-[20px] ">
             <div className="relative">
               <button onClick={() => navigate(-1)}>
                 <span className="absolute top-[25px] cursor-pointer">
@@ -51,11 +51,11 @@ const BookingHistoryDetail = ({ navigate }) => {
               </h2>
             </div>
             {bookingHistory && (
-              <div className="mt-6 rounded-md  px-6">
+              <div className="mt-6 rounded-md px-2 md:px-6">
                 <div className="py-2 bg-main  text-white text-lg font-semibold text-center rounded-t">
                   Thông tin lịch hẹn
                 </div>
-                <div className="space-y-8 border bg-gray-50 p-6">
+                <div className="space-y-8 border bg-gray-50 px-2 py-4 md:p-6">
                   <div className="">
                     Địa điểm:{' '}
                     <span className="text-main">
@@ -71,7 +71,7 @@ const BookingHistoryDetail = ({ navigate }) => {
                     </span>
                   </div>
                   <div className="border-t-2"></div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex  gap-y-4 flex-col md:flex-row md:items-center  justify-between">
                     <div className="">
                       Họ và tên:{' '}
                       <span className="text-main">
@@ -86,8 +86,8 @@ const BookingHistoryDetail = ({ navigate }) => {
                     </div>
                   </div>
                   <div className="border-t-2"></div>
-                  <div className="flex  justify-between">
-                    <div className="flex w-1/2 gap-x-2">
+                  <div className="flex flex-col md:flex-row md:items-center gap-y-4  justify-between">
+                    <div className="flex gap-y-2 flex-col md:flex-row md:items-center  md:w-1/2 gap-x-2">
                       Biển số xe:{' '}
                       <div
                         className={clsx(
@@ -111,7 +111,7 @@ const BookingHistoryDetail = ({ navigate }) => {
                     </div>
                   </div>
                   <div className="border-t-2"></div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex gap-y-4 flex-col md:flex-row md:items-center justify-between">
                     <div className="">
                       Ngày:{' '}
                       <span className="text-main">
