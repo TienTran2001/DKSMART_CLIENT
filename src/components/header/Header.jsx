@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Navbar,
-  // MobileNav,
+  MobileNav,
   Typography,
   Button,
   IconButton,
@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom';
 import { useUserStore } from '~/store/useUserStore';
 import { FaUserCircle } from 'react-icons/fa';
 
-export default function Header() {
+// eslint-disable-next-line react/prop-types
+export default function Header({ navigate }) {
   const [openNav, setOpenNav] = React.useState(false);
   const { current, token } = useUserStore();
 
@@ -60,9 +61,9 @@ export default function Header() {
         color="blue-gray"
         className="p-1 hover:text-main font-medium"
       >
-        <a href="#" className="flex items-center">
+        <Link to="/news-list" className="flex items-center">
           Tin tức
-        </a>
+        </Link>
       </Typography>
     </ul>
   );
@@ -151,17 +152,36 @@ export default function Header() {
           </IconButton>
         </div>
       </div>
-      {/* <MobileNav open={openNav}>
+      <MobileNav open={openNav}>
         {navList}
-        <div className="flex items-center gap-x-1">
-          <Button fullWidth variant="text" size="sm" className="">
-            <span>Log In</span>
-          </Button>
-          <Button fullWidth variant="gradient" size="sm" className="">
-            <span>Sign in</span>
-          </Button>
+        <div className=" flex   items-center gap-x-1">
+          {current == token ? (
+            <>
+              <Button
+                fullWidth
+                variant="text"
+                size="md"
+                className=""
+                onClick={() => navigate('/login')}
+              >
+                <span>Đăng nhập</span>
+              </Button>
+
+              <Button
+                fullWidth
+                variant="text"
+                size="md"
+                className="bg-main text-white"
+                onClick={() => navigate('/register')}
+              >
+                <span>Đăng ký</span>
+              </Button>
+            </>
+          ) : (
+            ''
+          )}
         </div>
-      </MobileNav> */}
+      </MobileNav>
     </Navbar>
   );
 }

@@ -78,7 +78,7 @@ const Home = ({ navigate }) => {
         <div className="w-full md:w-2/3 px-3 md:px-0 mt-[50px] mx-auto flex items-center justify-center md:justify-between flex-wrap gap-x-[10px] gap-y-[20px]">
           {categories.map((item, index) => (
             <Link key={index} to={item.link}>
-              <Card className="mt-6 w-64 md:w-56">
+              <Card key={index} className="mt-6 w-72 md:w-56">
                 <CardHeader
                   color="blue-gray"
                   className="relative h-32 flex items-center justify-center"

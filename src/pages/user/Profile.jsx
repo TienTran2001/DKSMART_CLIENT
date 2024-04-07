@@ -84,9 +84,11 @@ const Profile = ({ navigate }) => {
 
   return (
     <PublicLayout>
-      <div className="w-[1200px] mt-[50px] mx-auto md:h-auto">
-        <div className="w-1/2 mx-auto">
-          <h1 className="text-2xl mb-5  font-bold">Thông tin tài khoản</h1>
+      <div className="max-w-[1200px] mt-[50px] mx-auto md:h-auto">
+        <div className="md:w-1/2 mx-auto">
+          <h1 className="text-2xl mb-5 text-center font-bold">
+            Thông tin tài khoản
+          </h1>
           <div className="w-full h-full bg-white rounded-lg md:shadow  md:mt-0 ">
             <form className="p-6  sm:p-8">
               <div className="space-y-8 ">
@@ -143,7 +145,7 @@ const Profile = ({ navigate }) => {
                   placeholder="Địa chỉ"
                   validate={{}}
                 />
-                <div className="flex justify-between">
+                <div className="flex flex-col md:flex-row gap-y-4 justify-between">
                   <ButtonDefault
                     disable={loading}
                     className="bg-main"
@@ -153,7 +155,7 @@ const Profile = ({ navigate }) => {
                   </ButtonDefault>
                   <ButtonDefault
                     onClick={() => handleLogout()}
-                    className="bg-main"
+                    className="bg-red-400"
                   >
                     Đăng xuất
                   </ButtonDefault>

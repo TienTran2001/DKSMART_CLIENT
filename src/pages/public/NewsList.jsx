@@ -51,7 +51,7 @@ const NewsList = ({ navigate }) => {
               {news.map((item) => (
                 <div
                   key={item.newsId}
-                  className="w-full h-[200px] rounded-md flex space-x-3 overflow-hidden cursor-pointer bg-gray-100"
+                  className="w-full h-[120px] md:h-[200px] rounded-md flex space-x-3 overflow-hidden cursor-pointer bg-gray-100"
                   onClick={() => navigate(`/news-detail/${item.newsId}`)}
                 >
                   <div className="m-0 rounded-none w-[40%]">
@@ -63,7 +63,9 @@ const NewsList = ({ navigate }) => {
                   </div>
                   <div className="w-[60%] p-4">
                     <Typography variant="h5" color="blue-gray">
-                      <div className=" line-clamp-2">{item.title}</div>
+                      <div className=" line-clamp-2 text-base md:text-xl">
+                        {item.title}
+                      </div>
                     </Typography>
                     <Tooltip content="Ngày đăng">
                       <Typography className="font-normal inline-block mt-4 text-sm">

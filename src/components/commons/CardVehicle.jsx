@@ -26,11 +26,11 @@ const CardVehicle = ({ vehicle, onHandleDelete, navigate }) => {
 
   return (
     <div className="bg-main-gray border border-[#067d8b] rounded-md px-4 py-3 flex flex-col gap-y-5">
-      <div className="flex items-center">
-        <div className="w-1/6">Biển số xe:</div>
+      <div className="flex flex-col md:flex-row md:items-center">
+        <div className="md:w-1/6">Biển số xe:</div>
         <div
           className={clsx(
-            'uppercase w-5/6 text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
+            'uppercase md:w-5/6 text-center border-2 font-bold text-xl px-8 py-3 rounded-md',
             plateColor === 'Trắng' && 'bg-white',
             plateColor === 'Vàng' && 'bg-yellow-700',
             plateColor === 'Xanh' && 'bg-blue-700'
@@ -40,21 +40,21 @@ const CardVehicle = ({ vehicle, onHandleDelete, navigate }) => {
         </div>
       </div>
       <div className="border-t-2"></div>
-      <div className="flex items-center">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-y-4 md:items-center">
+        <div className="md:w-1/2">
           Loại phương tiện:{' '}
           <span className="hover:text-main  text-main">{vehicleType}</span>
         </div>
-        <div className="w-1/2">
+        <div className="md:w-1/2">
           Nhãn hiệu: <span className="text-main">{brand}</span>
         </div>
       </div>
-      <div className="flex items-center">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-y-4 md:items-center">
+        <div className="md:w-1/2">
           Số loại:{' '}
           <span className="hover:text-main text-main">{modelNumber}</span>
         </div>
-        <div className="w-1/2">
+        <div className="md:w-1/2">
           Ngày hết hạn:{' '}
           <span className="text-main">{formatDate(expiryDate)}</span>
         </div>

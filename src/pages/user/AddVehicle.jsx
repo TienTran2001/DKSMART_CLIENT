@@ -106,7 +106,7 @@ const AddVehicle = ({ navigate }) => {
     <>
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
             <Link to="/vehicles">
               <span className="absolute cursor-pointer">
                 <IoArrowBackSharp size={22} className="text-main  " />
@@ -131,7 +131,7 @@ const AddVehicle = ({ navigate }) => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   *Màu biển xe:
                 </label>
-                <List className="flex-row">
+                <List className="md:flex-row">
                   {plateColors.map((item) => (
                     <ListItem key={item.value} className="p-0">
                       <label

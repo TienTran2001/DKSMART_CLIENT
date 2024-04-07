@@ -8,7 +8,6 @@ import ButtonDefault from '~/components/commons/ButtonDefault';
 import { AiOutlinePlus } from 'react-icons/ai';
 import CardVehicle from '~/components/commons/CardVehicle';
 import { apiDeleteVehicle, apiGetVehicles } from '~/apis/vehicle';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { IoArrowBackSharp } from 'react-icons/io5';
@@ -65,7 +64,7 @@ const Vehicles = ({ navigate }) => {
     <>
       <PublicLayout>
         <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
             <div className="relative">
               <button onClick={() => navigate(-1)}>
                 <span className="absolute top-[25px] cursor-pointer">
@@ -76,18 +75,17 @@ const Vehicles = ({ navigate }) => {
                 Hồ sơ phương tiện
               </h2>
             </div>
-            <div className="mt-[30px] flex items-center justify-between">
-              <Link to="/create-vehicle">
-                <ButtonDefault
-                  disable={false}
-                  className="bg-main py-[14px] flex items-center gap-x-2"
-                >
-                  <AiOutlinePlus className="text-lg text-white" />
-                  <span>Đăng ký phương tiện</span>
-                </ButtonDefault>
-              </Link>
+            <div className="mt-[30px] flex flex-col gap-x-4 gap-y-5 md:gap-y-0 md:flex-row items-center justify-between">
+              <ButtonDefault
+                disable={false}
+                className="bg-main w-full md:w-1/3 py-[14px] flex items-center gap-x-2"
+                onClick={() => navigate('/create-vehicle')}
+              >
+                <AiOutlinePlus className="text-lg text-white" />
+                <span className="">Đăng ký phương tiện</span>
+              </ButtonDefault>
 
-              <div className="w-2/3  border-solid border border-gray-300 rounded-lg flex">
+              <div className="w-full md:w-2/3  border-solid border border-gray-300 rounded-lg flex">
                 <input
                   type="text"
                   value={search}
