@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 import { IoMdClose } from 'react-icons/io';
 import { FaRegEye } from 'react-icons/fa6';
-import Modal from '~/components/commons/model';
+import Modal from '~/components/commons/Model';
 
 const InputFile = ({
   containerClassName,
