@@ -66,7 +66,7 @@ const Vehicles = ({ navigate }) => {
         <div className="min-h-screen max-w-[1200px] mx-auto">
           <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
             <div className="relative">
-              <button onClick={() => navigate(-1)}>
+              <button onClick={() => navigate('/')}>
                 <span className="absolute top-[25px] cursor-pointer">
                   <IoArrowBackSharp size={22} className="text-main  " />
                 </span>
