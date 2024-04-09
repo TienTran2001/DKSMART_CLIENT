@@ -133,8 +133,8 @@ const UpdateVehicle = ({ navigate }) => {
   return (
     <>
       <PublicLayout>
-        <div className="min-h-screen max-w-[1200px] mx-auto">
-          <div className="mt-[50px] w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
+        <div className="min-h-screen md:max-w-[1200px] mx-auto">
+          <div className="mt-[50px] md:w-2/3 mx-auto rounded-md bg-white py-[25px] px-[20px]">
             <div className="">
               <Link to="/vehicles">
                 <span className="absolute cursor-pointer">
@@ -163,12 +163,12 @@ const UpdateVehicle = ({ navigate }) => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   *Màu biển xe:
                 </label>
-                <List className="flex-row">
+                <List className=" flex-col md:flex-row">
                   {colorList?.map((item) => (
                     <ListItem key={item.value} className="p-0">
                       <label
                         htmlFor={item.id}
-                        className="flex w-full cursor-pointer items-center px-3 py-2"
+                        className="flex  w-full cursor-pointer items-center px-3 py-2"
                       >
                         <ListItemPrefix className="mr-3">
                           <Radio
