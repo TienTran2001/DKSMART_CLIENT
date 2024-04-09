@@ -205,7 +205,7 @@ export default function BookingCenter() {
         if (response.success) {
           toast.success(response.message);
           setIsOpenModelDetail(false);
-          loadAppointments(status, limit, 0, search);
+          loadAppointments(statusValue, limit, 0, search);
           console.log(bookingHistory);
           const subject =
             bookingHistory.status == 'chưa xác nhận'
