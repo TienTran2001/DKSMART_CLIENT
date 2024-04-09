@@ -160,7 +160,29 @@ export default function BookingCenter() {
         const response = await apiCancelAppointment(appointmentId);
         if (response.success) {
           toast.success(response.message);
-          loadAppointments(status, limit, 0, search);
+          loadAppointments(statusValue, limit, 0, search);
+          const data = {
+            email: `${bookingHistory?.User?.email}`,
+            subject: `Lịch hẹn cho phương tiện ${bookingHistory?.Vehicle?.licensePlate} đã bị hủy.`,
+            message: `
+            <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
+            <b>Lịch hẹn của bạn đã bị hủy trên hệ thống DKSMART</b>
+            <p>Thông tin lịch hẹn:</p>
+            <p>Địa điểm: <b>${bookingHistory?.Center?.name}</b></p>
+            <p>Địa chỉ: ${bookingHistory?.Center?.address}</p>
+            <p>Phương tiện: <b>${bookingHistory?.Vehicle?.licensePlate}</b></p>
+            <p>Ngày hẹn: <b>${formatDate(
+              bookingHistory.appointmentDate
+            )}</b></p>
+            <p>Giờ hẹn: <b>${formatTime(
+              bookingHistory?.ShiftDetail?.startTime
+            )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
+            
+            <p><i>Xin lỗi quý khách vì sự bất tiện này!</i></p>
+        `,
+          };
+          const res = await apiGetSendMail(data);
+          console.log('res: ', res);
         } else toast.error(response.message);
       }
     });
@@ -192,7 +214,7 @@ export default function BookingCenter() {
 
           const data = {
             email: `${bookingHistory?.User?.email}`,
-            subject: `Lịch hẹn ${subject}`,
+            subject: `Lịch hẹn ${subject} cho phương tiện ${bookingHistory?.Vehicle?.licensePlate}`,
             message: `
             <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
             <b>Lịch hẹn của bạn ${subject} trên hệ thống DKSMART</b>
@@ -207,10 +229,12 @@ export default function BookingCenter() {
               bookingHistory?.ShiftDetail?.startTime
             )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
             <b>Lưu ý:</b><br/>
+            <p>
             <i>- Vui lòng mang xe đến trước lịch hẹn 15 phút.<br/>
             - Tuân thủ theo sự sắp xếp của nhân viên trung tâm để tránh gây ùn tắc. <br/>
             - Mang đầy đủ các loại giấy tờ cho đăng kiểm.</i> <br/>
-            <i>Xin chân thành cảm ơn!</i>
+            </p>
+            <p><i>Xin chân thành cảm ơn!</i></p>
         `,
           };
           const res = await apiGetSendMail(data);

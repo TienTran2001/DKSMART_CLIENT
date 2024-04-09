@@ -1,15 +1,16 @@
 import { Typography } from '@material-tailwind/react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
     <footer className="max-w-[1200px] mx-auto bg-white p-8">
-      <div className="flex flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 bg-white text-center md:justify-between">
-        <h2 className="font-bold text-xl text-main">DKSMART</h2>
-        <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
+      <div className="flex flex-col md:flex-row flex-wrap md:items-center  gap-y-6 gap-x-12 bg-white  md:justify-between">
+        <h2 className="font-bold text-xl text-main">
+          <Link to="/">DKSMART</Link>
+        </h2>
+        <ul className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-y-2 gap-x-8">
           <li>
             <Typography
-              as="a"
-              href="#"
               color="blue-gray"
               className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
             >
@@ -17,34 +18,34 @@ export default function Footer() {
             </Typography>
           </li>
           <li>
-            <Typography
-              as="a"
-              href="#"
-              color="blue-gray"
-              className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
-            >
-              Đặt lịch
-            </Typography>
+            <Link to="/booking">
+              <Typography
+                color="blue-gray"
+                className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
+              >
+                Đặt lịch
+              </Typography>
+            </Link>
           </li>
           <li>
-            <Typography
-              as="a"
-              href="#"
-              color="blue-gray"
-              className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
-            >
-              Lịch hẹn
-            </Typography>
+            <Link to="/booking-histories">
+              <Typography
+                color="blue-gray"
+                className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
+              >
+                Lịch hẹn
+              </Typography>
+            </Link>
           </li>
           <li>
-            <Typography
-              as="a"
-              href="#"
-              color="blue-gray"
-              className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
-            >
-              Tin tức
-            </Typography>
+            <Link to="/news-list">
+              <Typography
+                color="blue-gray"
+                className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
+              >
+                Tin tức
+              </Typography>
+            </Link>
           </li>
         </ul>
       </div>

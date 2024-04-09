@@ -20,7 +20,7 @@ import {
   apiGetShiftById,
 } from '~/apis/shift';
 import { formatDate, formatTime } from '~/utils/contants';
-import { apiAddBooking } from '~/apis/booking';
+import { apiAddBooking, apiGetSendMail } from '~/apis/booking';
 import { Chip } from '@material-tailwind/react';
 import { AiOutlineFileText } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
@@ -148,6 +148,7 @@ const Booking = ({ navigate }) => {
     console.log(payload);
     setLoading(true);
     const response = await apiAddBooking(payload);
+    console.log(response);
     setLoading(false);
     if (response.success) {
       Swal.fire({
@@ -161,6 +162,31 @@ const Booking = ({ navigate }) => {
           navigate('/booking-history?status=all');
         }
       });
+      const { appointment } = response;
+
+      const data = {
+        email: `${appointment?.User?.email}`,
+        subject: `Lịch hẹn đã được đặt cho phương tiện ${appointment?.Vehicle?.licensePlate}`,
+        message: `
+            <h3>Xin chào ${appointment?.User?.fullname}.</h3>
+            <b>Lịch hẹn của bạn đã được đặt trên hệ thống DKSMART</b>
+            <p>
+              <b>Lịch hẹn chờ xác nhận</b>
+            </p>
+            <p>Thông tin lịch hẹn:</p>
+            <p>Địa điểm: <b>${appointment?.Center?.name}</b></p>
+            <p>Địa chỉ: ${appointment?.Center?.address}</p>
+            <p>Phương tiện: <b>${appointment?.Vehicle?.licensePlate}</b></p>
+            <p>Ngày hẹn: <b>${formatDate(appointment.appointmentDate)}</b></p>
+            <p>Giờ hẹn: <b>${formatTime(
+              appointment?.ShiftDetail?.startTime
+            )} - ${formatTime(appointment?.ShiftDetail?.endTime)}</b></p>
+           
+            <p><i>Xin chân thành cảm ơn!</i></p>
+        `,
+      };
+      const res = await apiGetSendMail(data);
+      console.log(res);
     } else {
       toast.error(response.message);
     }
