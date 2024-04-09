@@ -81,9 +81,12 @@ const CentersPublic = ({ navigate }) => {
                 onChange={(e) => {
                   if (e.target.value == 'Chọn tỉnh thành') {
                     console.log('vào');
+                    setPage(1);
+                    setProvince('');
                     loadCenters('', search, limit, 0);
                     return;
                   }
+                  setPage(1);
                   setProvince(e.target.value);
                   loadCenters(e.target.value, search, limit, 0);
                 }}
@@ -151,8 +154,8 @@ const CentersPublic = ({ navigate }) => {
                   size="sm"
                   disabled={page >= totalPage ? true : false}
                   onClick={() => {
-                    loadCenters(province, search, limit, page);
                     setPage(page + 1);
+                    loadCenters(province, search, limit, page);
                   }}
                 >
                   Tiếp

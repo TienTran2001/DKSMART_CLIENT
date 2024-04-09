@@ -13,7 +13,7 @@ import { apiGetVehicleById, apiGetVehicles } from '~/apis/vehicle';
 import { IoArrowBackSharp } from 'react-icons/io5';
 
 import { apiGetAllProvince } from '~/apis/provinces';
-import { apiGetCentersOfProvince } from '~/apis/center';
+import { apiGetCenterById, apiGetCentersOfProvince } from '~/apis/center';
 import ModalContent from '~/components/commons/ModalContent';
 import {
   apiGetAllShiftsAfterOrEqualToTodayAsync,
@@ -50,6 +50,8 @@ const Booking = ({ navigate }) => {
 
   const [valuePayload, setValuePayload] = useState({});
   // console.log(valuePayload);
+  const centerId = new URLSearchParams(location.search).get('center');
+  console.log(centerId);
 
   const { current } = useUserStore();
   const {
@@ -64,9 +66,29 @@ const Booking = ({ navigate }) => {
   }
 
   useEffect(() => {
+    loadCenter(centerId);
     loadVehicles();
     loadProvinces();
   }, []);
+
+  const loadCenter = async (centerId) => {
+    const response = await apiGetCenterById(centerId);
+    if (response.success) {
+      const { center } = response;
+      setValue('center', center.name);
+      setValuePayload((prev) => {
+        return {
+          ...prev,
+          centerId: centerId,
+        };
+      });
+      setValue('province', center?.Province?.name);
+      setIsChooseProvince(true);
+      setIsChooseCenter(true);
+      handleChangeProvince(center.provinceId);
+      handleChangeCenter(centerId);
+    }
+  };
 
   const loadVehicles = async (search) => {
     const res = await apiGetVehicles(search);

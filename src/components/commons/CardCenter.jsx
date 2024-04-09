@@ -3,12 +3,14 @@ import { SlCalender } from 'react-icons/sl';
 import ButtonDefault from './ButtonDefault';
 import { AiOutlineClose } from 'react-icons/ai';
 import { GoogleMapsLink } from '~/utils/contants';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { clsx } from 'clsx';
 
 // eslint-disable-next-line react/prop-types
 const CardCenter = ({ center }) => {
   // eslint-disable-next-line react/prop-types
-  const { name, address, phone, status, operatingHours } = center;
+  const { centerId, name, address, phone, status, operatingHours } = center;
+  const navigate = useNavigate();
   return (
     <div className="bg-main-gray border border-[#067d8b] text-sm md:text-base rounded-md px-4 py-3 flex flex-col gap-y-5">
       <div className="uppercase font-semibold text-gray-700">{name}</div>
@@ -34,18 +36,25 @@ const CardCenter = ({ center }) => {
           </ButtonDefault>
         )}
         {status == 'ngưng nhận lịch' && (
-          <ButtonDefault className="bg-red-400 flex items-center gap-x-2">
+          <ButtonDefault className="bg-red-400 flex items-center gap-x-2 ">
             <AiOutlineClose className="text-lg" />
             <span>{status}</span>
           </ButtonDefault>
         )}
 
-        <Link to="/booking">
-          <ButtonDefault className="bg-main w-full  flex items-center gap-x-2">
-            <SlCalender className="text-lg -translate-y-[1px]" />
-            <span>Đặt lịch ngay</span>
-          </ButtonDefault>
-        </Link>
+        <ButtonDefault
+          className={clsx(
+            'bg-main w-full md:w-1/3  flex items-center gap-x-2',
+            status == 'ngưng nhận lịch' && 'cursor-not-allowed opacity-40'
+          )}
+          onClick={() => {
+            if (status == 'đang nhận lịch')
+              navigate(`/booking?center=${centerId}`);
+          }}
+        >
+          <SlCalender className="text-lg -translate-y-[1px]" />
+          <span>Đặt lịch ngay</span>
+        </ButtonDefault>
       </div>
     </div>
   );
