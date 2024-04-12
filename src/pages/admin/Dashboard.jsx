@@ -130,7 +130,7 @@ const Dashboard = () => {
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 {statisticsUsers.percentageIncrease >= 0 ? (
                   <strong className="text-green-500">
-                    +{statisticsUsers.percentageIncrease.tofixed(2)}%
+                    +{statisticsUsers.percentageIncrease}%
                   </strong>
                 ) : (
                   <strong className="text-red-500">

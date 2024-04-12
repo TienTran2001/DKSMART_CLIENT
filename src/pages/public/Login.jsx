@@ -19,7 +19,7 @@ const Login = ({ navigate }) => {
     if (current?.roleId == 1) {
       navigate('/admin/dashboard');
     } else if (current?.roleId == 3 || current?.roleId == 4) {
-      navigate('/manage-center');
+      navigate('/manage-center/dashboard');
     } else {
       navigate('');
     }
