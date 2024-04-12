@@ -71,9 +71,11 @@ const Dashboard = () => {
             percent={
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 <strong className="text-green-500">
-                  {(statisticsCenters.activeCenters /
-                    statisticsCenters.totalCenters) *
-                    100}
+                  {(
+                    (statisticsCenters.activeCenters /
+                      statisticsCenters.totalCenters) *
+                    100
+                  ).toFixed(2)}
                   %
                 </strong>
                 &nbsp; tỉ lệ trung tâm
@@ -90,9 +92,11 @@ const Dashboard = () => {
             percent={
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 <strong className="text-red-500">
-                  {(statisticsCenters.inactiveCenters /
-                    statisticsCenters.totalCenters) *
-                    100}
+                  {(
+                    (statisticsCenters.inactiveCenters /
+                      statisticsCenters.totalCenters) *
+                    100
+                  ).toFixed(2)}
                   %
                 </strong>
                 &nbsp; tỉ lệ trung tâm
@@ -126,7 +130,7 @@ const Dashboard = () => {
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 {statisticsUsers.percentageIncrease >= 0 ? (
                   <strong className="text-green-500">
-                    +{statisticsUsers.percentageIncrease}%
+                    +{statisticsUsers.percentageIncrease.tofixed(2)}%
                   </strong>
                 ) : (
                   <strong className="text-red-500">

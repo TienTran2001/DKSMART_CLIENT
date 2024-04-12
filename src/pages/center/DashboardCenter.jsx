@@ -75,9 +75,11 @@ const DashboardCenter = () => {
             percent={
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 <strong className="text-green-500">
-                  {(statisticsAppointments.doneAppointments /
-                    statisticsAppointments.totalAppointments) *
-                    100}
+                  {(
+                    (statisticsAppointments.doneAppointments /
+                      statisticsAppointments.totalAppointments) *
+                    100
+                  ).toFixed(2)}
                   %
                 </strong>
                 &nbsp; tỉ lệ hoàn thành
@@ -94,9 +96,11 @@ const DashboardCenter = () => {
             percent={
               <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
                 <strong className="text-red-500">
-                  {(statisticsAppointments.cancelAppointments /
-                    statisticsAppointments.totalAppointments) *
-                    100}
+                  {(
+                    (statisticsAppointments.cancelAppointments /
+                      statisticsAppointments.totalAppointments) *
+                    100
+                  ).toFixed(2)}
                   %
                 </strong>
                 &nbsp; tỉ lệ hủy lịch
