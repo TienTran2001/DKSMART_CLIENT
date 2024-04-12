@@ -39,6 +39,7 @@ import AddNews from './pages/admin/news/AddNews';
 import UpdateNews from './pages/admin/news/UpdateNews';
 import NewsDetail from './pages/public/NewsDetail';
 import NewsList from './pages/public/NewsList';
+import DashboardCenter from './pages/center/DashboardCenter';
 
 function App() {
   const navigate = useNavigate();
@@ -138,6 +139,7 @@ function App() {
               element={<UpdateShiftDetail navigate={navigate} />}
             />
             <Route path="booking" element={<BookingCenter />} />
+            <Route path="dashboard" element={<DashboardCenter />} />
           </Route>
         )}
       </Routes>

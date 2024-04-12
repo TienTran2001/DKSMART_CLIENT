@@ -5,6 +5,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { GoogleMapsLink } from '~/utils/contants';
 import { useNavigate } from 'react-router-dom';
 import { clsx } from 'clsx';
+import { Tooltip } from '@material-tailwind/react';
 
 // eslint-disable-next-line react/prop-types
 const CardCenter = ({ center }) => {
@@ -17,9 +18,11 @@ const CardCenter = ({ center }) => {
       <div className="border-t-2"></div>
       <div>
         Địa chỉ:{' '}
-        <span className="text-main cursor-pointer">
-          <GoogleMapsLink address={address}>{address}</GoogleMapsLink>
-        </span>
+        <Tooltip content="Xem trên Google map">
+          <span className="text-main cursor-pointer">
+            <GoogleMapsLink address={address}>{address}</GoogleMapsLink>
+          </span>
+        </Tooltip>
       </div>
 
       <div className="">

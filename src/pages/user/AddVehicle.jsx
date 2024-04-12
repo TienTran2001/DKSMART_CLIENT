@@ -167,61 +167,81 @@ const AddVehicle = ({ navigate }) => {
                   ))}
                 </List>
               </div>
-              <div className="md:flex block space-y-[10px] md:space-y-0 md:space-x-6  justify-between">
-                <InputForm
-                  label="*Loại phương tiện:"
-                  register={register}
-                  id="vehicleType"
-                  placeholder="Nhập loại phương tiện"
-                  containerClassName="md:w-1/2"
-                  validate={{
-                    required: 'Loại phương tiện không được bỏ trống.',
-                  }}
-                  errors={errors}
-                />
-                <InputForm
-                  label="Nhãn hiệu:"
-                  type="text"
-                  register={register}
-                  containerClassName="md:w-1/2"
-                  id="brand"
-                  placeholder="Nhập nhãn hiệu"
-                  validate={
-                    {
-                      // required: 'Địa chỉ không được bỏ trống.',
+              <div className="md:flex block space-y-5 md:space-y-0 md:space-x-6  justify-between">
+                <div className="md:w-1/2">
+                  <InputForm
+                    label="*Loại phương tiện:"
+                    register={register}
+                    id="vehicleType"
+                    placeholder="Nhập loại phương tiện"
+                    containerClassName=""
+                    validate={{
+                      required: 'Loại phương tiện không được bỏ trống.',
+                    }}
+                    errors={errors}
+                  />
+                  <span className="italic text-sm text-blue-400 block mt-2">
+                    Nhập chính xác theo giấy đăng kiểm
+                  </span>
+                </div>
+                <div className="md:w-1/2">
+                  <InputForm
+                    label="Nhãn hiệu:"
+                    type="text"
+                    register={register}
+                    containerClassName=""
+                    id="brand"
+                    placeholder="Nhập nhãn hiệu"
+                    validate={
+                      {
+                        // required: 'Địa chỉ không được bỏ trống.',
+                      }
                     }
-                  }
-                  errors={errors}
-                />
+                    errors={errors}
+                  />
+                  <span className="italic text-sm text-blue-400 block mt-2">
+                    Nhập chính xác theo giấy đăng kiểm
+                  </span>
+                </div>
               </div>
-              <div className="md:flex block space-y-[10px] md:space-y-0 md:space-x-6  justify-between">
-                <InputForm
-                  label="*Ngày hết hạn:"
-                  type="date"
-                  register={register}
-                  containerClassName="md:w-1/2"
-                  inputClassName="date-input"
-                  id="expiryDate"
-                  placeholder="Nhập số loại"
-                  validate={{
-                    required: 'Ngày hết hạn không được bỏ trống.',
-                  }}
-                  errors={errors}
-                />
-                <InputForm
-                  label="Số loại:"
-                  type="text"
-                  register={register}
-                  containerClassName="md:w-1/2"
-                  id="modelNumber"
-                  placeholder="Nhập số loại"
-                  validate={
-                    {
-                      // required: 'Địa chỉ không được bỏ trống.',
+              <div className="md:flex block space-y-5 md:space-y-0 md:space-x-6  justify-between">
+                <div className="md:w-1/2">
+                  <InputForm
+                    label="*Ngày hết hạn:"
+                    type="date"
+                    register={register}
+                    containerClassName=""
+                    inputClassName="date-input"
+                    id="expiryDate"
+                    placeholder="Nhập số loại"
+                    validate={{
+                      required: 'Ngày hết hạn không được bỏ trống.',
+                    }}
+                    errors={errors}
+                  />
+                  <span className="italic text-sm text-blue-400 block mt-2">
+                    Nhập chính xác theo giấy đăng kiểm
+                  </span>
+                </div>
+                <div className="md:w-1/2">
+                  <InputForm
+                    label="Số loại:"
+                    type="text"
+                    register={register}
+                    containerClassName=""
+                    id="modelNumber"
+                    placeholder="Nhập số loại"
+                    validate={
+                      {
+                        // required: 'Địa chỉ không được bỏ trống.',
+                      }
                     }
-                  }
-                  errors={errors}
-                />
+                    errors={errors}
+                  />
+                  <span className="italic text-sm text-blue-400 block mt-2">
+                    Nhập chính xác theo giấy đăng kiểm
+                  </span>
+                </div>
               </div>
 
               <div className=""></div>
