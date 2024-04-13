@@ -54,7 +54,7 @@ export default function AdminSidebarMain({ navigate, navSidebar = [], rou }) {
       <div className="py-5 px-4 font-bold text-base rounded-xl text-center bg-[#edeff1]">
         {current?.roleId == 1 && <span>Quản trị hệ thống</span>}
         {current?.roleId == 3 && <span>Quản trị trung tâm đăng kiểm</span>}
-        {current?.roleId == 4 && <span>Trung tâm đăng kiểm</span>}
+        {current?.roleId == 4 && <span>Nhân viên trung tâm</span>}
       </div>
       <List>
         {navSidebar.map((item) => (

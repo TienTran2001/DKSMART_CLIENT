@@ -6,6 +6,12 @@ export const apiGetAllProvince = () =>
     method: 'get',
   });
 
+export const apiGetAllProvincePaging = (limit = 6, page = 0, name = '') =>
+  axios({
+    url: `/provinces?limit=${limit}&page=${page}&name=${name}`,
+    method: 'get',
+  });
+
 export const apiGetProvinceById = (provinceId) =>
   axios({
     url: `/provinces/${provinceId}`,

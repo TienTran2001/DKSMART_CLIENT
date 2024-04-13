@@ -1,43 +1,47 @@
 /* eslint-disable no-unused-vars */
 import {
   Card,
+  CardHeader,
+  Input,
   Typography,
   Button,
+  CardBody,
   Chip,
+  CardFooter,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Avatar,
   IconButton,
   Tooltip,
-  CardFooter,
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import {
+  apiDeleteUser,
+  apiDeleteUserOfCenter,
+  apiGetAllUser,
+  apiGetAllUserOfCenter,
+} from '~/apis/user';
 import { IoPencilSharp } from 'react-icons/io5';
-import { AiFillDelete, AiOutlineFileText } from 'react-icons/ai';
+import { AiFillDelete } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const TABLE_HEAD = [
-  'Số thứ tự',
-  'Tiêu đề',
-  'Ảnh thumbnail',
-  'Số lượt xem',
-  'Trạng thái',
-  'Thao tác',
-];
+const TABLE_HEAD = ['Người dùng', 'Email', 'Địa chỉ', 'Quyền', 'Thao tác'];
 
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import ButtonDefault from '~/components/commons/ButtonDefault';
-import { useForm } from 'react-hook-form';
 import { IoMdSearch } from 'react-icons/io';
-import { apiDeleteNews, apiGetAllNews } from '~/apis/news';
-
-export default function News() {
+import { InputForm } from '~/components';
+import { useForm } from 'react-hook-form';
+export default function UserCenter() {
   const [loading, setLoading] = useState(false);
-  const [news, setNews] = useState([]);
-  let navigate = useNavigate();
+  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const limit = 6;
-
+  let navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -46,42 +50,48 @@ export default function News() {
     setValue,
   } = useForm();
 
+  const phone = watch('phone');
+  // console.log(phone);
   useEffect(() => {
-    loadNews('', limit, 0);
+    loadUsers();
   }, []);
 
-  const loadNews = async (status, limit, page) => {
+  const loadUsers = async (phone, limit = 6, page) => {
     setLoading(true);
-    const response = await apiGetAllNews({ status, limit, page });
-    console.log(response);
+    const response = await apiGetAllUserOfCenter(phone, limit, page);
     setLoading(false);
+    console.log(response);
     if (response.success) {
-      const { news, totalPage } = response;
-      setNews(news.rows);
+      const { users, totalPage } = response;
+      setUsers(users.rows);
       setTotalPage(totalPage);
     } else toast.error(response.message);
   };
 
-  const handleEditNews = (newsId) => {
-    navigate(`/admin/update-news/${newsId}`);
+  const handleEditUser = (userId) => {
+    navigate(`/manage-center/update-user/${userId}`);
   };
 
-  const handleDeleteNews = async (newsId) => {
+  const handleSearch = (data) => {
+    loadUsers(data.phone);
+  };
+
+  const handleDeleteUser = async (userId) => {
     Swal.fire({
       title: '',
-      text: 'Bạn có chắc xóa tin tức này!',
+      text: 'Bạn có chắc xóa tài khoản này!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa!',
+      confirmButtonText: 'Có, xóa nó!',
       cancelButtonText: 'Thoát!',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await apiDeleteNews(newsId);
+        const response = await apiDeleteUserOfCenter(userId);
         if (response.success) {
           toast.success(response.message);
-          loadNews('', limit, 0);
+          loadUsers();
         } else toast.error(response.message);
       }
     });
@@ -89,37 +99,38 @@ export default function News() {
 
   return (
     <Card className="h-full w-full">
-      <div className="rounded-none p-4 ">
-        <div className="mb-8 flex items-center justify-between gap-8">
+      <div className="rounded-none p-4">
+        <div className="mb-8 flex items-center justify-between gap-8  ">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Danh sách tin tức
+              Danh sách tài khoản của trung tâm
+            </Typography>
+            <Typography color="gray" className="mt-1 font-normal">
+              Xem thông tin tài khoản
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <ButtonDefault
-              disable={false}
-              className="px-4 py-3 flex items-center"
-              onClick={() => {
-                loadNews('', limit, 0);
-                // setValue('name', '');
-                setPage(1);
-              }}
-              variant="outlined"
-            >
-              Làm mới
-            </ButtonDefault>
-          </div>
+          <ButtonDefault
+            disable={false}
+            className="px-4 py-3 flex items-center"
+            onClick={() => {
+              loadUsers();
+              setValue('phone', '');
+              setPage(1);
+            }}
+            variant="outlined"
+          >
+            Làm mới
+          </ButtonDefault>
         </div>
         <div>
-          {/* <div className="md:flex items-center justify-between   space-y-[10px] md:space-y-0 ">
-          
+          <div className="md:flex items-center justify-between   space-y-[10px] md:space-y-0 ">
+            {/* tìm kiếm */}
 
             <InputForm
               type="text"
               register={register}
-              id="name"
-              placeholder="Nhập tên tiêu đề"
+              id="phone"
+              placeholder="Nhập số điện thoại"
               containerClassName="md:w-1/3"
               inputClassName="pl-[50px]"
               validate={{}}
@@ -135,19 +146,19 @@ export default function News() {
                 <IoMdSearch className="text-xl" />
               </ButtonDefault>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
-      <div className="p-0 overflow-scroll relative">
-        <table className="w-full min-w-max table-auto text-left">
-          <thead className="sticky top-0 bg-black transition-all delay-500 z-10">
+      <div className="p-0 mt-4 overflow-scroll relative ">
+        <table className=" w-full min-w-max table-auto text-left  ">
+          <thead className="sticky top-0 bg-black transition-all delay-500 z-50">
             <tr>
               {TABLE_HEAD.map((head) => (
                 <th key={head} className="border-y border-blue-gray-100  p-4">
                   <Typography
                     variant="small"
-                    color="white"
-                    className="font-normal leading-none  opacity-90"
+                    color=""
+                    className="font-normal text-white leading-none opacity-90"
                   >
                     {head}
                   </Typography>
@@ -155,13 +166,33 @@ export default function News() {
               ))}
             </tr>
           </thead>
-          {news.length > 0 && (
-            <tbody>
-              {news.map(({ newsId, title, views, imageUrl, status }, index) => {
-                const classes = 'p-4 border-b border-blue-gray-50';
+          <tbody className="">
+            {users.map(
+              ({ userId, phone, fullname, email, address, roleId }, index) => {
+                const classes = 'p-3 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={index}>
+                  <tr key={phone}>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {fullname}
+                          </Typography>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal opacity-70"
+                          >
+                            {phone}
+                          </Typography>
+                        </div>
+                      </div>
+                    </td>
                     <td className={classes}>
                       <div className="flex flex-col">
                         <Typography
@@ -169,7 +200,7 @@ export default function News() {
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
-                          {index + 1 + limit * (page - 1)}
+                          {email}
                         </Typography>
                       </div>
                     </td>
@@ -178,59 +209,38 @@ export default function News() {
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal"
+                          className="font-normal opacity-70"
                         >
-                          {title}
+                          {address}
                         </Typography>
                       </div>
                     </td>
                     <td className={classes}>
-                      <div className="w-[200px]">
-                        <img src={imageUrl} alt="" />
-                      </div>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {roleId == 1 && `Quản trị hệ thống`}
+                        {roleId == 3 && `Quản trị trung tâm đăng kiểm`}
+                        {roleId == 2 && `Người dùng`}
+                        {roleId == 4 && `Nhân viên trung tâm`}
+                      </Typography>
                     </td>
                     <td className={classes}>
-                      <div className="w-max">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {views}
-                        </Typography>
-                      </div>
-                    </td>
-
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          size="sm"
-                          variant="ghost"
-                          value={status}
-                          color={
-                            status === 'công khai'
-                              ? 'green'
-                              : status === 'ẩn'
-                              ? 'amber'
-                              : 'red'
-                          }
-                        />
-                      </div>
-                    </td>
-
-                    <td className={classes}>
-                      <Tooltip content="Sửa">
+                      <Tooltip content="Sửa tài khoản">
                         <IconButton
                           variant="text"
-                          onClick={() => handleEditNews(newsId)}
+                          onClick={() => handleEditUser(userId)}
                         >
                           <IoPencilSharp className="text-xl" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip content="Xóa">
+                      <Tooltip content="Xóa tài khoản">
                         <IconButton
                           variant="text"
-                          onClick={() => handleDeleteNews(newsId)}
+                          disabled={roleId == 3 ? true : false}
+                          onClick={() => handleDeleteUser(userId)}
                         >
                           <AiFillDelete className="text-xl" />
                         </IconButton>
@@ -238,18 +248,10 @@ export default function News() {
                     </td>
                   </tr>
                 );
-              })}
-            </tbody>
-          )}
+              }
+            )}
+          </tbody>
         </table>
-        {news.length == 0 && (
-          <div className="flex items-center justify-center my-5">
-            <div className="  flex items-center space-x-4  text-white px-10 py-7 bg-gray-400 rounded-md">
-              <AiOutlineFileText className="text-[70px]" />
-              <span className="text-lg">Không có dữ liệu!</span>
-            </div>
-          </div>
-        )}
       </div>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
@@ -262,8 +264,7 @@ export default function News() {
             disabled={page <= 1}
             onClick={() => {
               const x = page - 1;
-              // loadCenters('', limit, x - 1);
-              loadNews('', limit, x - 1);
+              loadUsers(phone, 6, x - 1);
               setPage(page - 1);
             }}
           >
@@ -274,8 +275,7 @@ export default function News() {
             size="sm"
             disabled={page >= totalPage ? true : false}
             onClick={() => {
-              // loadCenters('', limit, page);
-              loadNews('', limit, page);
+              loadUsers(phone, 6, page);
               setPage(page + 1);
             }}
           >

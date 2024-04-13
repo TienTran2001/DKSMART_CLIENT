@@ -40,6 +40,9 @@ import UpdateNews from './pages/admin/news/UpdateNews';
 import NewsDetail from './pages/public/NewsDetail';
 import NewsList from './pages/public/NewsList';
 import DashboardCenter from './pages/center/DashboardCenter';
+import UserCenter from './pages/center/user/UserCenter';
+import AddUserCenter from './pages/center/user/AddUserCenter';
+import UpdateUserCenter from './pages/center/user/UpdateUserCenter';
 
 function App() {
   const navigate = useNavigate();
@@ -124,6 +127,9 @@ function App() {
             <Route path="profile" element={<ProfileUser />} />
             <Route path="center" element={<ProfileCenter />} />
             <Route path="shifts" element={<Shifts />} />
+            <Route path="users" element={<UserCenter />} />
+            <Route path="create-user" element={<AddUserCenter />} />
+            <Route path="update-user/:userId" element={<UpdateUserCenter />} />
 
             <Route path="create-shift" element={<AddShift />} />
             <Route

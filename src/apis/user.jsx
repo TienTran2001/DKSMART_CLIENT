@@ -42,3 +42,35 @@ export const apiUpdateCurrent = (data) =>
     method: 'put',
     data,
   });
+
+export const apiGetAllUserOfCenter = (phone = '', limit = 6, page = 0) =>
+  axios({
+    url: `users/of/center?phone=${phone}&limit=${limit}&page=${page}`,
+    method: 'get',
+  });
+
+export const apiAddStaff = (data) =>
+  axios({
+    url: '/users/staff',
+    method: 'post',
+    data,
+  });
+
+export const apiGetUserCenterById = (userId) =>
+  axios({
+    url: `/users/center/${userId}`,
+    method: 'get',
+  });
+
+export const apiUpdateUserOfCenter = (userId, data) =>
+  axios({
+    url: `/users/center/${userId}`,
+    method: 'put',
+    data,
+  });
+
+export const apiDeleteUserOfCenter = (userId) =>
+  axios({
+    url: `/users/center/${userId}`,
+    method: 'delete',
+  });
