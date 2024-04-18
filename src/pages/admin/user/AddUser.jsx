@@ -9,6 +9,7 @@ import { Select as SelectM, Option } from '@material-tailwind/react';
 import { apiAddUser } from '~/apis/user';
 import Select from 'react-tailwindcss-select';
 import { apiGetCenters } from '~/apis/center';
+import { apiGetSendMail } from '~/apis/booking';
 
 // eslint-disable-next-line react/prop-types
 const AddUser = () => {
@@ -65,9 +66,23 @@ const AddUser = () => {
         text: response.message,
         showConfirmButton: true,
         confirmButtonText: 'Thoát',
-      }).then((isConfirm) => {
+      }).then(async (isConfirm) => {
         if (isConfirm) {
           reset();
+          if (data.roleId == 3) {
+            const dataSend = {
+              email: `${data.email}`,
+              subject: 'DKSMART cấp tài khoản quản trị trung tâm đăng kiểm',
+              message: `
+            <h3>Xin chào cảm ơn bạn đã hợp tác với hệ thống của chúng tôi.</h3>
+            <b>Tài khoản trên hệ thống DKSMART:</b>
+            <p>Số điện thoại: <b>${data.phone}</b></p>
+            <p>Mật khẩu: <b>${data.password}</b> </p>
+            <p><i>Xin chân thành cảm ơn!</i></p>
+        `,
+            };
+            await apiGetSendMail(dataSend);
+          }
         }
       });
     } else toast.error(response.message);
