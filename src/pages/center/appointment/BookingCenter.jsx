@@ -133,6 +133,7 @@ export default function BookingCenter() {
 
     if (response.success) {
       const { appointments, totalPage } = response;
+      console.log(appointments);
       setTotalPage(totalPage);
       setAppointments(appointments.rows);
     }
@@ -147,43 +148,52 @@ export default function BookingCenter() {
 
   const handleCancelAppointment = async (appointmentId, status) => {
     Swal.fire({
-      title: '',
-      text: 'Bạn chắc chắn hủy lịch hẹn này',
-      icon: '',
+      title: 'Lý do hủy lịch',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Hủy lịch',
+      confirmContainer: '#3085d6',
+      cancelButtonText: 'Thoát',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xác nhận',
-      cancelButtonText: 'Thoát!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await apiCancelAppointment(appointmentId);
+      showLoaderOnConfirm: true,
+      preConfirm: async (data) => {
+        // setCancelValue(data);
+        const dt = { note: data };
+        const response = await apiCancelAppointment(appointmentId, dt);
+        console.log(response);
         if (response.success) {
           toast.success(response.message);
           loadAppointments(statusValue, limit, 0, search);
-          const data = {
-            email: `${bookingHistory?.User?.email}`,
-            subject: `Lịch hẹn cho phương tiện ${bookingHistory?.Vehicle?.licensePlate} đã bị hủy.`,
-            message: `
-            <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
-            <b>Lịch hẹn của bạn đã bị hủy trên hệ thống DKSMART</b>
-            <p>Thông tin lịch hẹn:</p>
-            <p>Địa điểm: <b>${bookingHistory?.Center?.name}</b></p>
-            <p>Địa chỉ: ${bookingHistory?.Center?.address}</p>
-            <p>Phương tiện: <b>${bookingHistory?.Vehicle?.licensePlate}</b></p>
-            <p>Ngày hẹn: <b>${formatDate(
-              bookingHistory.appointmentDate
-            )}</b></p>
-            <p>Giờ hẹn: <b>${formatTime(
-              bookingHistory?.ShiftDetail?.startTime
-            )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
-            
-            <p><i>Xin lỗi quý khách vì sự bất tiện này!</i></p>
-        `,
-          };
-          const res = await apiGetSendMail(data);
-          console.log('res: ', res);
         } else toast.error(response.message);
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        console.log(result);
+        const content = {
+          email: `${bookingHistory?.User?.email}`,
+          subject: `Lịch hẹn cho phương tiện ${bookingHistory?.Vehicle?.licensePlate} đã bị hủy.`,
+          message: `
+          <h3>Xin chào ${bookingHistory?.User?.fullname}.</h3>
+          <b>Lịch hẹn của bạn đã bị hủy trên hệ thống DKSMART</b>
+          <p>Thông tin lịch hẹn:</p>
+          <p>Địa điểm: <b>${bookingHistory?.Center?.name}</b></p>
+          <p>Địa chỉ: ${bookingHistory?.Center?.address}</p>
+          <p>Phương tiện: <b>${bookingHistory?.Vehicle?.licensePlate}</b></p>
+          <p>Ngày hẹn: <b>${formatDate(bookingHistory.appointmentDate)}</b></p>
+          <p>Giờ hẹn: <b>${formatTime(
+            bookingHistory?.WorkDayShift?.Shift?.startTime
+          )} - ${formatTime(
+            bookingHistory?.WorkDayShift?.Shift?.endTime
+          )}</b></p>
+          <p>Lý do hủy: ${result.value} </p>
+          <p><i>Xin lỗi quý khách vì sự bất tiện này!</i></p>
+      `,
+        };
+        const res = await apiGetSendMail(content);
+        console.log('res: ', res);
       }
     });
   };
@@ -226,8 +236,10 @@ export default function BookingCenter() {
               bookingHistory.appointmentDate
             )}</b></p>
             <p>Giờ hẹn: <b>${formatTime(
-              bookingHistory?.ShiftDetail?.startTime
-            )} - ${formatTime(bookingHistory?.ShiftDetail?.endTime)}</b></p>
+              bookingHistory?.WorkDayShift?.Shift?.startTime
+            )} - ${formatTime(
+              bookingHistory?.WorkDayShift?.Shift?.endTime
+            )}</b></p>
             <b>Lưu ý:</b><br/>
             <p>
             <i>- Vui lòng mang xe đến trước lịch hẹn 15 phút.<br/>
@@ -386,11 +398,11 @@ export default function BookingCenter() {
                     </td>
                     <td className={classes}>
                       <div className="w-max">
-                        {item?.ShiftDetail && (
+                        {item?.WorkDayShift && (
                           <span className="">
-                            {formatTime(item?.ShiftDetail?.startTime)}
+                            {formatTime(item?.WorkDayShift?.Shift?.startTime)}
                             {' - '}
-                            {formatTime(item?.ShiftDetail?.endTime)}
+                            {formatTime(item?.WorkDayShift?.Shift?.endTime)}
                           </span>
                         )}
                       </div>
@@ -582,18 +594,29 @@ export default function BookingCenter() {
                     </div>
                     <div className="">
                       Giờ:{' '}
-                      {bookingHistory?.ShiftDetail && (
+                      {bookingHistory?.WorkDayShift && (
                         <span className="text-main">
-                          {formatTime(bookingHistory?.ShiftDetail?.startTime)}{' '}
-                          đến {formatTime(bookingHistory?.ShiftDetail?.endTime)}
+                          {formatTime(
+                            bookingHistory?.WorkDayShift?.Shift?.startTime
+                          )}{' '}
+                          đến{' '}
+                          {formatTime(
+                            bookingHistory?.WorkDayShift?.Shift?.endTime
+                          )}
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="border-t-2"></div>
-                  {bookingHistory.note && (
+                  {bookingHistory.note && bookingHistory.status != 'đã hủy' && (
                     <div>
                       Ghi chú:{' '}
+                      <span className="text-black">{bookingHistory.note}</span>
+                    </div>
+                  )}
+                  {bookingHistory.note && bookingHistory.status == 'đã hủy' && (
+                    <div>
+                      Lý do hủy:{' '}
                       <span className="text-black">{bookingHistory.note}</span>
                     </div>
                   )}

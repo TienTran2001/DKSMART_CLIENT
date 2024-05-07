@@ -53,6 +53,7 @@ const BookingHistory = ({ navigate }) => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [statusValue, setStatusValue] = useState('');
+  // const [cancelValue, setCancelValue] = useState('');
 
   const limit = 2;
 
@@ -87,24 +88,48 @@ const BookingHistory = ({ navigate }) => {
   const handleCancelAppointment = async (appointmentId) => {
     console.log(appointmentId);
     Swal.fire({
-      title: '',
-      text: 'Bạn chắc chắn hủy lịch hẹn này',
-      icon: '',
+      title: 'Lý do hủy lịch',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Hủy lịch',
+      confirmContainer: '#3085d6',
+      cancelButtonText: 'Thoát',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xác nhận',
-      cancelButtonText: 'Thoát!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await apiCancelAppointment(appointmentId);
+      showLoaderOnConfirm: true,
+      preConfirm: async (data) => {
+        // setCancelValue(data);
+        const dt = { note: data };
+        const response = await apiCancelAppointment(appointmentId, dt);
         console.log(response);
         if (response.success) {
           toast.success(response.message);
           loadBookingHistories(statusValue, limit, 0);
         } else toast.error(response.message);
-      }
+      },
     });
+
+    // Swal.fire({
+    //   title: '',
+    //   text: 'Bạn chắc chắn hủy lịch hẹn này',
+    //   icon: '',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Xác nhận',
+    //   cancelButtonText: 'Thoát!',
+    // }).then(async (result) => {
+    //   if (result.isConfirmed) {
+    //     const response = await apiCancelAppointment(appointmentId);
+    //     console.log(response);
+    //     if (response.success) {
+    //       toast.success(response.message);
+    //       loadBookingHistories(statusValue, limit, 0);
+    //     } else toast.error(response.message);
+    //   }
+    // });
   };
 
   return (
@@ -178,10 +203,13 @@ const BookingHistory = ({ navigate }) => {
                         <div className="flex items-center">
                           <div className="">
                             Giờ hẹn:{' '}
-                            {item?.ShiftDetail && (
+                            {item?.WorkDayShift && (
                               <span className="hover:text-main  text-main">
-                                {formatTime(item?.ShiftDetail?.startTime)} đến{' '}
-                                {formatTime(item?.ShiftDetail?.endTime)}
+                                {formatTime(
+                                  item?.WorkDayShift?.Shift?.startTime
+                                )}{' '}
+                                đến{' '}
+                                {formatTime(item?.WorkDayShift?.Shift?.endTime)}
                                 {' - '}
                                 {formatDate(item.appointmentDate)}
                               </span>

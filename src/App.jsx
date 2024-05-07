@@ -25,11 +25,7 @@ import AddVehicle from './pages/user/AddVehicle';
 import UpdateVehicle from './pages/user/UpdateVehicle';
 import CenterAdminLayout from './pages/center/CenterAdminLayout';
 import ProfileCenter from './pages/center/ProfileCenter';
-import Shifts from './pages/center/shift/Shifts';
-import AddShift from './pages/center/shift/AddShift';
-import UpdateShift from './pages/center/shift/UpdateShift';
-import AddShiftDetail from './pages/center/shift/AddShiftDetail';
-import UpdateShiftDetail from './pages/center/shift/UpdateShiftDetail';
+
 import Booking from './pages/user/Booking';
 import BookingHistory from './pages/user/BookingHistory';
 import BookingHistoryDetail from './pages/user/BookingHistoryDetail';
@@ -43,6 +39,13 @@ import DashboardCenter from './pages/center/DashboardCenter';
 import UserCenter from './pages/center/user/UserCenter';
 import AddUserCenter from './pages/center/user/AddUserCenter';
 import UpdateUserCenter from './pages/center/user/UpdateUserCenter';
+import WorkDays from './pages/center/workDay/WorkDays';
+import AddWorkDay from './pages/center/workDay/AddWorkDay';
+import UpdateWorkDayShift from './pages/center/workDay/UpdateWorkDayShift';
+import Shifts from './pages/center/shift/Shifts';
+import UpdateShift from './pages/center/shift/UpdateShift';
+import AddShift from './pages/center/shift/AddShift';
+import UpdateWorkDay from './pages/center/workDay/UpdateWorkDay';
 
 function App() {
   const navigate = useNavigate();
@@ -126,23 +129,29 @@ function App() {
           >
             <Route path="profile" element={<ProfileUser />} />
             <Route path="center" element={<ProfileCenter />} />
-            <Route path="shifts" element={<Shifts />} />
+            <Route path="work-days" element={<WorkDays />} />
             <Route path="users" element={<UserCenter />} />
             <Route path="create-user" element={<AddUserCenter />} />
             <Route path="update-user/:userId" element={<UpdateUserCenter />} />
 
-            <Route path="create-shift" element={<AddShift />} />
+            <Route path="shifts" element={<Shifts navigate={navigate} />} />
+            <Route
+              path="create-shift"
+              element={<AddShift navigate={navigate} />}
+            />
             <Route
               path="update-shift/:shiftId"
               element={<UpdateShift navigate={navigate} />}
             />
+
+            <Route path="create-work-day" element={<AddWorkDay />} />
             <Route
-              path="create-shift-detail/:shiftId"
-              element={<AddShiftDetail navigate={navigate} />}
+              path="update-work-day/:workDayId"
+              element={<UpdateWorkDay navigate={navigate} />}
             />
             <Route
-              path="update-shift-detail/:shiftDetailId"
-              element={<UpdateShiftDetail navigate={navigate} />}
+              path="update-work-day-shift/:workDayShiftId"
+              element={<UpdateWorkDayShift navigate={navigate} />}
             />
             <Route path="booking" element={<BookingCenter />} />
             <Route path="dashboard" element={<DashboardCenter />} />

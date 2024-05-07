@@ -14,10 +14,11 @@ export const apiUpdateStatus = (appointmentId) => {
   });
 };
 
-export const apiCancelAppointment = (appointmentId) => {
+export const apiCancelAppointment = (appointmentId, data) => {
   return axios({
     url: `/appointments/cancel/${appointmentId}`,
     method: 'put',
+    data,
   });
 };
 

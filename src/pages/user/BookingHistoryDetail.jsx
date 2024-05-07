@@ -120,10 +120,15 @@ const BookingHistoryDetail = ({ navigate }) => {
                     </div>
                     <div className="">
                       Giờ:{' '}
-                      {bookingHistory?.ShiftDetail && (
+                      {bookingHistory?.WorkDayShift && (
                         <span className="text-main">
-                          {formatTime(bookingHistory?.ShiftDetail?.startTime)}{' '}
-                          đến {formatTime(bookingHistory?.ShiftDetail?.endTime)}
+                          {formatTime(
+                            bookingHistory?.WorkDayShift?.Shift?.startTime
+                          )}{' '}
+                          đến{' '}
+                          {formatTime(
+                            bookingHistory?.WorkDayShift?.Shift?.endTime
+                          )}
                         </span>
                       )}
                     </div>

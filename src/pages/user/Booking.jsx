@@ -15,15 +15,15 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import { apiGetAllProvince } from '~/apis/provinces';
 import { apiGetCenterById, apiGetCentersOfProvince } from '~/apis/center';
 import ModalContent from '~/components/commons/ModalContent';
-import {
-  apiGetAllShiftsAfterOrEqualToTodayAsync,
-  apiGetShiftById,
-} from '~/apis/shift';
 import { formatDate, formatTime } from '~/utils/contants';
 import { apiAddBooking, apiGetSendMail } from '~/apis/booking';
 import { Chip } from '@material-tailwind/react';
 import { AiOutlineFileText } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import {
+  apiGetAllWorkDaysAfterOrEqualToTodayAsync,
+  apiGetWorkDayById,
+} from '~/apis/workDay';
 
 // eslint-disable-next-line react/prop-types
 const Booking = ({ navigate }) => {
@@ -40,18 +40,17 @@ const Booking = ({ navigate }) => {
   const [centers, setCenters] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [shifts, setShifts] = useState([]);
+  const [workDays, setWorkDays] = useState([]);
   const [shiftDetails, setShiftDetails] = useState([]);
   const [isOpenModelVehicle, setIsOpenModelVehicle] = useState(false);
   const [isOpenModelProvince, setIsOpenModelProvince] = useState(false);
   const [isOpenModelCenter, setIsOpenModelCenter] = useState(false);
-  const [isOpenModelShift, setIsOpenModelShift] = useState(false);
+  const [isOpenModelWorkDay, setIsOpenModelWorkDay] = useState(false);
   const [isOpenModelShiftDetail, setIsOpenModelShiftDetail] = useState(false);
 
   const [valuePayload, setValuePayload] = useState({});
   // console.log(valuePayload);
   const centerId = new URLSearchParams(location.search).get('center');
-  console.log(centerId);
 
   const { current } = useUserStore();
   const {
@@ -129,7 +128,7 @@ const Booking = ({ navigate }) => {
 
       if (response.success) {
         const { centers } = response;
-        console.log(centers);
+
         setCenters(centers);
         setIsChooseProvince(true);
       }
@@ -137,25 +136,25 @@ const Booking = ({ navigate }) => {
   };
   const handleChangeCenter = async (value) => {
     if (value) {
-      const response = await apiGetAllShiftsAfterOrEqualToTodayAsync(value);
+      const response = await apiGetAllWorkDaysAfterOrEqualToTodayAsync(value);
 
       if (response.success) {
-        const { shifts } = response;
-
-        setShifts(shifts);
+        const { workDays } = response;
+        console.log(workDays);
+        setWorkDays(workDays);
         setIsChooseCenter(true);
       }
     }
   };
 
-  const handleChangeShift = async (value) => {
+  const handleChangeWorkDay = async (value) => {
     if (value) {
-      const response = await apiGetShiftById(value);
+      const response = await apiGetWorkDayById(value);
 
       if (response.success) {
-        const { shift } = response;
-
-        setShiftDetails(shift.ShiftDetails);
+        const { workDay } = response;
+        console.log(workDay.WorkDayShifts);
+        setShiftDetails(workDay.WorkDayShifts);
         setIsChooseShift(true);
       }
     }
@@ -167,10 +166,10 @@ const Booking = ({ navigate }) => {
       note: data.note,
       appointmentDate: data.shift,
     };
-    console.log(payload);
+
     setLoading(true);
     const response = await apiAddBooking(payload);
-    console.log(response);
+
     setLoading(false);
     if (response.success) {
       Swal.fire({
@@ -201,12 +200,15 @@ const Booking = ({ navigate }) => {
             <p>Phương tiện: <b>${appointment?.Vehicle?.licensePlate}</b></p>
             <p>Ngày hẹn: <b>${formatDate(appointment.appointmentDate)}</b></p>
             <p>Giờ hẹn: <b>${formatTime(
-              appointment?.ShiftDetail?.startTime
-            )} - ${formatTime(appointment?.ShiftDetail?.endTime)}</b></p>
+              appointment?.WorkDayShift?.Shift?.startTime
+            )} - ${formatTime(
+          appointment?.WorkDayShift?.Shift?.endTime
+        )}</b></p>
            
             <p><i>Xin chân thành cảm ơn!</i></p>
         `,
       };
+
       const res = await apiGetSendMail(data);
       console.log(res);
     } else {
@@ -403,7 +405,6 @@ const Booking = ({ navigate }) => {
                             key={center.centerId}
                             onClick={() => {
                               if (center.status == 'đang nhận lịch') {
-                                console.log('vào');
                                 setValue('center', center.name);
                                 setIsOpenModelCenter(false);
                                 handleChangeCenter(center.centerId);
@@ -459,18 +460,23 @@ const Booking = ({ navigate }) => {
                 {/* model ngày hẹn */}
                 <ModalContent
                   title="Ngày đăng kiểm"
-                  isOpen={isOpenModelShift}
-                  onClose={() => setIsOpenModelShift(false)}
+                  isOpen={isOpenModelWorkDay}
+                  onClose={() => setIsOpenModelWorkDay(false)}
                 >
                   <div className="">
                     <ul>
-                      {shifts.map((shift) => {
-                        const totalQuantity = shift.ShiftDetails.reduce(
-                          (total, detail) => total + detail.quantity,
+                      {workDays.map((workDay) => {
+                        const totalQuantity = workDay?.WorkDayShifts?.reduce(
+                          (total, detail) =>
+                            total + detail?.Appointments?.length,
                           0
                         );
-                        const totalMaxQuantity = shift.ShiftDetails.reduce(
-                          (total, detail) => total + detail.maxQuantity,
+                        const totalMaxQuantity = workDay?.WorkDayShifts?.reduce(
+                          (total, detail) => {
+                            if (detail.status != 'Ngưng nhận lịch')
+                              return total + detail.maxQuantity;
+                            return total;
+                          },
                           0
                         );
                         return (
@@ -478,14 +484,14 @@ const Booking = ({ navigate }) => {
                             <li
                               className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
                             transition-all flex items-center justify-between px-[30px]"
-                              key={shift.shiftId}
+                              key={workDay.workDayId}
                               onClick={() => {
-                                setValue('shift', shift.registrationDate);
-                                setIsOpenModelShift(false);
-                                handleChangeShift(shift.shiftId);
+                                setValue('shift', workDay.inspectionDate);
+                                setIsOpenModelWorkDay(false);
+                                handleChangeWorkDay(workDay.workDayId);
                               }}
                             >
-                              {formatDate(shift.registrationDate)}
+                              {formatDate(workDay.inspectionDate)}
                               <span>
                                 <span className="text-main">
                                   {totalQuantity}
@@ -509,7 +515,7 @@ const Booking = ({ navigate }) => {
                   id="shift"
                   placeholder="Vui lòng chọn ngày đăng kiểm"
                   onClick={() => {
-                    if (isChooseCenter) setIsOpenModelShift(true);
+                    if (isChooseCenter) setIsOpenModelWorkDay(true);
                   }}
                   validate={{
                     required: 'Ngày đăng kiểm không được bỏ trống.',
@@ -529,28 +535,42 @@ const Booking = ({ navigate }) => {
                       {shiftDetails.map((shiftDetail) => (
                         <>
                           <li
-                            className="text-center py-2 border-b cursor-pointer hover:bg-gray-100 
-                            transition-all flex items-center justify-between px-4"
-                            key={shiftDetail.shiftDetailId}
+                            // className="text-center py-2 border-b cursor-pointer hover:bg-gray-100
+                            // transition-all flex items-center justify-between px-4"
+                            className={clsx(
+                              'text-center py-2 border-b  hover:bg-gray-100 transition-all flex items-center justify-between px-4',
+                              shiftDetail?.Appointments?.length ==
+                                shiftDetail.maxQuantity ||
+                                shiftDetail.status == 'Ngưng nhận lịch'
+                                ? 'opacity-95 text-red-700 cursor-not-allowed'
+                                : 'cursor-pointer'
+                            )}
+                            key={shiftDetail.workDayShiftId}
                             onClick={() => {
+                              if (
+                                shiftDetail?.Appointments?.length ==
+                                shiftDetail.maxQuantity
+                              ) {
+                                return;
+                              }
                               setValue(
                                 'shiftDetail',
                                 `${formatTime(
-                                  shiftDetail.startTime
-                                )} đến ${formatTime(shiftDetail.endTime)}`
+                                  shiftDetail.Shift.startTime
+                                )} đến ${formatTime(shiftDetail.Shift.endTime)}`
                               );
                               setIsOpenModelShiftDetail(false);
                               setValuePayload((prev) => {
                                 return {
                                   ...prev,
-                                  shiftDetailId: shiftDetail.shiftDetailId,
+                                  workDayShiftId: shiftDetail.workDayShiftId,
                                 };
                               });
                             }}
                           >
                             <span>
-                              {formatTime(shiftDetail.startTime)} đến{' '}
-                              {formatTime(shiftDetail.endTime)}
+                              {formatTime(shiftDetail.Shift.startTime)} đến{' '}
+                              {formatTime(shiftDetail.Shift.endTime)}
                             </span>
                             {shiftDetail.status == 'Đã đầy' ? (
                               <Chip
@@ -569,7 +589,7 @@ const Booking = ({ navigate }) => {
                             ) : (
                               <span>
                                 <span className="text-main">
-                                  {shiftDetail.quantity}
+                                  {shiftDetail?.Appointments?.length}
                                 </span>
                                 /{shiftDetail.maxQuantity}
                               </span>
