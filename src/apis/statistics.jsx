@@ -20,3 +20,9 @@ export const apiGetStatisticsAppointments = () => {
     method: 'get',
   });
 };
+export const apiGetStatisticsAppointmentsOfMonth = (month, year) => {
+  return axios({
+    url: `statistics/appointments-of-month?month=${month}&year=${year}`,
+    method: 'get',
+  });
+};

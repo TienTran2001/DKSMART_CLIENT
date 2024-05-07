@@ -130,17 +130,33 @@ export const centerSidebar = [
       {
         id: 31,
         name: 'Tạo lịch làm việc',
-        path: `/manage-center/create-shift`,
+        path: `/manage-center/create-work-day`,
       },
       {
         id: 32,
         name: 'Quản lý',
-        path: `/manage-center/shifts`,
+        path: `/manage-center/work-days`,
       },
     ],
   },
   {
     id: 4,
+    name: 'Ca đăng kiểm',
+    path: `/manage-center/shifts`,
+    icon: <FaCalendarAlt />,
+    type: 'SINGLE',
+  },
+  {
+    id: 5,
+    name: 'Lịch hẹn',
+    path: `/manage-center/booking?status=all`,
+    icon: <FaCalendarAlt />,
+    type: 'SINGLE',
+  },
+];
+export const staffCenterSidebar = [
+  {
+    id: 5,
     name: 'Lịch hẹn',
     path: `/manage-center/booking?status=all`,
     icon: <FaCalendarAlt />,
@@ -172,6 +188,13 @@ export function formatTime(timeString) {
   const formattedTime = `${hour}h${minute}`;
 
   return formattedTime;
+}
+export function formatMonth(dateString) {
+  if (dateString) {
+    const [year, month] = dateString.split('-');
+    const formattedDate = `${month}/${year}`;
+    return formattedDate;
+  }
 }
 
 // eslint-disable-next-line react/prop-types

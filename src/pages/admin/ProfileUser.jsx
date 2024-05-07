@@ -12,7 +12,7 @@ import { apiUpdateCurrent } from '~/apis/user';
 const ProfileUser = () => {
   const [loading, setLoading] = useState(false);
   const { current } = useUserStore();
-  console.log(current);
+
   const {
     register,
     formState: { errors },

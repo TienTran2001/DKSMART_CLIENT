@@ -6,22 +6,28 @@ import Swal from 'sweetalert2';
 import { InputForm } from '~/components';
 import ButtonDefault from '~/components/commons/ButtonDefault';
 import { apiAddShift } from '~/apis/shift';
+import { IoArrowBackSharp } from 'react-icons/io5';
 
 // eslint-disable-next-line react/prop-types
-const AddShift = () => {
+const AddShift = ({ navigate }) => {
   const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
-  const handleAddProvince = async (data) => {
+
+  const handleAddShift = async (data) => {
+    console.log(data);
     const payload = {
-      registrationDate: data.registrationDate,
+      startTime: data.startTime,
+      endTime: data.endTime,
     };
 
     setLoading(true);
     const response = await apiAddShift(payload);
+    console.log(response);
     setLoading(false);
 
     if (response.success) {
@@ -32,7 +38,7 @@ const AddShift = () => {
         confirmButtonText: 'Thoát',
       }).then((isConfirm) => {
         if (isConfirm) {
-          // reset();
+          reset();
         }
       });
     } else toast.error(response.message);
@@ -40,20 +46,39 @@ const AddShift = () => {
 
   return (
     <div className=" mx-auto md:h-auto">
-      <h1 className="text-2xl mb-5  font-bold">Tạo ngày làm việc</h1>
-      <div className="w-full h-full bg-white rounded-lg md:shadow  md:mt-0 ">
+      <h1 className="text-2xl mb-5  font-bold">Tạo ca đăng kiểm</h1>
+      <div className="w-full  bg-white rounded-lg md:shadow  md:mt-0 ">
+        <div className="p-6">
+          <span
+            className="absolute cursor-pointer"
+            onClick={() => navigate(-1)}
+          >
+            <IoArrowBackSharp size={22} className="text-main  " />
+          </span>
+        </div>
+
         <form className="p-6  sm:p-8">
           <div className="space-y-8 ">
-            <div className="md:flex block space-y-[10px] md:space-y-0 md:space-x-6  justify-between">
+            <div className="md:flex block space-y-[10px] md:space-y-0 md:space-x-6  md:w-1/2 ">
               <InputForm
-                label="Ngày làm việc"
+                label="Thời gian bắt đầu"
                 register={register}
-                type="Date"
-                id="registrationDate"
-                placeholder="Hà Nội"
+                type="time"
+                id="startTime"
                 containerClassName="md:w-1/2"
                 validate={{
-                  required: 'Không được bỏ trống.',
+                  required: 'Thời gian bắt đầu không được bỏ trống.',
+                }}
+                errors={errors}
+              />
+              <InputForm
+                label="Thời gian kết thúc"
+                register={register}
+                type="Time"
+                id="endTime"
+                containerClassName="md:w-1/2"
+                validate={{
+                  required: 'Thời gian kết thúc không được bỏ trống.',
                 }}
                 errors={errors}
               />
@@ -62,7 +87,7 @@ const AddShift = () => {
             <ButtonDefault
               disable={loading}
               className="bg-main"
-              onClick={handleSubmit(handleAddProvince)}
+              onClick={handleSubmit(handleAddShift)}
             >
               Tạo
             </ButtonDefault>

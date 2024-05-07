@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
 } from '@material-tailwind/react';
 import ButtonDefault from '../commons/ButtonDefault';
 import { Link } from 'react-router-dom';
@@ -152,7 +152,7 @@ export default function Header({ navigate }) {
           </IconButton>
         </div>
       </div>
-      <MobileNav open={openNav}>
+      <Collapse open={openNav}>
         {navList}
         <div className=" flex   items-center gap-x-1">
           {current == token ? (
@@ -181,7 +181,7 @@ export default function Header({ navigate }) {
             ''
           )}
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 }
