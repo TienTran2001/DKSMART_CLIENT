@@ -11,12 +11,14 @@ import { apiDeleteVehicle, apiGetVehicles } from '~/apis/vehicle';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { IoArrowBackSharp } from 'react-icons/io5';
+import { VehicleSkeleton } from '~/components/loadingSkeleton/VehicleSkeleton';
 
 // eslint-disable-next-line react/prop-types
 const Vehicles = ({ navigate }) => {
   const [vehicles, setVehicles] = useState([]);
   const [search, setSearch] = useState('');
   const { current } = useUserStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!current) {
     navigate('/login');
@@ -27,10 +29,12 @@ const Vehicles = ({ navigate }) => {
   }, []);
 
   const loadVehicles = async (search) => {
+    setIsLoading(true);
     const res = await apiGetVehicles(search);
     if (res.success) {
       const { vehicles } = res;
       setVehicles(vehicles);
+      setIsLoading(false);
     }
   };
 
@@ -108,17 +112,23 @@ const Vehicles = ({ navigate }) => {
               <span className="text-main">{vehicles.length}</span>
             </div>
             <div className="  mt-[25px] mx-auto flex flex-col gap-y-5">
-              {vehicles.map((vehicle) => (
-                <Fragment key={vehicle.vehicleId}>
-                  <CardVehicle
-                    vehicle={vehicle}
-                    onHandleDelete={(vehicleId) =>
-                      handleDeleteCenter(vehicleId)
-                    }
-                    navigate={navigate}
-                  />
-                </Fragment>
-              ))}
+              {isLoading ? (
+                <>
+                  <VehicleSkeleton isLoading={isLoading} />
+                </>
+              ) : (
+                vehicles.map((vehicle) => (
+                  <Fragment key={vehicle.vehicleId}>
+                    <CardVehicle
+                      vehicle={vehicle}
+                      onHandleDelete={(vehicleId) =>
+                        handleDeleteCenter(vehicleId)
+                      }
+                      navigate={navigate}
+                    />
+                  </Fragment>
+                ))
+              )}
             </div>
           </div>
         </div>

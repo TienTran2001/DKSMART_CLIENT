@@ -1,7 +1,7 @@
 import Slide from '~/components/commons/Slide';
 import { AiTwotoneClockCircle, AiTwotoneCar } from 'react-icons/ai';
 import { GiMechanicGarage } from 'react-icons/gi';
-import { FaChevronCircleRight } from 'react-icons/fa';
+import { FaChevronCircleRight, FaRegEye } from 'react-icons/fa';
 
 import {
   Card,
@@ -17,6 +17,8 @@ import { apiGetAllCenter } from '~/apis/center';
 import { PublicLayout } from '.';
 import { apiGetAllNews } from '~/apis/news';
 import { formatDate } from '~/utils/contants';
+import { CenterItemSkeleton } from '~/components/loadingSkeleton/CenterItemSkeleton';
+import { NewsSkeleton } from '~/components/loadingSkeleton/NewsSkeleton';
 
 const categories = [
   {
@@ -52,21 +54,27 @@ const Home = ({ navigate }) => {
 
   const [centers, setCenters] = useState([]);
   const [news, setNews] = useState([]);
+  const [isLoadingCenter, setIsLoadingCenter] = useState(false);
+  const [isLoadingNews, setIsLoadingNews] = useState(false);
   console.log(news);
   useEffect(() => {
     loadCenters('', 2, 0);
     loadNews('công khai', 2, 0);
   }, []);
   const loadCenters = async (name, limit, page) => {
+    setIsLoadingCenter(true);
     const response = await apiGetAllCenter({ name, limit, page });
     if (response.success) {
       setCenters(response.centers.rows);
+      setIsLoadingCenter(false);
     }
   };
   const loadNews = async (status, limit, page) => {
+    setIsLoadingNews(true);
     const response = await apiGetAllNews({ status, limit, page });
     if (response.success) {
       setNews(response.news.rows);
+      setIsLoadingNews(false);
     }
   };
   return (
@@ -109,11 +117,18 @@ const Home = ({ navigate }) => {
           </div>
 
           <div className="  mt-[20px] mx-auto flex flex-col gap-y-5">
-            {centers.map((center) => (
-              <Fragment key={center.centerId}>
-                <CardCenter center={center} />
-              </Fragment>
-            ))}
+            {isLoadingCenter ? (
+              <>
+                <CenterItemSkeleton isLoading={isLoadingCenter} />
+                <CenterItemSkeleton isLoading={isLoadingCenter} />
+              </>
+            ) : (
+              centers.map((center) => (
+                <Fragment key={center.centerId}>
+                  <CardCenter center={center} isLoading={isLoadingCenter} />
+                </Fragment>
+              ))
+            )}
           </div>
         </div>
         {/* danh sách tin tức */}
@@ -130,36 +145,49 @@ const Home = ({ navigate }) => {
             </Link>
           </div>
           <div className="mt-5 flex gap-5 justify-around flex-wrap">
-            {news.map((item) => (
-              <Card
-                key={item.newsId}
-                className="w-[22rem] overflow-hidden cursor-pointer"
-                onClick={() => navigate(`/news-detail/${item.newsId}`)}
-              >
-                <CardHeader
-                  floated={false}
-                  shadow={false}
-                  color="transparent"
-                  className="m-0 rounded-none h-[200px] w-full"
+            {isLoadingNews ? (
+              <>
+                <NewsSkeleton isLoading={isLoadingNews} />
+                <NewsSkeleton isLoading={isLoadingNews} />
+              </>
+            ) : (
+              news.map((item) => (
+                <Card
+                  key={item.newsId}
+                  className="w-[22rem] overflow-hidden cursor-pointer"
+                  onClick={() => navigate(`/news-detail/${item.newsId}`)}
                 >
-                  <img
-                    className="w-full h-full object-cover"
-                    src={item?.imageUrl}
-                    alt=""
-                  />
-                </CardHeader>
-                <CardBody className="p-4">
-                  <Typography variant="h5" color="blue-gray">
-                    <div className=" line-clamp-2">{item.title}</div>
-                  </Typography>
-                  <Tooltip content="Ngày đăng">
-                    <Typography className="font-normal inline-block mt-4 text-sm">
-                      {formatDate(item.createdAt)}
+                  <CardHeader
+                    floated={false}
+                    shadow={false}
+                    color="transparent"
+                    className="m-0 rounded-none h-[200px] w-full"
+                  >
+                    <img
+                      className="w-full h-full object-cover"
+                      src={item?.imageUrl}
+                      alt=""
+                    />
+                  </CardHeader>
+                  <CardBody className="p-4 flex flex-col flex-1 gap-y-4 justify-between">
+                    <Typography variant="h5" color="blue-gray">
+                      <div className=" line-clamp-2">{item.title}</div>
                     </Typography>
-                  </Tooltip>
-                </CardBody>
-              </Card>
-            ))}
+                    <Typography className="font-normal text-sm flex items-center justify-between">
+                      <Tooltip content="Ngày đăng">
+                        <span>{formatDate(item.createdAt)}</span>
+                      </Tooltip>
+                      <Tooltip content="Lượt xem">
+                        <span className="flex items-center gap-x-1">
+                          <span>{item.views}</span>
+                          <FaRegEye />
+                        </span>
+                      </Tooltip>
+                    </Typography>
+                  </CardBody>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </main>

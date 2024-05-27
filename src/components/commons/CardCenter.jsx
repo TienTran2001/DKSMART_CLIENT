@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { MdCheckCircle } from 'react-icons/md';
 import { SlCalender } from 'react-icons/sl';
 import ButtonDefault from './ButtonDefault';
@@ -6,15 +7,18 @@ import { GoogleMapsLink } from '~/utils/contants';
 import { useNavigate } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { Tooltip } from '@material-tailwind/react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 // eslint-disable-next-line react/prop-types
-const CardCenter = ({ center }) => {
-  // eslint-disable-next-line react/prop-types
+const CardCenter = ({ center, isLoading }) => {
   const { centerId, name, address, phone, status, operatingHours } = center;
   const navigate = useNavigate();
   return (
     <div className="bg-main-gray border border-[#067d8b] text-sm md:text-base rounded-md px-4 py-3 flex flex-col gap-y-5">
-      <div className="uppercase font-semibold text-gray-700">{name}</div>
+      <div className="uppercase font-semibold text-gray-700">
+        {isLoading ? <Skeleton width={200} /> : name}
+      </div>
       <div className="border-t-2"></div>
       <div>
         Địa chỉ:{' '}
