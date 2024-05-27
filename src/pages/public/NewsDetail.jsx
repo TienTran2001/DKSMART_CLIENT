@@ -2,6 +2,8 @@ import { PublicLayout } from '.';
 import { useEffect, useState } from 'react';
 
 import { IoArrowBackSharp } from 'react-icons/io5';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useParams } from 'react-router-dom';
 import { apiGetNews, apiIncreaseView } from '~/apis/news';
 import { formatDate } from '~/utils/contants';
@@ -10,18 +12,19 @@ import { formatDate } from '~/utils/contants';
 const NewsDetail = ({ navigate }) => {
   const { newsId } = useParams();
   const [news, setNews] = useState('');
-
-  console.log(news);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     loadNewDetail(newsId);
   }, []);
 
   const loadNewDetail = async (newsId) => {
+    setLoading(true);
     const response = await apiGetNews(newsId);
     if (response.success) {
       const { news } = response;
       setNews(news);
+      setLoading(false);
       await apiIncreaseView(newsId);
     }
   };
@@ -42,17 +45,44 @@ const NewsDetail = ({ navigate }) => {
               </h2>
             </div>
             <div className="mt-[50px]">
-              <h2 className="font-bold text-2xl mb-5">{news.title}</h2>
+              <h2 className="font-bold text-2xl mb-5">
+                {isLoading ? (
+                  <Skeleton className="skeleton w-full" />
+                ) : (
+                  news.title
+                )}{' '}
+              </h2>
               <div className="text-gray-500">
-                <span>{news.views}</span> lượt xem
+                {isLoading ? (
+                  <Skeleton className="skeleton w-[100px]" />
+                ) : (
+                  <>
+                    {' '}
+                    <span>{news.views}</span> lượt xem
+                  </>
+                )}
               </div>
               <div className="text-gray-500">
-                Ngày đăng: <span>{formatDate(news.createdAt)}</span>
+                {isLoading ? (
+                  <Skeleton className="skeleton w-[160px]" />
+                ) : (
+                  <>
+                    Ngày đăng: <span>{formatDate(news.createdAt)}</span>
+                  </>
+                )}
               </div>
               <hr className="my-[50px]" />
-              <div dangerouslySetInnerHTML={{ __html: news.content }} />
+              {isLoading ? (
+                <Skeleton className="skeleton w-full" count={20} />
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: news.content }} />
+              )}
             </div>
-            <div className="italic mt-4">{news.source}</div>
+            {isLoading ? (
+              <Skeleton className="skeleton w-[100px]" />
+            ) : (
+              <div className="italic mt-4">{news.source}</div>
+            )}
           </div>
         </div>
       </PublicLayout>

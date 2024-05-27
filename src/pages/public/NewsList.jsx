@@ -8,11 +8,13 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import { apiGetAllNews } from '~/apis/news';
 import { Typography } from '@material-tailwind/react';
 import { formatDate } from '~/utils/contants';
+import { NewsListSkeleton } from '~/components/loadingSkeleton/NewsSkeleton';
 
 // eslint-disable-next-line react/prop-types
 const NewsList = ({ navigate }) => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [news, setNews] = useState([]);
 
@@ -23,10 +25,12 @@ const NewsList = ({ navigate }) => {
   }, []);
 
   const loadNews = async (status, limit, page) => {
+    setIsLoading(true);
     const response = await apiGetAllNews({ status, limit, page });
     if (response.success) {
       console.log(response.news.rows);
       setNews(response.news.rows);
+      setIsLoading(false);
       setTotalPage(response.totalPage);
     }
   };
@@ -48,33 +52,37 @@ const NewsList = ({ navigate }) => {
             </div>
 
             <div className="  mt-[50px] mx-auto flex flex-col gap-y-5">
-              {news.map((item) => (
-                <div
-                  key={item.newsId}
-                  className="w-full h-[120px] md:h-[200px] rounded-md flex space-x-3 overflow-hidden cursor-pointer bg-gray-100"
-                  onClick={() => navigate(`/news-detail/${item.newsId}`)}
-                >
-                  <div className="m-0 rounded-none w-[40%]">
-                    <img
-                      className="w-full h-full object-cover"
-                      src={item?.imageUrl}
-                      alt=""
-                    />
-                  </div>
-                  <div className="w-[60%] p-4">
-                    <Typography variant="h5" color="blue-gray">
-                      <div className=" line-clamp-2 text-base md:text-xl">
-                        {item.title}
-                      </div>
-                    </Typography>
-                    <Tooltip content="Ngày đăng">
-                      <Typography className="font-normal inline-block mt-4 text-sm">
-                        {formatDate(item.createdAt)}
+              {isLoading ? (
+                <NewsListSkeleton isLoading={isLoading} />
+              ) : (
+                news.map((item) => (
+                  <div
+                    key={item.newsId}
+                    className="w-full h-[120px] md:h-[200px] rounded-md flex space-x-3 overflow-hidden cursor-pointer bg-gray-100"
+                    onClick={() => navigate(`/news-detail/${item.newsId}`)}
+                  >
+                    <div className="m-0 rounded-none w-[40%]">
+                      <img
+                        className="w-full h-full object-cover"
+                        src={item?.imageUrl}
+                        alt=""
+                      />
+                    </div>
+                    <div className="w-[60%] p-4">
+                      <Typography variant="h5" color="blue-gray">
+                        <div className=" line-clamp-2 text-base md:text-xl">
+                          {item.title}
+                        </div>
                       </Typography>
-                    </Tooltip>
+                      <Tooltip content="Ngày đăng">
+                        <Typography className="font-normal inline-block mt-4 text-sm">
+                          {formatDate(item.createdAt)}
+                        </Typography>
+                      </Tooltip>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
             <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
               <div className="font-normal">

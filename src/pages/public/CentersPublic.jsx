@@ -8,6 +8,7 @@ import { Button, Tooltip } from '@material-tailwind/react';
 import CardCenter from '~/components/commons/CardCenter';
 import { IoArrowBackSharp } from 'react-icons/io5';
 import ButtonDefault from '~/components/commons/ButtonDefault';
+import { CenterItemSkeleton } from '~/components/loadingSkeleton/CenterItemSkeleton';
 
 // eslint-disable-next-line react/prop-types
 const CentersPublic = ({ navigate }) => {
@@ -18,6 +19,7 @@ const CentersPublic = ({ navigate }) => {
   const [totalPage, setTotalPage] = useState(1);
   const [search, setSearch] = useState('');
   const [province, setProvince] = useState('');
+  const [isLoadingCenter, setIsLoadingCenter] = useState(false);
 
   const limit = 3;
 
@@ -27,10 +29,12 @@ const CentersPublic = ({ navigate }) => {
   }, []);
 
   const loadCenters = async (province = '', name, limit, page) => {
+    setIsLoadingCenter(true);
     const response = await apiGetAllCenter({ province, name, limit, page });
     if (response.success) {
       const { centers, totalPage } = response;
       setCenters(centers.rows);
+      setIsLoadingCenter(false);
       setTotalPage(totalPage);
     }
   };
@@ -126,11 +130,15 @@ const CentersPublic = ({ navigate }) => {
               </div>
             </div>
             <div className="  mt-[50px] mx-auto flex flex-col gap-y-5">
-              {centers.map((center) => (
-                <Fragment key={center.centerId}>
-                  <CardCenter center={center} />
-                </Fragment>
-              ))}
+              {isLoadingCenter ? (
+                <CenterItemSkeleton isLoading={isLoadingCenter} />
+              ) : (
+                centers.map((center) => (
+                  <Fragment key={center.centerId}>
+                    <CardCenter center={center} />
+                  </Fragment>
+                ))
+              )}
             </div>
             <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
               <div className="font-normal">
