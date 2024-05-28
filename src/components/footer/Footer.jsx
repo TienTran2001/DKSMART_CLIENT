@@ -28,7 +28,7 @@ export default function Footer() {
             </Link>
           </li>
           <li>
-            <Link to="/booking-histories">
+            <Link to="/booking-history?status=all">
               <Typography
                 color="blue-gray"
                 className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
