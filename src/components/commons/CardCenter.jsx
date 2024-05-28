@@ -37,7 +37,7 @@ const CardCenter = ({ center, isLoading }) => {
       </div>
       <div className="flex justify-between flex-col md:flex-row gap-y-2 md:gap-y-0">
         {status == 'đang nhận lịch' && (
-          <ButtonDefault className="bg-green-600 flex items-center gap-x-2">
+          <ButtonDefault className="bg-green-600 flex items-center gap-x-2 cursor-default ">
             <MdCheckCircle className="text-lg" />
             <span>{status}</span>
           </ButtonDefault>

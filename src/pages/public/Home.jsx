@@ -64,17 +64,17 @@ const Home = ({ navigate }) => {
   const loadCenters = async (name, limit, page) => {
     setIsLoadingCenter(true);
     const response = await apiGetAllCenter({ name, limit, page });
+    setIsLoadingCenter(false);
     if (response.success) {
       setCenters(response.centers.rows);
-      setIsLoadingCenter(false);
     }
   };
   const loadNews = async (status, limit, page) => {
     setIsLoadingNews(true);
     const response = await apiGetAllNews({ status, limit, page });
+    setIsLoadingNews(false);
     if (response.success) {
       setNews(response.news.rows);
-      setIsLoadingNews(false);
     }
   };
   return (

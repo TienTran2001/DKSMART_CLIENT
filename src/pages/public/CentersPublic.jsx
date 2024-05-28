@@ -31,10 +31,10 @@ const CentersPublic = ({ navigate }) => {
   const loadCenters = async (province = '', name, limit, page) => {
     setIsLoadingCenter(true);
     const response = await apiGetAllCenter({ province, name, limit, page });
+    setIsLoadingCenter(false);
     if (response.success) {
       const { centers, totalPage } = response;
       setCenters(centers.rows);
-      setIsLoadingCenter(false);
       setTotalPage(totalPage);
     }
   };
